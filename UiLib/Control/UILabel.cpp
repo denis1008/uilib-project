@@ -537,7 +537,7 @@ namespace UiLib
 		try
 		{
 			if(!m_EnableEffect)
-				return GetText();
+				return CControlUI::GetText();
 			return m_TextValue;
 		}
 		catch (...)
