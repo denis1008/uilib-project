@@ -7,7 +7,8 @@
 			<Control bkimage="file='WndFrame/start.png' dest='14,14,69,69,'" width="69" height="69"/>
 			<VerticalLayout>
 				<Control />
-				<Label enabledeffect="true" enabledshadow="true" enabledstroke="true" transshadow1="0" transtext1="0" textcolor="#ff0680C9" strokecolor="#ffffffff"  shadowoffset="2,-120" mouse="true" text="SvnSource：uilib-project.googlecode.com)" align="center" height="30" disabledtextcolor="#FFa3c6f2" font="2" />
+				<Label enabledeffect="true" enabledshadow="true" enabledstroke="true" transshadow1="0" transtext1="0" textcolor="#ff0680C9" strokecolor="#ffffffff"  shadowoffset="2,-120" mouse="true" text="SvnSource：uilib-project.googlecode.com)" align="center" height="27" disabledtextcolor="#FFa3c6f2" font="2" />
+				<Edit text="来这里输入文字看看" tipvalue="来这里输入文字看看" height="22" />
 				<Control />
 			</VerticalLayout>
 		</HorizontalLayout>

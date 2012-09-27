@@ -26,7 +26,6 @@
 					</HorizontalLayout>
 				</HorizontalLayout>
 				<Control />
-				
 			</VerticalLayout>
 		</HorizontalLayout>
 		<Label float="true" pos="10,2,0,0"  enabledeffect="true" enabledshadow="true" transshadow1="100" enabledstroke="true" strokecolor="#ffffffff"  shadowoffset="2,-120" text="UiLib Open Source Community" align="center" width="350" height="26" disabledtextcolor="#FFa3c6f2" bkimage="file='WndFrame/ModuleTitleBG.png' corner='5,2,5,5' fade='188'" font="2" />
