@@ -32,11 +32,13 @@ namespace UiLib
 
 			this->SetFixedHeight(18);
 			pFolderButton->SetFixedWidth(GetFixedHeight());
-			pDottedLine->SetFixedWidth(1);
+			pDottedLine->SetFixedWidth(2);
 			pCheckBox->SetFixedWidth(GetFixedHeight());
 			pItemButton->SetAttribute(_T("align"),_T("left"));
 
 			pDottedLine->SetVisible(false);
+			pCheckBox->SetVisible(false);
+			pItemButton->SetMouseEnabled(false);
 
 			if(_ParentNode)
 			{
@@ -113,9 +115,9 @@ namespace UiLib
 	{
 		try
 		{
-			if( _tcscmp(pstrName, _T("ListItem")) == 0 ) return static_cast<IListItemUI*>(this);
-			if( _tcscmp(pstrName, _T("TreeNode")) == 0 ) return static_cast<CTreeNodeUI*>(this);
-			return CContainerUI::GetInterface(pstrName);
+			if( _tcscmp(pstrName, _T("TreeNode")) == 0 )
+				return static_cast<CTreeNodeUI*>(this);
+			return CListContainerElementUI::GetInterface(pstrName);
 		}
 		catch(...)
 		{
@@ -234,13 +236,13 @@ namespace UiLib
 	// Returns:   bool
 	// Qualifier:
 	// Parameter: CControlUI * pControl
-	// Note:	  暂时屏蔽，后续完善
+	// Note:	  
 	//************************************
 	bool CTreeNodeUI::Remove( CControlUI* pControl )
 	{
 		try
 		{
-			return false;
+			return RemoveAt((CTreeNodeUI*)pControl);
 		}
 		catch (...)
 		{
@@ -433,10 +435,9 @@ namespace UiLib
 			_pTreeNodeUI->GetDottedLine()->SetFixedWidth(pDottedLine->GetFixedWidth()+16);
 			_pTreeNodeUI->SetParentNode(this);
 			_pTreeNodeUI->GetItemButton()->SetGroup(pItemButton->GetGroup());
-			mChildNodes.push_back(_pTreeNodeUI);
+			mTreeNodes.Add(_pTreeNodeUI);
 
 			m_bIsHasChild = true;
-
 			return true;
 		}
 		catch(...)
@@ -458,13 +459,14 @@ namespace UiLib
 	{
 		try
 		{
-			for(std::vector<CTreeNodeUI*>::iterator nIndex = mChildNodes.begin();nIndex != mChildNodes.end();)
+			int nIndex = mTreeNodes.Find(_pTreeNodeUI);
+			CTreeNodeUI* pNode = static_cast<CTreeNodeUI*>(mTreeNodes.GetAt(nIndex));
+			if(pNode && pNode == _pTreeNodeUI)
 			{
-				if((*nIndex) == _pTreeNodeUI)
-				{
-					mChildNodes.erase(nIndex);
-					return true;
-				}
+				while(pNode->IsHasChild())
+					RemoveAt(static_cast<CTreeNodeUI*>(pNode->mTreeNodes.GetAt(0)));
+				mTreeNodes.Remove(nIndex);
+				return true;
 			}
 			return false;
 		}
@@ -516,26 +518,6 @@ namespace UiLib
 	}
 
 	//************************************
-	// Method:    GetChildNodes
-	// FullName:  CTreeNodeUI::GetChildNodes
-	// Access:    public 
-	// Returns:   CChildNodes*
-	// Qualifier:
-	// Note:	  
-	//************************************
-	CTreeNodeUI::CChildNodes* CTreeNodeUI::GetChildNodes()
-	{
-		try
-		{
-			return &mChildNodes;
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::GetChildNodes";
-		}
-	}
-
-	//************************************
 	// Method:    GetCountChild
 	// FullName:  CTreeNodeUI::GetCountChild
 	// Access:    public 
@@ -547,7 +529,7 @@ namespace UiLib
 	{
 		try
 		{
-			return mChildNodes.size();
+			return mTreeNodes.GetSize();
 		}
 		catch(...)
 		{
@@ -594,42 +576,6 @@ namespace UiLib
 			throw "CTreeNodeUI::GetTreeView";
 		}
 	}
-	
-	//************************************
-	// Method:    ReCalculateDotWidth
-	// FullName:  CTreeNodeUI::ReCalculateDotWidth
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: CTreeNodeUI * _pParentNode
-	// Note:	  
-	//************************************
-	void CTreeNodeUI::ReCalculateDotWidth( CTreeNodeUI* _pParentNode /*= NULL*/ )
-	{
-		try
-		{
-			if(!_pParentNode)
-				pDottedLine->SetFixedWidth(0);
-			else
-				pDottedLine->SetFixedWidth(_pParentNode->GetDottedLine()->GetFixedWidth()+_pParentNode->GetDottedLine()->GetFixedHeight());
-
-
-			for(std::vector<CTreeNodeUI*>::iterator nIndex = mChildNodes.begin();nIndex != mChildNodes.end();nIndex++)
-			{
-				CDuiString aa; 
-				aa.Format(_T("Text:%s\r\nWidth:%d"),pItemButton->GetText().GetData(),pDottedLine->GetFixedWidth());
-				MessageBox(NULL,aa.GetData(),NULL,MB_OK);
-				if((*nIndex)->GetCountChild() > 0)
-				{
-					(*nIndex)->ReCalculateDotWidth(this);
-				}
-			}
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::ReCalculateDotWidth";
-		}
-	}
 
 	//************************************
 	// Method:    SetAttribute
@@ -664,7 +610,96 @@ namespace UiLib
 			throw "CTreeNodeUI::SetAttribute";
 		}
 	}
-	
+
+	CStdPtrArray CTreeNodeUI::GetTreeNodes()
+	{
+		return mTreeNodes;
+	}
+
+	CTreeNodeUI* CTreeNodeUI::GetChildNode( int _nIndex )
+	{
+		return static_cast<CTreeNodeUI*>(mTreeNodes.GetAt(_nIndex));
+	}
+
+	//************************************
+	// Method:    SetVisibleFolderBtn
+	// FullName:  CTreeNodeUI::SetVisibleFolderBtn
+	// Access:    public 
+	// Returns:   void
+	// Qualifier:
+	// Parameter: bool _IsVisibled
+	// Node:	  
+	//************************************
+	void CTreeNodeUI::SetVisibleFolderBtn( bool _IsVisibled )
+	{
+		try
+		{
+			pFolderButton->SetVisible(_IsVisibled);
+		}
+		catch(...)
+		{
+			throw "CTreeNodeUI::SetVisibleFolderBtn";
+		}
+	}
+	//************************************
+	// Method:    GetVisibleFolderBtn
+	// FullName:  CTreeNodeUI::GetVisibleFolderBtn
+	// Access:    public 
+	// Returns:   bool
+	// Qualifier:
+	// Node:	  
+	//************************************
+	bool CTreeNodeUI::GetVisibleFolderBtn()
+	{
+		try
+		{
+			return pFolderButton->IsVisible();
+		}
+		catch(...)
+		{
+			throw "CTreeNodeUI::GetVisibleFolderBtn";
+		}
+	}
+	//************************************
+	// Method:    SetVisibleCheckBtn
+	// FullName:  CTreeNodeUI::SetVisibleCheckBtn
+	// Access:    public 
+	// Returns:   void
+	// Qualifier:
+	// Parameter: bool _IsVisibled
+	// Node:	  
+	//************************************
+	void CTreeNodeUI::SetVisibleCheckBtn( bool _IsVisibled )
+	{
+		try
+		{
+			pCheckBox->SetVisible(_IsVisibled);
+		}
+		catch(...)
+		{
+			throw "CTreeNodeUI::SetVisibleCheckBtn";
+		}
+	}
+	//************************************
+	// Method:    GetVisibleCheckBtn
+	// FullName:  CTreeNodeUI::GetVisibleCheckBtn
+	// Access:    public 
+	// Returns:   bool
+	// Qualifier:
+	// Node:	  
+	//************************************
+	bool CTreeNodeUI::GetVisibleCheckBtn()
+	{
+		try
+		{
+			return pCheckBox->IsVisible();
+		}
+		catch(...)
+		{
+			throw "CTreeNodeUI::GetVisibleCheckBtn";
+		}
+	}
+
 	/*****************************************************************************/
 	/*****************************************************************************/
 	/*****************************************************************************/
@@ -678,7 +713,7 @@ namespace UiLib
 	// Parameter: void
 	// Note:	  
 	//************************************
-	CTreeViewUI::CTreeViewUI( void )
+	CTreeViewUI::CTreeViewUI( void ) : m_bVisibleFolderBtn(true),m_bVisibleCheckBtn(false)
 	{
 		try
 		{
@@ -710,6 +745,46 @@ namespace UiLib
 		}
 	}
 
+		//************************************
+	// Method:    GetClass
+	// FullName:  UiLib::CTreeViewUI::GetClass
+	// Access:    virtual public 
+	// Returns:   LPCTSTR
+	// Qualifier: const
+	//************************************
+	LPCTSTR CTreeViewUI::GetClass() const
+	{
+		try
+		{
+			return _T("TreeViewUI");
+		}
+		catch(...)
+		{
+			throw "CTreeNodeUI::GetClass";
+		}
+	}
+
+	//************************************
+	// Method:    GetInterface
+	// FullName:  UiLib::CTreeViewUI::GetInterface
+	// Access:    virtual public 
+	// Returns:   LPVOID
+	// Qualifier:
+	// Parameter: LPCTSTR pstrName
+	//************************************
+	LPVOID CTreeViewUI::GetInterface( LPCTSTR pstrName )
+	{
+		try
+		{
+			if( _tcscmp(pstrName, _T("TreeView")) == 0 ) return static_cast<CTreeViewUI*>(this);
+			return CListUI::GetInterface(pstrName);
+		}
+		catch(...)
+		{
+			throw "CTreeNodeUI::GetClass";
+		}
+	}
+
 	//************************************
 	// Method:    Add
 	// FullName:  CTreeViewUI::Add
@@ -731,14 +806,20 @@ namespace UiLib
 
 			pControl->GetFolderButton()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnFolderChanged);
 			pControl->GetCheckBox()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnCheckBoxChanged);
+			
+			pControl->SetVisibleFolderBtn(m_bVisibleFolderBtn);
+			pControl->SetVisibleCheckBtn(m_bVisibleCheckBtn);
 
 			CListUI::Add(pControl);
 
 			if(pControl->GetCountChild() > 0)
 			{
-				for(std::vector<CTreeNodeUI*>::iterator nIndex = pControl->GetChildNodes()->begin();nIndex != pControl->GetChildNodes()->end();nIndex++)
+				int nCount = pControl->GetCountChild();
+				for(int nIndex = 0;nIndex < nCount;nIndex++)
 				{
-					Add((*nIndex));
+					CTreeNodeUI* pNode = pControl->GetChildNode(nIndex);
+					if(pNode)
+						Add(pNode);
 				}
 			}
 
@@ -776,17 +857,24 @@ namespace UiLib
 				return -1;
 
 			CListUI::AddAt(pControl,iIndex);
-			
+
+			pControl->SetVisibleFolderBtn(m_bVisibleFolderBtn);
+			pControl->SetVisibleCheckBtn(m_bVisibleCheckBtn);
+
 			if(pControl->GetCountChild() > 0)
 			{
-				for(std::vector<CTreeNodeUI*>::iterator nIndex = pControl->GetChildNodes()->begin();nIndex != pControl->GetChildNodes()->end();nIndex++)
+				int nCount = pControl->GetCountChild();
+				for(int nIndex = 0;nIndex < nCount;nIndex++)
 				{
-					iIndex = AddAt((*nIndex),iIndex+1);
+					CTreeNodeUI* pNode = pControl->GetChildNode(nIndex);
+					if(pNode)
+						return AddAt(pNode,iIndex+1);
 				}
-				return true;
 			}
 			else
 				return iIndex+1;
+
+			return -1;
 		}
 		catch(...)
 		{
@@ -807,11 +895,14 @@ namespace UiLib
 	{
 		try
 		{
-			if(pControl->GetCountChild())
+			if(pControl->GetCountChild() > 0)
 			{
-				for(std::vector<CTreeNodeUI*>::iterator nIndex = pControl->GetChildNodes()->begin();nIndex != pControl->GetChildNodes()->end();nIndex++)
+				int nCount = pControl->GetCountChild();
+				for(int nIndex = 0;nIndex < nCount;nIndex++)
 				{
-					Remove(*nIndex);
+					CTreeNodeUI* pNode = pControl->GetChildNode(nIndex);
+					if(pNode)
+						Remove(pNode);
 				}
 			}
 			CListUI::Remove(pControl);
@@ -961,12 +1052,16 @@ namespace UiLib
 		{
 			if(_TreeNode)
 			{
-				for(std::vector<CTreeNodeUI*>::iterator nIndex = _TreeNode->GetChildNodes()->begin();nIndex != _TreeNode->GetChildNodes()->end();nIndex++)
+				if(_TreeNode->GetCountChild() > 0)
 				{
-					CTreeNodeUI* pItem = (*nIndex);
-					pItem->GetCheckBox()->Selected(_Selected);
-					if(pItem->GetCountChild())
-						SetItemCheckBox(_Selected,pItem);
+					int nCount = _TreeNode->GetCountChild();
+					for(int nIndex = 0;nIndex < nCount;nIndex++)
+					{
+						CTreeNodeUI* pItem = _TreeNode->GetChildNode(nIndex);
+						pItem->GetCheckBox()->Selected(_Selected);
+						if(pItem->GetCountChild())
+							SetItemCheckBox(_Selected,pItem);
+					}
 				}
 				return true;
 			}
@@ -1009,14 +1104,17 @@ namespace UiLib
 		{
 			if(_TreeNode)
 			{
-				for(std::vector<CTreeNodeUI*>::iterator nIndex = _TreeNode->GetChildNodes()->begin();nIndex != _TreeNode->GetChildNodes()->end();nIndex++)
+				if(_TreeNode->GetCountChild() > 0)
 				{
-					CTreeNodeUI* pItem = (*nIndex);
+					int nCount = _TreeNode->GetCountChild();
+					for(int nIndex = 0;nIndex < nCount;nIndex++)
+					{
+						CTreeNodeUI* pItem = _TreeNode->GetChildNode(nIndex);
+						pItem->SetVisible(_Expanded);
 
-					pItem->SetVisible(_Expanded);
-
-					if(pItem->GetCountChild() && !pItem->GetFolderButton()->IsSelected())
-						SetItemExpand(_Expanded,pItem);
+						if(pItem->GetCountChild() && !pItem->GetFolderButton()->IsSelected())
+							SetItemExpand(_Expanded,pItem);
+					}
 				}
 			}
 			else
@@ -1043,6 +1141,97 @@ namespace UiLib
 	}
 
 	//************************************
+	// Method:    SetVisibleFolderBtn
+	// FullName:  CTreeViewUI::SetVisibleFolderBtn
+	// Access:    virtual public 
+	// Returns:   void
+	// Qualifier:
+	// Parameter: bool _IsVisibled
+	// Node:	  
+	//************************************
+	void CTreeViewUI::SetVisibleFolderBtn( bool _IsVisibled )
+	{
+		try
+		{
+			m_bVisibleFolderBtn = _IsVisibled;
+			int nCount = this->GetCount();
+			for(int nIndex = 0;nIndex < nCount;nIndex++)
+			{
+				CTreeNodeUI* pItem = static_cast<CTreeNodeUI*>(this->GetItemAt(nIndex));
+				pItem->GetFolderButton()->SetVisible(m_bVisibleFolderBtn);
+			}
+		}
+		catch(...)
+		{
+			throw "CTreeViewUI::SetVisibleFolderBtn";
+		}
+	}
+	//************************************
+	// Method:    GetVisibleFolderBtn
+	// FullName:  CTreeViewUI::GetVisibleFolderBtn
+	// Access:    virtual public 
+	// Returns:   bool
+	// Qualifier:
+	// Node:	  
+	//************************************
+	bool CTreeViewUI::GetVisibleFolderBtn()
+	{
+		try
+		{
+			return m_bVisibleFolderBtn;
+		}
+		catch(...)
+		{
+			throw "CTreeViewUI::GetVisibleFolderBtn";
+		}
+	}
+	//************************************
+	// Method:    SetVisibleCheckBtn
+	// FullName:  CTreeViewUI::SetVisibleCheckBtn
+	// Access:    virtual public 
+	// Returns:   void
+	// Qualifier:
+	// Parameter: bool _IsVisibled
+	// Node:	  
+	//************************************
+	void CTreeViewUI::SetVisibleCheckBtn( bool _IsVisibled )
+	{
+		try
+		{
+			m_bVisibleCheckBtn = _IsVisibled;
+			int nCount = this->GetCount();
+			for(int nIndex = 0;nIndex < nCount;nIndex++)
+			{
+				CTreeNodeUI* pItem = static_cast<CTreeNodeUI*>(this->GetItemAt(nIndex));
+				pItem->GetCheckBox()->SetVisible(m_bVisibleCheckBtn);
+			}
+		}
+		catch(...)
+		{
+			throw "CTreeViewUI::SetVisibleCheckBtn";
+		}
+	}
+	//************************************
+	// Method:    GetVisibleCheckBtn
+	// FullName:  CTreeViewUI::GetVisibleCheckBtn
+	// Access:    virtual public 
+	// Returns:   bool
+	// Qualifier:
+	// Node:	  
+	//************************************
+	bool CTreeViewUI::GetVisibleCheckBtn()
+	{
+		try
+		{
+			return m_bVisibleCheckBtn;
+		}
+		catch(...)
+		{
+			throw "CTreeViewUI::GetVisibleCheckBtn";
+		}
+	}
+
+	//************************************
 	// Method:    SetAttribute
 	// FullName:  CTreeViewUI::SetAttribute
 	// Access:    virtual public 
@@ -1056,12 +1245,15 @@ namespace UiLib
 	{
 		try
 		{
-			CListUI::SetAttribute(pstrName,pstrValue);
+			if(_tcscmp(pstrName,_T("visiblefolderbtn")) == 0)
+				SetVisibleFolderBtn(_tcscmp(pstrValue,_T("true")) == 0);
+			else if(_tcscmp(pstrName,_T("visiblecheckbtn")) == 0)
+				SetVisibleCheckBtn(_tcscmp(pstrValue,_T("true")) == 0);
+			else CListUI::SetAttribute(pstrName,pstrValue);
 		}
 		catch(...)
 		{
 			throw "CTreeViewUI::SetAttribute";
 		}
 	}
-
 }

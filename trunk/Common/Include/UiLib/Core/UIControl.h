@@ -172,6 +172,7 @@ public:
 	void AnyEffectsAdvProfiles(LPCTSTR pstrEffects,TEffectAge* pTEffectAge = NULL);
 	void AnyEasyEffectsPorfiles(LPCTSTR pstrEffects,TEffectAge* pTEffectAge = NULL);
 
+	bool AddAnimationJob( const CDxAnimationUI& _DxAnimationUI );
 private:
 	bool		m_bEnabledEffect;
 	CDuiString	m_strEffectStyle;
@@ -229,7 +230,6 @@ protected:
     int m_nBorderSize;
     SIZE m_cxyBorderRound;
     RECT m_rcPaint;
-
 public:
 
 	// 取控件图片非透明色区域
