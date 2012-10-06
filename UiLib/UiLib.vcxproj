@@ -107,7 +107,7 @@
       <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy .\*.h $(SolutionDir)CommonFile\ /E /S /D /Y</Command>
+      <Command>xcopy .\*.h $(SolutionDir)Common\ /E /S /D /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'">
@@ -138,8 +138,7 @@
       <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>xcopy .\*.h $(SolutionDir)Common\ /E /S /D /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release|Win32'">
@@ -170,7 +169,7 @@
       <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy .\*.h $(SolutionDir)CommonFile\ /E /S /D /Y</Command>
+      <Command>xcopy .\*.h $(SolutionDir)Common\ /E /S /D /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release|Win32'">
@@ -202,7 +201,7 @@
       <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy .\*.h $(SolutionDir)CommonFile\ /E /S /D /Y</Command>
+      <Command>xcopy .\*.h $(SolutionDir)Common\ /E /S /D /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -264,6 +263,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'">WIN32;_DEBUG;_WINDOWS;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Utils\WinImplBase.cpp" />
     <ClCompile Include="Utils\XUnzip.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -294,6 +294,7 @@
     <ClInclude Include="Core\UIBase.h" />
     <ClInclude Include="Core\UIContainer.h" />
     <ClInclude Include="Core\UIControl.h" />
+    <ClInclude Include="Core\UIDefine.h" />
     <ClInclude Include="Core\UIDlgBuilder.h" />
     <ClInclude Include="Core\UIDxAnimation.h" />
     <ClInclude Include="Core\UIManager.h" />

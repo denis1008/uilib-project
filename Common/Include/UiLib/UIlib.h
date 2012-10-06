@@ -16,6 +16,8 @@
 #endif
 #endif
 
+#define UILIB_COMDAT __declspec(selectany) 
+
 #include <windows.h>
 #include <windowsx.h>
 #include <commctrl.h>
@@ -39,6 +41,7 @@
 #include "Core/UIManager.h"
 #include "Core/UIDxAnimation.h"
 
+#include "Core/UIDefine.h"
 #include "Core/UIControl.h"
 #include "Core/UIContainer.h"
 

@@ -117,9 +117,10 @@ void CMainWnd::Init()
 	try
 	{
 		IWindowBase::Init();
-		pAnimWnd	= static_cast<CHorizontalLayoutUI*>(pm.FindControl(_T("AnimWnd")));
-		pTestEdit	= static_cast<CEditUI*>(pm.FindControl(_T("TestEdit")));
-		pTestLabel	= static_cast<CLabelUI*>(pm.FindControl(_T("TestLabel")));
+		pAnimWnd		= static_cast<CHorizontalLayoutUI*>(pm.FindControl(_T("AnimWnd")));
+		pTestEdit		= static_cast<CEditUI*>(pm.FindControl(_T("TestEdit")));
+		pTestLabel		= static_cast<CLabelUI*>(pm.FindControl(_T("TestLabel")));
+		pEffectsDemo	= static_cast<CButtonUI*>(pm.FindControl(_T("EffectsDemo")));
 		
 		nid.cbSize				= (DWORD)sizeof(NOTIFYICONDATA);
 		nid.hWnd				= m_hWnd;
@@ -158,31 +159,31 @@ void CMainWnd::Notify( TNotifyUI& msg )
 		if(msg.pSender->GetName() == _T("EffectsDemo"))
 		{
 			pAnimWnd->SetAnimEffects(true);
-			msg.pSender->SetTag(msg.pSender->GetTag()+1);
+			pEffectsDemo->SetTag(pEffectsDemo->GetTag()+1);
 
-			if(msg.pSender->GetTag() == 1)
+			if(pEffectsDemo->GetTag() == 1)
 				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='left2right' offset='180'"));
 			else if(msg.pSender->GetTag() == 2)
 				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='right2left' offset='180'"));
-			else if(msg.pSender->GetTag() == 3)
+			else if(pEffectsDemo->GetTag() == 3)
 				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='top2bottom' offset='180'"));
-			else if(msg.pSender->GetTag() == 4)
+			else if(pEffectsDemo->GetTag() == 4)
 				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='bottom2top' offset='180'"));
-			else if(msg.pSender->GetTag() == 5)
+			else if(pEffectsDemo->GetTag() == 5)
 				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='zoom+' offset='180'"));
-			else if(msg.pSender->GetTag() == 6)
+			else if(pEffectsDemo->GetTag() == 6)
 				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='zoom-' offset='180'"));
-			else if(msg.pSender->GetTag() == 7)
+			else if(pEffectsDemo->GetTag() == 7)
 				pAnimWnd->SetAttribute(_T("adveffects"),_T("offsetx='180' rotation='0.3'"));
-			else if(msg.pSender->GetTag() == 8)
+			else if(pEffectsDemo->GetTag() == 8)
 				pAnimWnd->SetAttribute(_T("adveffects"),_T("offsetx='180' rotation='-0.3'"));
-			else if(msg.pSender->GetTag() == 9)
+			else if(pEffectsDemo->GetTag() == 9)
 				pAnimWnd->SetAttribute(_T("adveffects"),_T("offsety='180' rotation='0.3'"));
-			else if(msg.pSender->GetTag() == 10)
+			else if(pEffectsDemo->GetTag() == 10)
 				pAnimWnd->SetAttribute(_T("adveffects"),_T("offsety='180' rotation='-0.3'"));
 			else
 			{
-				msg.pSender->SetTag(1);
+				pEffectsDemo->SetTag(1);
 				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='left2right' offset='80'"));
 			}
 			pAnimWnd->TriggerEffects();
