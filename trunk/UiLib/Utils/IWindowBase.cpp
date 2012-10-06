@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "IWindowBase.h"
 
-
 IWindowBase::IWindowBase(LPCTSTR _ZipSkin /*= NULL*/)
 {
 	ZipSkinPath = _ZipSkin?_ZipSkin:_T("");

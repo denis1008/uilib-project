@@ -23,6 +23,7 @@ public:
 private:
 	CLabelUI*		pTestLabel;
 	CEditUI*		pTestEdit;
+	CButtonUI*		pEffectsDemo;
 	CHorizontalLayoutUI* pAnimWnd;
 	HMENU			hMenu;
 	NOTIFYICONDATA	nid;
