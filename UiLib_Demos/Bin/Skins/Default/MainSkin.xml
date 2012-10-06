@@ -41,7 +41,7 @@
 			<Include source="ComputerExamine.xml" />
 		</HorizontalLayout>
 		<HorizontalLayout height="31" padding="1,0,1,1" inset="5,0,10,0" bkimage="file='WndFrame/StatusBarBG.png'">
-			<Label name="test" text="Svn Source：http://uilib-project.googlecode.com" textcolor="#3b3b3b" />
+			<Label name="test" text="源码地址：http://uilib-project.googlecode.com" textcolor="#3b3b3b" />
 		</HorizontalLayout>
 	</VerticalLayout>
 </Window>

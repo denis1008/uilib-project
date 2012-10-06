@@ -449,7 +449,9 @@
 		<!--UiLib 扩展更新的属性-->
 		<Attribute name="bkimage" default="" type="STRING" comment="Gif动画图片"/>
 	</GifAnim>
-	<Button parent="Label" notifies="setfocus killfocus timer menu click windowinit(root)">
+	<!--UiLib 扩展事件-->
+	<!--OnSelectDate 日期选择完成时触发该事件-->
+	<Button parent="Label" notifies="OnSelectDate setfocus killfocus timer menu click windowinit(root)">
 		<Attribute name="name" default="" type="STRING" comment="控件名字，同一窗口内必须唯一，如(testbtn)"/>
 		<Attribute name="pos" default="0,0,0,0" type="RECT" comment="位置，如果为float控件则指定位置和大小，否则只指定大小,如(0,0,100,100)"/>
 		<Attribute name="padding" default="0,0,0,0" type="RECT" comment="外边距,如(2,2,2,2)"/>
@@ -746,7 +748,7 @@
 	<!--Calendar OnCalendarLastYear 上一年按钮事件-->
 	<!--Calendar OnCalendarNextYear 下一年按钮事件-->
 	<Calendar parent="VerticalLayout" setfocus killfocus timer menu windowinit(root) OnSelcetDay OnSelectMooth OnCalendarLastYear OnCalendarNextYear" >
-		<Attribute name="name" default="" type="STRING" comment="控件名字，同一窗口内必须唯一，如(testbtn)"/>
+		<Attribute name="name" default="" type="STfRING" comment="控件名字，同一窗口内必须唯一，如(testbtn)"/>
 		<Attribute name="pos" default="0,0,0,0" type="RECT" comment="位置，如果为float控件则指定位置和大小，否则只指定大小,如(0,0,100,100)"/>
 		<Attribute name="padding" default="0,0,0,0" type="RECT" comment="外边距,如(2,2,2,2)"/>
 		<Attribute name="bkcolor" default="0x00000000" type="DWORD" comment="背景颜色,如(0xFFFF0000)"/>

@@ -21,6 +21,8 @@ public:
 	void OnFinalMessage(HWND hWnd);
 
 private:
+	CLabelUI*		pTestLabel;
+	CEditUI*		pTestEdit;
 	CHorizontalLayoutUI* pAnimWnd;
 	HMENU			hMenu;
 	NOTIFYICONDATA	nid;
