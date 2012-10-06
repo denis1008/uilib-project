@@ -118,6 +118,8 @@ void CMainWnd::Init()
 	{
 		IWindowBase::Init();
 		pAnimWnd	= static_cast<CHorizontalLayoutUI*>(pm.FindControl(_T("AnimWnd")));
+		pTestEdit	= static_cast<CEditUI*>(pm.FindControl(_T("TestEdit")));
+		pTestLabel	= static_cast<CLabelUI*>(pm.FindControl(_T("TestLabel")));
 		
 		nid.cbSize				= (DWORD)sizeof(NOTIFYICONDATA);
 		nid.hWnd				= m_hWnd;
@@ -184,6 +186,10 @@ void CMainWnd::Notify( TNotifyUI& msg )
 				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='left2right' offset='80'"));
 			}
 			pAnimWnd->TriggerEffects();
+		}
+		else if(msg.sType == _T("OnEditTimer") && msg.pSender == pTestEdit){
+			pTestLabel->SetText(msg.pSender->GetText().GetData());
+			pTestLabel->NeedUpdate();
 		}
 
 		IWindowBase::Notify(msg);
