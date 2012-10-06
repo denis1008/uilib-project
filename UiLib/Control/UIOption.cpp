@@ -193,6 +193,7 @@ namespace UiLib
 		if( _tcscmp(pstrName, _T("group")) == 0 ) SetGroup(pstrValue);
 		else if( _tcscmp(pstrName, _T("selected")) == 0 ) Selected(_tcscmp(pstrValue, _T("true")) == 0);
 		else if( _tcscmp(pstrName, _T("selectedimage")) == 0 ) SetSelectedImage(pstrValue);
+		else if( _tcscmp(pstrName, _T("selectedhotimage")) == 0 ) SetSelectedHotImage(pstrValue);
 		else if( _tcscmp(pstrName, _T("foreimage")) == 0 ) SetForeImage(pstrValue);
 		else if( _tcscmp(pstrName, _T("selectedbkcolor")) == 0 ) {
 			if( *pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);
@@ -213,7 +214,12 @@ namespace UiLib
 	{
 		m_uButtonState &= ~UISTATE_PUSHED;
 
-		if( (m_uButtonState & UISTATE_SELECTED) != 0 ) {
+		if( (m_uButtonState & UISTATE_HOT) != 0 && IsSelected() && !m_sSelectedHotImage.IsEmpty()) {
+			if( !DrawImage(hDC, (LPCTSTR)m_sSelectedHotImage) )
+				m_sSelectedHotImage.Empty();
+			else goto Label_ForeImage;
+		}
+		else if( (m_uButtonState & UISTATE_SELECTED) != 0 ) {
 			if( !m_sSelectedImage.IsEmpty() ) {
 				if( !DrawImage(hDC, (LPCTSTR)m_sSelectedImage) ) m_sSelectedImage.Empty();
 				else goto Label_ForeImage;
@@ -262,4 +268,45 @@ Label_ForeImage:
 		else
 			CButtonUI::PaintText(hDC);
 	}
+	//************************************
+	// Method:    GetSelectedHotImage
+	// FullName:  COptionUI::GetSelectedHotImage
+	// Access:    public 
+	// Returns:   LPCTSTR
+	// Qualifier:
+	// Node:	  
+	//************************************
+	LPCTSTR COptionUI::GetSelectedHotImage()
+	{
+		try
+		{
+			return m_sSelectedHotImage;
+		}
+		catch(...)
+		{
+			throw "COptionUI::GetSelectedHotImage";
+		}
+	}
+	//************************************
+	// Method:    SetSelectedHotImage
+	// FullName:  COptionUI::SetSelectedHotImage
+	// Access:    public 
+	// Returns:   void
+	// Qualifier:
+	// Parameter: LPCTSTR pStrImage
+	// Node:	  
+	//************************************
+	void COptionUI::SetSelectedHotImage( LPCTSTR pStrImage )
+	{
+		try
+		{
+			m_sSelectedHotImage = pStrImage;
+			Invalidate();
+		}
+		catch(...)
+		{
+			throw "COptionUI::SetSelectedHotImage";
+		}
+	}
+
 }

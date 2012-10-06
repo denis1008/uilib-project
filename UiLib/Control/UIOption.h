@@ -21,6 +21,8 @@ namespace UiLib
 
 		LPCTSTR GetSelectedImage();
 		void SetSelectedImage(LPCTSTR pStrImage);
+		LPCTSTR GetSelectedHotImage();
+		void SetSelectedHotImage(LPCTSTR pStrImage);
 
 		void SetSelectedTextColor(DWORD dwTextColor);
 		DWORD GetSelectedTextColor();
@@ -50,6 +52,7 @@ namespace UiLib
 		DWORD			m_dwSelectedTextColor;
 
 		CDuiString		m_sSelectedImage;
+		CDuiString		m_sSelectedHotImage;
 		CDuiString		m_sForeImage;
 	};
 

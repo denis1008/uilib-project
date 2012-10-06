@@ -15,7 +15,6 @@ namespace UiLib
 
 	class UILIB_API CTreeNodeUI : public CListContainerElementUI
 	{
-		typedef std::vector<CTreeNodeUI*>	CChildNodes;
 	public:
 		CTreeNodeUI(CTreeNodeUI* _ParentNode = NULL);
 		~CTreeNodeUI(void);
@@ -41,13 +40,18 @@ namespace UiLib
 		bool	RemoveAt(CTreeNodeUI* _pTreeNodeUI);
 		void	SetParentNode(CTreeNodeUI* _pParentTreeNode);
 		CTreeNodeUI* GetParentNode();
-		CChildNodes* GetChildNodes();
 		long	GetCountChild();
 		void	SetTreeView(CTreeViewUI* _CTreeViewUI);
 		CTreeViewUI* GetTreeView();
+		CTreeNodeUI* GetChildNode(int _nIndex);
+		void	SetVisibleFolderBtn(bool _IsVisibled);
+		bool	GetVisibleFolderBtn();
+		void	SetVisibleCheckBtn(bool _IsVisibled);
+		bool	GetVisibleCheckBtn();
 
-		void	ReCalculateDotWidth(CTreeNodeUI* _pParentNode = NULL);
 		void	SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+
+		CStdPtrArray			GetTreeNodes();
 	public:
 		CHorizontalLayoutUI*	GetTreeNodeHoriznotal() const {return pHoriz;};
 		CCheckBoxUI*			GetFolderButton() const {return pFolderButton;};
@@ -69,7 +73,8 @@ namespace UiLib
 		COptionUI*				pItemButton;
 
 		CTreeNodeUI*			pParentTreeNode;
-		CChildNodes				mChildNodes;
+
+		CStdPtrArray			mTreeNodes;
 	};
 
 	class UILIB_API CTreeViewUI : public CListUI,public INotifyUI
@@ -79,6 +84,8 @@ namespace UiLib
 		~CTreeViewUI(void);
 
 	public:
+		virtual LPCTSTR GetClass() const;
+		virtual LPVOID	GetInterface(LPCTSTR pstrName);
 		virtual bool Add(CTreeNodeUI* pControl );
 		virtual long AddAt(CTreeNodeUI* pControl, int iIndex );
 		virtual bool Remove(CTreeNodeUI* pControl);
@@ -89,8 +96,16 @@ namespace UiLib
 		virtual bool SetItemCheckBox(bool _Selected,CTreeNodeUI* _TreeNode = NULL);
 		virtual void SetItemExpand(bool _Expanded,CTreeNodeUI* _TreeNode = NULL);
 		virtual void Notify(TNotifyUI& msg);
+		virtual void SetVisibleFolderBtn(bool _IsVisibled);
+		virtual bool GetVisibleFolderBtn();
+		virtual void SetVisibleCheckBtn(bool _IsVisibled);
+		virtual bool GetVisibleCheckBtn();
 
 		virtual void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+
+	private:
+		bool m_bVisibleFolderBtn;
+		bool m_bVisibleCheckBtn;
 	};
 }
 

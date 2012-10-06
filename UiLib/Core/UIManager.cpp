@@ -10,6 +10,7 @@ extern ZRESULT CloseZipU(HZIP hz);
 
 namespace UiLib {
 
+#define WM_EFFECTS	WM_USER+1680
 /////////////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -606,6 +607,38 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
 		{
 			// We'll do the painting here...
 			lRes = 1;
+			return true;
+		}
+	case WM_EFFECTS:
+		{
+		//
+		// Render screen
+		//
+		if( m_anim.IsAnimating() )
+			{
+			// 3D animation in progress
+			//   3D动画  
+			m_anim.Render();
+			// Do a minimum paint loop  做一个最小的绘制循环
+			// Keep the client area invalid so we generate lots of
+			// WM_PAINT messages. Cross fingers that Windows doesn't
+			// batch these somehow in the future.
+			PAINTSTRUCT ps = { 0 };
+			::BeginPaint(m_hWndPaint, &ps);
+			::EndPaint(m_hWndPaint, &ps);
+			::InvalidateRect(m_hWndPaint, NULL, FALSE);
+			}
+		else if( m_anim.IsJobScheduled() ) {
+			// Animation system needs to be initialized
+			//	动画系统需要初始化
+			m_anim.Init(m_hWndPaint);
+			// A 3D animation was scheduled; allow the render engine to
+			// capture the window content and repaint some other time
+			//翻译(by 金山词霸)一个3d动画被准备;允许渲染引擎捕获窗口内容，并且适时重画
+
+			if( !m_anim.PrepareAnimation(m_hWndPaint)) m_anim.CancelJobs();
+			::InvalidateRect(m_hWndPaint, NULL, TRUE);
+			}
 		}
 		return true;
 	case WM_PAINT:
@@ -618,7 +651,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
 				::BeginPaint(m_hWndPaint, &ps);
 				::EndPaint(m_hWndPaint, &ps);
 				return true;
-			}            
+			}
 			// Do we need to resize anything?
 			// This is the time where we layout the controls on the form.
 			// We delay this even from the WM_SIZE messages since resizing can be
@@ -659,34 +692,8 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
 				SetNextTabControl();
 			}
 
-			//
-			// Render screen
-			//
-			if( m_anim.IsAnimating() )
-			{
-				// 3D animation in progress
-				//   3D动画  
-				m_anim.Render();
-				// Do a minimum paint loop  做一个最小的绘制循环
-				// Keep the client area invalid so we generate lots of
-				// WM_PAINT messages. Cross fingers that Windows doesn't
-				// batch these somehow in the future.
-				PAINTSTRUCT ps = { 0 };
-				::BeginPaint(m_hWndPaint, &ps);
-				::EndPaint(m_hWndPaint, &ps);
-				::InvalidateRect(m_hWndPaint, NULL, FALSE);
-			}
-			else if( m_anim.IsJobScheduled() ) {
-				// Animation system needs to be initialized
-				//	动画系统需要初始化
-				m_anim.Init(m_hWndPaint);
-				// A 3D animation was scheduled; allow the render engine to
-				// capture the window content and repaint some other time
-				//翻译(by 金山词霸)一个3d动画被准备;允许渲染引擎捕获窗口内容，并且适时重画
-
-				if( !m_anim.PrepareAnimation(m_hWndPaint) ) m_anim.CancelJobs();
-				::InvalidateRect(m_hWndPaint, NULL, TRUE);
-			}
+			if( m_anim.IsAnimating() || m_anim.IsJobScheduled())
+				::PostMessage(m_hWndPaint,WM_EFFECTS,NULL,NULL);
 			//
 			// Render screen //渲染屏幕
 			//

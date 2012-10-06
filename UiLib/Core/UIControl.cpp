@@ -1,19 +1,6 @@
 #include "StdAfx.h"
 
 namespace UiLib {
-
-	class CEffectLock
-	{
-		HANDLE	mMutex;
-	public:
-		CEffectLock() {mMutex = CreateMutex(NULL,FALSE,NULL);}
-		virtual ~CEffectLock() {CloseHandle(mMutex);}
-		void Lock() {WaitForSingleObject(mMutex,INFINITE);}
-		void UnLock() {ReleaseMutex(mMutex);}
-	};
-
-	CEffectLock mEffectLock;
-
 CControlUI::CControlUI() : 
 m_pManager(NULL), 
 m_pParent(NULL), 
@@ -781,10 +768,12 @@ void CControlUI::DoEvent(TEventUI& event)
 	if( event.Type == UIEVENT_MOUSEENTER )
 	{
 		TriggerEffects(&m_tMouseInEffects);
+		Invalidate();
 	}
 	if( event.Type == UIEVENT_MOUSELEAVE )
 	{
 		TriggerEffects(&m_tMouseOutEffects);
+		Invalidate();
 	}
     if( event.Type == UIEVENT_TIMER )
     {
@@ -1709,15 +1698,10 @@ void CControlUI::TriggerEffects( TEffectAge* pTEffectAge /*= NULL*/ )
 	{
 		try
 		{
-			mEffectLock.Lock();
 			TEffectAge* pcTEffect = pTEffectAge?pTEffectAge:&m_tCurEffects;
 
 			if(GetManager() && m_bEnabledEffect && pcTEffect->m_bEnableEffect)
-			{
-				//GetManager()->AddAnimationJob(CDxAnimationUI(UIANIMTYPE_FLAT,0,GetEffectsNeedTimer(),GetEffectsFillingBK(),GetEffectsFillingBK(),GetPos(),GetEffectsOffectX(),GetEffectsOffectY(),GetEffectsZoom(),GetEffectsAlpha(),GetEffectsRotation()));
 				GetManager()->AddAnimationJob(CDxAnimationUI(UIANIMTYPE_FLAT,0,pcTEffect->m_iNeedTimer,pcTEffect->m_dFillingBK,pcTEffect->m_dFillingBK,GetPos(),pcTEffect->m_iOffectX,pcTEffect->m_iOffectY,pcTEffect->m_iZoom,pcTEffect->m_iAlpha,(float)pcTEffect->m_fRotation));
-			}
-			mEffectLock.UnLock();
 		}
 		catch (...)
 		{
