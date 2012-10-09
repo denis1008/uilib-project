@@ -115,6 +115,8 @@ public:
     virtual void SetFocus();
     virtual bool IsFloat() const;
     virtual void SetFloat(bool bFloat = true);
+	virtual const CDuiString& GetStyleName();
+	virtual void SetStyleName(LPCTSTR pStrStyleName);
 
     virtual CControlUI* FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags);
 
@@ -213,6 +215,7 @@ protected:
     bool m_bSetPos; // ∑¿÷πSetPos—≠ª∑µ˜”√
     TRelativePosUI m_tRelativePos;
 
+	CDuiString m_sStyleName;
     CDuiString m_sText;
     CDuiString m_sToolTip;
     TCHAR m_chShortcut;

@@ -41,6 +41,7 @@ typedef enum EVENTTYPE_UI
     UIEVENT_NOTIFY,
     UIEVENT_COMMAND,
     UIEVENT__LAST,
+	UIEVENT_RELOADSTYLE,
 };
 
 typedef enum
@@ -396,6 +397,20 @@ public:
 	bool RemoveEffectStyle(LPCTSTR pStrStyleName);
 	void RemoveAllEffectStyle();
 
+	bool AddControlStyle(LPCTSTR pStrStyleName,LPCTSTR pStrKey,LPCTSTR pStrVal,LPCTSTR pStylesName = NULL);
+	bool AddControlStyle(LPCTSTR pStrStyleName,CStdStringPtrMap* _StyleMap,LPCTSTR pStylesName = NULL);
+	bool SetControlStyle(LPCTSTR pStrStyleName,LPCTSTR pStrKey,LPCTSTR pStrVal,LPCTSTR pStylesName = NULL);
+	bool SetControlStyle(LPCTSTR pStrStyleName,CStdStringPtrMap* _StyleMap,LPCTSTR pStylesName = NULL);
+	CDuiString GetControlStyle(LPCTSTR pStrStyleName,LPCTSTR pStrKey,LPCTSTR pStylesName = NULL);
+	CStdStringPtrMap* GetControlsStyles(LPCTSTR pStylesName = NULL) const;
+	CStdStringPtrMap* GetControlStyles(LPCTSTR pStrStyleName,LPCTSTR pStylesName = NULL) const;
+	bool RemoveControlStyle(LPCTSTR pStrStyleName,LPCTSTR pStrKey = NULL,LPCTSTR pStylesName = NULL);
+	void RemoveAllControlStyle(LPCTSTR pStrStyleName = NULL,LPCTSTR pStylesName = NULL);
+	bool SetCurStyles(LPCTSTR pStylesName = NULL,bool _NowUpdate = true);
+	CDuiString GetCurStylesName();
+	bool RemoveStyles(LPCTSTR pStylesName);
+	void RemoveAllStyles();
+
     CControlUI* GetFocus() const;
     void SetFocus(CControlUI* pControl);
     void SetFocusNeeded(CControlUI* pControl);
@@ -411,8 +426,9 @@ public:
     void ReleaseCapture();
     bool IsCaptured();
 
+	void EventAllControl(TEventUI& event,CControlUI* pControl = NULL);
     bool AddNotifier(INotifyUI* pControl);
-    bool RemoveNotifier(INotifyUI* pControl);   
+    bool RemoveNotifier(INotifyUI* pControl);
     void SendNotify(TNotifyUI& Msg, bool bAsync = false);
     void SendNotify(CControlUI* pControl, LPCTSTR pstrMessage, WPARAM wParam = 0, LPARAM lParam = 0, bool bAsync = false);
 
@@ -501,6 +517,8 @@ private:
     bool m_bAlphaBackground;
     bool m_bMouseTracking;
     bool m_bMouseCapture;
+	//
+	CDuiString m_sCurStylesName;
     //
     CStdPtrArray m_aNotifiers;
     CStdPtrArray m_aTimers;
@@ -512,6 +530,9 @@ private:
     CStdPtrArray m_aFoundControls;
     CStdStringPtrMap m_mNameHash;
     CStdStringPtrMap m_mOptionGroup;
+	CStdStringPtrMap m_mControlsStyle;
+	CStdStringPtrMap* m_pControlsStyle;
+	CStdStringPtrMap m_mStyles;
 	CStdStringPtrMap m_mEffectsStyle;
     //
     CPaintManagerUI* m_pParentResourcePM;

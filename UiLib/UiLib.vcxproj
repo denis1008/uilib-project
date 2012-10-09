@@ -107,7 +107,7 @@
       <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy .\*.h $(SolutionDir)Common\ /E /S /D /Y</Command>
+      <Command>xcopy .\*.h $(SolutionDir)Common\Include\ /E /S /D /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'">
@@ -138,7 +138,7 @@
       <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy .\*.h $(SolutionDir)Common\ /E /S /D /Y</Command>
+      <Command>xcopy .\*.h $(SolutionDir)Common\Include\ /E /S /D /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release|Win32'">
@@ -169,7 +169,7 @@
       <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy .\*.h $(SolutionDir)Common\ /E /S /D /Y</Command>
+      <Command>xcopy .\*.h $(SolutionDir)Common\Include\ /E /S /D /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release|Win32'">
@@ -201,7 +201,7 @@
       <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy .\*.h $(SolutionDir)Common\ /E /S /D /Y</Command>
+      <Command>xcopy .\*.h $(SolutionDir)Common\Include\ /E /S /D /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

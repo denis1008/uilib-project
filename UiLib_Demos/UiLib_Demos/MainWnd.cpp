@@ -161,6 +161,8 @@ void CMainWnd::Notify( TNotifyUI& msg )
 			pAnimWnd->SetAnimEffects(true);
 			pEffectsDemo->SetTag(pEffectsDemo->GetTag()+1);
 
+			pm.SetCurStyles(pEffectsDemo->GetTag()%2?_T("LangEnglish"):_T("LangChinese"));
+
 			if(pEffectsDemo->GetTag() == 1)
 				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='left2right' offset='180'"));
 			else if(msg.pSender->GetTag() == 2)
@@ -191,6 +193,10 @@ void CMainWnd::Notify( TNotifyUI& msg )
 		else if(msg.sType == _T("OnEditTimer") && msg.pSender == pTestEdit){
 			pTestLabel->SetText(msg.pSender->GetText().GetData());
 			pTestLabel->NeedUpdate();
+		}
+		else if(msg.sType == _T("OnSelectDate"))
+		{
+			MessageBox(m_hWnd,_T("Test"),NULL,MB_OK);
 		}
 
 		IWindowBase::Notify(msg);

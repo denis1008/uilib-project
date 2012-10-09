@@ -10,21 +10,36 @@
 	<Default name="Option" value="textcolor=&quot;#FFbac0c5&quot; hottextcolor=&quot;#FF386382&quot; selectedtextcolor=&quot;#FF386382&quot; disabledtextcolor=&quot;#FFbac0c5&quot; textpadding=&quot;18,2,0,0&quot; align=&quot;left&quot; selectedimage=&quot;file='Button/RadioBtnSel.png' source='0,0,13,13' dest='0,5,14,19'&quot; normalimage=&quot;file='Button/RadioBtnNon.png' source='0,0,13,13' dest='0,5,14,19'&quot;" />
 	<Default name="CheckBox" value="textcolor=&quot;#FFbac0c5&quot; hottextcolor=&quot;#FF386382&quot; selectedtextcolor=&quot;#FF386382&quot; disabledtextcolor=&quot;#FFbac0c5&quot; textpadding=&quot;20,2,0,0&quot; align=&quot;left&quot; selectedimage=&quot;file='Icon/checked.png' dest='0,2,16,18'&quot; normalimage=&quot;file='Icon/unchecked.png' dest='0,2,16,18'&quot;" />
 	<EffectsStyles>
-		<EffectsStyle name="sysMenu" value="anim='zoom+' offset='80' " />
+		<EffectsStyle name="EffectsDemo" value="anim='zoom+' offset='80' " />
 		<EffectsStyle name="clickeffect" value="anim='zoom-' offset='80' " />
 	</EffectsStyles>
-	<VerticalLayout bkcolor="#FFFFFFFF" bkimage="file='WndFrame/WndFrameBK.png' corner='6,96,6,2'" inset="1,0,1,1" colorhsl="true" vscrollbar="true">
+	<Styles name="LateStyle">
+		<Style stylename="MenuBtn" name="MenuBtn" width="26" maxheight="17" hotimage="file='WndFrame/sys_btn_menu.png' source='26,0,52,17'" normalimage="file='WndFrame/sys_btn_menu.png' source='0,0,26,17'" pushedimage="file='WndFrame/sys_btn_menu.png' source='52,0,78,17'" />
+		<Style stylename="SysMinBtn" name="SysMinBtn" width="26" maxheight="17" hotimage="file='WndFrame/sys_btn_min.png' source='26,0,52,17'" normalimage="file='WndFrame/sys_btn_min.png' source='0,0,26,17'" pushedimage="file='WndFrame/sys_btn_min.png' source='52,0,78,17'" />
+		<Style stylename="SysMaxBtn" name="SysMaxBtn" width="26" maxheight="17" hotimage="file='WndFrame/sys_btn_max.png' source='26,0,52,17'" normalimage="file='WndFrame/sys_btn_max.png' source='0,0,26,17'" pushedimage="file='WndFrame/sys_btn_max.png' source='52,0,78,17'" />
+		<Style stylename="SysRestoreBtn" name="SysRestoreBtn" width="26" maxheight="17" visible="false" hotimage="file='WndFrame/sys_btn_restore.png' source='26,0,52,17'" normalimage="file='WndFrame/sys_btn_restore.png' source='0,0,26,17'" pushedimage="file='WndFrame/sys_btn_restore.png' source='52,0,78,17'" />
+		<Style stylename="SysCloseBtn" name="SysCloseBtn" animeffects="true" mouseineffects="sysMenu" width="45" maxheight="17" hotimage="file='WndFrame/sys_btn_close.png' source='45,0,90,17'" normalimage="file='WndFrame/sys_btn_close.png' source='0,0,45,17'" pushedimage="file='WndFrame/sys_btn_close.png' source='90,0,135,17'"/>
+		<Style stylename="BtnStyle" name="EffectsDemo" mouseineffects="EffectsDemo" mouseclickeffects="EffectsDemo" animeffects="true" font="1" width="70" height="60" textpadding="0,40,0,0" textcolor="#C1C1C1" hottextcolor="#FFFFFF" selectedtextcolor="#010101" disabledtextcolor="#FFa3c6f2" normalimage="" foreimage="file='Icon/CtrlDemo.png' dest='10,0,57,53'" />
+		<Style stylename="MainWnd" bkcolor="#FFFFFFFF" bkimage="file='WndFrame/WndFrameBK.png' corner='6,96,6,2'" inset="1,0,1,1" colorhsl="true" vscrollbar="true" />
+	</Styles>
+	<Styles name="LangChinese" inherit="LateStyle" >
+		<Style stylename="BtnStyle" text="动画演示" />
+	</Styles>
+	<Styles name="LangEnglish" inherit="LateStyle" default="true" >
+		<Style stylename="BtnStyle" text="AnimDemo" />
+	</Styles>
+	<VerticalLayout style="MainWnd" >
 		<HorizontalLayout bkimage="file='WndFrame/BannerBG.png' source='2,0,4,96' xtiled='true' ytiled='true'" height="95" >
 			<Control />
 			<VerticalLayout bkimage="file='WndFrame/BannerBG.png' source='4,0,454,96'" height="96" width="450" >
 				<HorizontalLayout height="24">
 					<Control />
 					<HorizontalLayout width="130" inset="0,2,0,0" >
-						<Button name="MenuBtn" animeffects="true" mouseineffects="sysMenu" width="26" maxheight="17" hotimage="file='WndFrame/sys_btn_menu.png' source='26,0,52,17'" normalimage="file='WndFrame/sys_btn_menu.png' source='0,0,26,17'" pushedimage="file='WndFrame/sys_btn_menu.png' source='52,0,78,17'" />
-						<Button name="SysMinBtn" animeffects="true" mouseineffects="sysMenu" width="26" maxheight="17" hotimage="file='WndFrame/sys_btn_min.png' source='26,0,52,17'" normalimage="file='WndFrame/sys_btn_min.png' source='0,0,26,17'" pushedimage="file='WndFrame/sys_btn_min.png' source='52,0,78,17'" />
-						<Button name="SysMaxBtn" animeffects="true" mouseineffects="sysMenu" width="26" maxheight="17" hotimage="file='WndFrame/sys_btn_max.png' source='26,0,52,17'" normalimage="file='WndFrame/sys_btn_max.png' source='0,0,26,17'" pushedimage="file='WndFrame/sys_btn_max.png' source='52,0,78,17'" />
-						<Button name="SysRestoreBtn" animeffects="true" mouseineffects="sysMenu" width="26" maxheight="17" visible="false" hotimage="file='WndFrame/sys_btn_restore.png' source='26,0,52,17'" normalimage="file='WndFrame/sys_btn_restore.png' source='0,0,26,17'" pushedimage="file='WndFrame/sys_btn_restore.png' source='52,0,78,17'" />
-						<Button name="SysCloseBtn" animeffects="true" mouseineffects="sysMenu" width="45" maxheight="17" hotimage="file='WndFrame/sys_btn_close.png' source='45,0,90,17'" normalimage="file='WndFrame/sys_btn_close.png' source='0,0,45,17'" pushedimage="file='WndFrame/sys_btn_close.png' source='90,0,135,17'"/>
+						<Button style="MenuBtn" />
+						<Button style="SysMinBtn" />
+						<Button style="SysMaxBtn" />
+						<Button style="SysRestoreBtn" />
+						<Button style="SysCloseBtn" />
 					</HorizontalLayout>
 				</HorizontalLayout>
 				<Control />
@@ -32,8 +47,8 @@
 		</HorizontalLayout>
 		<Label float="true" pos="10,2,0,0" enabledeffect="true" enabledshadow="true" transshadow1="100" enabledstroke="true" strokecolor="#ffffffff"  shadowoffset="2,-120" text="UiLib Open Source Community" align="center" width="350" height="26" disabledtextcolor="#FFa3c6f2" bkimage="file='WndFrame/ModuleTitleBG.png' corner='5,2,5,5' fade='188'" font="2" />
 		<HorizontalLayout float="true" pos="10,10,800,98" inset="10,24,0,0" childpadding="5" name="MenuBar">
-			<Button name="EffectsDemo" text="动画演示" mouseineffects="sysMenu" animeffects="true" mouseclickeffects="sysMenu" font="1" width="70" height="60" textpadding="0,40,0,0" textcolor="#C1C1C1" hottextcolor="#FFFFFF" selectedtextcolor="#010101" disabledtextcolor="#FFa3c6f2" normalimage="" foreimage="file='Icon/CtrlDemo.png' dest='10,0,57,53'" />
-			<Button name="CalenderBtn" text="日历测试" animeffects="true" mouseineffects="sysMenu" calendarprofile="bordercolor=&quot;#ff3b3b3b&quot; bordersize=&quot;1&quot; inset=&quot;1,1,1,1&quot;" width="120" height="30" calendarname="test"  normalimage="" />
+			<Button style="BtnStyle" />
+			<Button name="CalenderBtn" text="日历测试" calendarprofile="bordercolor=&quot;#ff3b3b3b&quot; bordersize=&quot;1&quot; inset=&quot;1,1,1,1&quot;" width="120" height="30" calendarname="test"  normalimage="" />
 			<Label enabledeffect="true" enabledshadow="true" transshadow1="100" enabledstroke="true" strokecolor="#ffffffff"  shadowoffset="5,-100" text="深圳码农公司" align="center" width="350" height="26" disabledtextcolor="#FFa3c6f2" font="2" />
 			<Label enabledeffect="true" enabledshadow="true" enabledstroke="false" transshadow="255" transtext="255" transshadow1="0" transtext1="0" textcolor="#ff0680C9" shadowoffset="2,120" text="渐变透明" align="center" gradientlength="38" disabledtextcolor="#FFa3c6f2" font="2" />
 		</HorizontalLayout>
