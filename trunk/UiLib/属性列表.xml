@@ -19,7 +19,25 @@
 	<Include parent="Container" >
 		<Attribute name="xmlfile" default="" type="STRING" comment="外部XML布局文件"/>
 		<Attribute name="count" default="1" type="INT" comment="重复创建xmlfile布局的个数"/>
-	</ChildLayout>
+	</Include>
+	<!--UiLib 扩展的UI元素对象-->
+	<Styles parent="">
+		<Attribute name="name" default="" type="STRING" comment="样式模版名称"/>
+		<Attribute name="default" default="" type="BOOL" comment="是否作为当前默认模版"/>
+		<Attribute name="inherit" default="" type="STRING" comment="从指定的模版中继承样式"/>
+		<Attribute name="stylefile" default="" type="STRING" comment="从XML模版中继承"/>
+	</Styles>
+	<!--UiLib 扩展的UI元素对象-->
+	<Style parent="">
+		<Attribute name="stylename" default="" type="STRING" comment="样式名称"/>
+		<!--
+		除stylename属性外可将任意控件属性作为模版属性。
+		包括控件的name属性，也可定义到样式中。
+		按控件的具体拥有的属性进行组合。
+		相同属性名，则为最后个生效。
+		-->
+		<Attribute 控件属性名称="控件属性值" default="" type="" comment="定义的控件属性组，控件自身属性将覆盖模版样式属性"/>
+	</Style>
 	<!--UiLib 扩展的UI元素对象-->
 	<EffectsStyles parent="">
 		<Attribute name="stylefile" default="" type="STRING" comment="外部XML文件加载样式定义"/>
@@ -749,7 +767,7 @@
 	<!--Calendar OnCalendarLastYear 上一年按钮事件-->
 	<!--Calendar OnCalendarNextYear 下一年按钮事件-->
 	<Calendar parent="VerticalLayout" setfocus killfocus timer menu windowinit(root) OnSelcetDay OnSelectMooth OnCalendarLastYear OnCalendarNextYear" >
-		<Attribute name="name" default="" type="STfRING" comment="控件名字，同一窗口内必须唯一，如(testbtn)"/>
+		<Attribute name="name" default="" type="STRING" comment="控件名字，同一窗口内必须唯一，如(testbtn)"/>
 		<Attribute name="pos" default="0,0,0,0" type="RECT" comment="位置，如果为float控件则指定位置和大小，否则只指定大小,如(0,0,100,100)"/>
 		<Attribute name="padding" default="0,0,0,0" type="RECT" comment="外边距,如(2,2,2,2)"/>
 		<Attribute name="bkcolor" default="0x00000000" type="DWORD" comment="背景颜色,如(0xFFFF0000)"/>

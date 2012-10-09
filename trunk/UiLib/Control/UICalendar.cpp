@@ -54,7 +54,7 @@ namespace UiLib
 		rcDlg.right				= (point.x+rcControl.right);
 		rcDlg.bottom			= point.y+168;
 
-		CWindowWnd::Create(NULL,NULL,WS_POPUP, 0L,rcDlg.left,rcDlg.top,220,168);
+		CWindowWnd::Create(NULL,NULL,WS_POPUP, WS_EX_TOOLWINDOW,rcDlg.left,rcDlg.top,220,168);
 		SetWindowPos(m_hWnd,HWND_TOP,rcDlg.left,rcDlg.top,220,168,SWP_SHOWWINDOW);
 	}
 
