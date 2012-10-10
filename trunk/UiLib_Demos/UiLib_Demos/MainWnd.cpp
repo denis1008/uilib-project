@@ -161,7 +161,7 @@ void CMainWnd::Notify( TNotifyUI& msg )
 			pAnimWnd->SetAnimEffects(true);
 			pEffectsDemo->SetTag(pEffectsDemo->GetTag()+1);
 
-			pm.SetCurStyles(pEffectsDemo->GetTag()%2?_T("LangEnglish"):_T("LangChinese"));
+			pm.SetCurStyles(pEffectsDemo->GetTag()%2?_T("LangChinese"):_T("LangEnglish"));
 
 			if(pEffectsDemo->GetTag() == 1)
 				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='left2right' offset='180'"));

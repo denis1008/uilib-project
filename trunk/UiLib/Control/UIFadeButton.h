@@ -32,11 +32,11 @@ namespace UiLib {
 		BOOL       m_bMouseHove;
 		BOOL       m_bMouseLeave;
 		enum{
-			FADE_IN_ID    = 8,
-			FADE_OUT_ID = 9,
+			FADE_IN_ID			= 8,
+			FADE_OUT_ID			= 9,
 
-			FADE_ELLAPSE = 10,
-			FADE_FRAME_COUNT = 50,
+			FADE_ELLAPSE		= 10,
+			FADE_FRAME_COUNT	= 30,
 		};
 	};
 

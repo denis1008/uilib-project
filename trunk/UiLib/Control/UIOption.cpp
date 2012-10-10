@@ -120,6 +120,47 @@ namespace UiLib
 		Invalidate();
 	}
 
+	//************************************
+	// Method:    GetSelectedHotImage
+	// FullName:  COptionUI::GetSelectedHotImage
+	// Access:    public 
+	// Returns:   LPCTSTR
+	// Qualifier:
+	// Node:	  
+	//************************************
+	LPCTSTR COptionUI::GetSelectedHotImage()
+	{
+		try
+		{
+			return m_sSelectedHotImage;
+		}
+		catch(...)
+		{
+			throw "COptionUI::GetSelectedHotImage";
+		}
+	}
+	//************************************
+	// Method:    SetSelectedHotImage
+	// FullName:  COptionUI::SetSelectedHotImage
+	// Access:    public 
+	// Returns:   void
+	// Qualifier:
+	// Parameter: LPCTSTR pStrImage
+	// Node:	  
+	//************************************
+	void COptionUI::SetSelectedHotImage( LPCTSTR pStrImage )
+	{
+		try
+		{
+			m_sSelectedHotImage = pStrImage;
+			Invalidate();
+		}
+		catch(...)
+		{
+			throw "COptionUI::SetSelectedHotImage";
+		}
+	}
+
 	void COptionUI::SetSelectedTextColor(DWORD dwTextColor)
 	{
 		m_dwSelectedTextColor = dwTextColor;
@@ -171,6 +212,7 @@ namespace UiLib
 			throw "COptionUI::GetSelectBkColor";
 		}
 	}
+
 	LPCTSTR COptionUI::GetForeImage()
 	{
 		return m_sForeImage;
@@ -268,45 +310,4 @@ Label_ForeImage:
 		else
 			CButtonUI::PaintText(hDC);
 	}
-	//************************************
-	// Method:    GetSelectedHotImage
-	// FullName:  COptionUI::GetSelectedHotImage
-	// Access:    public 
-	// Returns:   LPCTSTR
-	// Qualifier:
-	// Node:	  
-	//************************************
-	LPCTSTR COptionUI::GetSelectedHotImage()
-	{
-		try
-		{
-			return m_sSelectedHotImage;
-		}
-		catch(...)
-		{
-			throw "COptionUI::GetSelectedHotImage";
-		}
-	}
-	//************************************
-	// Method:    SetSelectedHotImage
-	// FullName:  COptionUI::SetSelectedHotImage
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: LPCTSTR pStrImage
-	// Node:	  
-	//************************************
-	void COptionUI::SetSelectedHotImage( LPCTSTR pStrImage )
-	{
-		try
-		{
-			m_sSelectedHotImage = pStrImage;
-			Invalidate();
-		}
-		catch(...)
-		{
-			throw "COptionUI::SetSelectedHotImage";
-		}
-	}
-
 }

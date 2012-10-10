@@ -6,11 +6,23 @@
 namespace UiLib {
 /////////////////////////////////////////////////////////////////////////////////////
 //
+#define WM_EFFECTS		WM_USER+1680
+#define WM_RELOADSTYLE	WM_USER+1681
 
 class CControlUI;
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
+static UINT MapKeyState()
+{
+	UINT uState = 0;
+	if( ::GetKeyState(VK_CONTROL) < 0 ) uState |= MK_CONTROL;
+	if( ::GetKeyState(VK_RBUTTON) < 0 ) uState |= MK_LBUTTON;
+	if( ::GetKeyState(VK_LBUTTON) < 0 ) uState |= MK_RBUTTON;
+	if( ::GetKeyState(VK_SHIFT) < 0 ) uState |= MK_SHIFT;
+	if( ::GetKeyState(VK_MENU) < 0 ) uState |= MK_ALT;
+	return uState;
+}
 
 typedef enum EVENTTYPE_UI
 {

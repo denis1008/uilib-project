@@ -21,6 +21,7 @@ namespace UiLib
 
 		LPCTSTR GetSelectedImage();
 		void SetSelectedImage(LPCTSTR pStrImage);
+
 		LPCTSTR GetSelectedHotImage();
 		void SetSelectedHotImage(LPCTSTR pStrImage);
 

@@ -339,8 +339,6 @@ namespace UiLib
 
 	void CButtonUI::PaintStatusImage(HDC hDC)
 	{
-
-
 		if( IsFocused() ) m_uButtonState |= UISTATE_FOCUSED;
 		else m_uButtonState &= ~ UISTATE_FOCUSED;
 		if( !IsEnabled() ) m_uButtonState |= UISTATE_DISABLED;
