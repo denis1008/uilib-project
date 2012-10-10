@@ -118,7 +118,7 @@ namespace UiLib
 
 	CAnimationSpooler::~CAnimationSpooler()
 	{
-		Term();
+		CancelJobs();
 	}
 
 	bool CAnimationSpooler::Init(HWND hWnd)
@@ -315,7 +315,7 @@ namespace UiLib
 		m_p3DDevice->EndScene();
 		m_p3DDevice->Present(NULL, NULL, NULL, NULL);
 		// No more frames to animate?
-		if( nAnimated == 0 ) Term();
+		if( nAnimated == 0 ) CancelJobs();
 		return true;
 	}
 

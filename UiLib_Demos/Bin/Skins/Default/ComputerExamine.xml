@@ -14,6 +14,8 @@
 		</HorizontalLayout>
 		</VerticalLayout>
 		<VerticalLayout height="120" inset="1,1,10,0" bkimage="WndFrame/examine_background.bmp">
+			<FadeButton style="FadeButtonDemo" text="FadeButtonDemoA" />
+			<FadeButton style="FadeButtonDemo" text="FadeButtonDemoB" />
 		</VerticalLayout>
 		<Calendar />
     </VerticalLayout>

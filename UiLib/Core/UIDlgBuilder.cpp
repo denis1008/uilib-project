@@ -221,10 +221,7 @@ namespace UiLib
 							if( _tcscmp(pstrName, _T("stylename")) == 0 ) {
 								pStrStyleName = pstrValue;
 								break;
-								//continue;
 							}
-							//CDuiString* pVal = new CDuiString(pstrValue);
-							//pStyleMap->Set(pstrName,(LPVOID)pVal);
 						}
 						if(pStrStyleName){
 							for( int i = 0; i < nAttributes; i++ ) {
@@ -237,21 +234,6 @@ namespace UiLib
 								pManager->SetControlStyle(pStrStyleName,pstrName,pstrValue,pStrStylesName.GetData());
 							}
 						}
-
-// 						if(pStrStyleName == NULL){
-// 							for(int nIndex = 0;nIndex < pStyleMap->GetSize();nIndex++){
-// 								if(LPCTSTR nKey = pStyleMap->GetAt(nIndex)){
-// 									if(LPVOID pTmpDef = pStyleMap->Find(nKey)){
-// 										delete pTmpDef;
-// 										pTmpDef = NULL;
-// 									}
-// 								}
-// 							}
-// 							pStyleMap->RemoveAll();
-// 							delete pStyleMap;
-// 							continue;
-// 						}
-// 						pManager->SetControlStyle(pStrStyleName,pStyleMap,pStrStylesName.GetData());
 					}
 					if(nIsDefaultStyles && !pStrStylesName.IsEmpty())
 						pManager->SetCurStyles(pStrStylesName.GetData(),false);

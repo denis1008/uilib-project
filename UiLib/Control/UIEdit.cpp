@@ -128,8 +128,18 @@ namespace UiLib
 				::InvalidateRect(m_hWnd, &rcClient, FALSE);
 			}
 		}
-		else if( uMsg == WM_KEYDOWN && TCHAR(wParam) == VK_RETURN ) {
-			m_pOwner->GetManager()->SendNotify(m_pOwner, _T("return"));
+		else if( uMsg == WM_KEYDOWN ) {
+
+			TEventUI event = { 0 };
+			event.Type = UIEVENT_KEYDOWN;
+			event.chKey = (TCHAR)wParam;
+			event.wKeyState = MapKeyState();
+			event.dwTimestamp = ::GetTickCount();
+			m_pOwner->Event(event);
+
+			if (TCHAR(wParam) == VK_RETURN )
+				m_pOwner->GetManager()->SendNotify(m_pOwner, _T("return"));
+
 		}
 		else if( uMsg == OCM__BASE + WM_CTLCOLOREDIT  || uMsg == OCM__BASE + WM_CTLCOLORSTATIC ) {
 			if( m_pOwner->GetNativeEditBkColor() == 0xFFFFFFFF ) return NULL;

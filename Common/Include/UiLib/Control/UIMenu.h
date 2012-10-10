@@ -6,6 +6,7 @@
 namespace UiLib
 {
 	class CMenuUI;
+	class CMenuWnd;
 	class COptionUI;
 	class CButtonUI;
 	class CHorizontalLayoutUI;
@@ -35,6 +36,7 @@ namespace UiLib
 
 	class CMenuUI : public CListUI
 	{
+		friend class CMenuWnd;
 	public:
 		CMenuUI(void);
 		~CMenuUI(void);
@@ -59,8 +61,13 @@ namespace UiLib
 		int GetItemIndex(CMenuItemUI* _pMenuItem) const;
 		bool SetItemIndex(CMenuItemUI* _pMenuItem, int iIndex);
 
-	public:
 		void CalMenuHeight();
+
+	public:
+		static void ShowMenu();
+
+	private:
+		CMenuWnd* m_pMenuWnd;
 	};
 }
 

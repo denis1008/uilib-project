@@ -135,9 +135,8 @@ namespace UiLib {
 
 	void CFadeButtonUI::OnAnimationStep(INT nTotalFrame, INT nCurFrame, INT nAnimationID)
 	{
-		m_bFadeAlpha = (BYTE)(nCurFrame / (double)nTotalFrame) * 255;
-		if(m_bFadeAlpha == 0) 
-			m_bFadeAlpha = 10;
+		m_bFadeAlpha = (BYTE)((nCurFrame / (double)nTotalFrame) * 255);
+		m_bFadeAlpha = m_bFadeAlpha == 0?10:m_bFadeAlpha;
 		Invalidate();
 	}
 

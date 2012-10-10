@@ -52,6 +52,7 @@
 #include "Layout/UIChildLayout.h"
 
 #include "Control/UIList.h"
+//#include "Control/UIMenu.h"
 #include "Control/UICombo.h"
 #include "Control/UIScrollBar.h"
 #include "Control/UITreeView.h"
@@ -61,6 +62,7 @@
 #include "Control/UIEdit.h"
 #include "Control/UIGifAnim.h"
 
+#include <vector>
 #include <algorithm>
 #include "Control/UIAnimation.h"
 #include "Control/UIFadeButton.h"

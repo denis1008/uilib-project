@@ -244,6 +244,7 @@ namespace UiLib
 	{
 		return CRenderEngine::DrawImageString(hDC, m_pManager, m_rcItem, m_rcPaint, pStrImage, pStrModify, bNeedAlpha, bNewFade);
 	}
+
 	void CControlUI::GetRegion(HDC hDC, LPCTSTR pStrImage, COLORREF dwColorKey)
 	{
 		m_bGetRegion = false;
@@ -698,6 +699,7 @@ namespace UiLib
 				SetAttribute(nKey.GetData(),nVal->GetData());
 			}
 			m_sStyleName = pStrStyleName;
+			Invalidate();
 		}
 		catch(...)
 		{

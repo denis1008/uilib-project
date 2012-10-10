@@ -923,7 +923,7 @@ bool DrawImage(HDC hDC, CPaintManagerUI* pManager, const RECT& rc, const RECT& r
 	if( !::IntersectRect(&rcTemp, &rcItem, &rc) ) return true;
 	if( !::IntersectRect(&rcTemp, &rcItem, &rcPaint) ) return true;
 
-	if( bNeedAlpha )
+	if( !bNeedAlpha )
 		CRenderEngine::DrawImage(hDC, data->hBitmap, rcItem, rcPaint, rcBmpPart, rcCorner, true, bFade, bHole, bTiledX, bTiledY);
 	else
 		CRenderEngine::DrawImage(hDC, data->hBitmap, rcItem, rcPaint, rcBmpPart, rcCorner, data->alphaChannel, bFade, bHole, bTiledX, bTiledY);
@@ -1050,9 +1050,14 @@ bool CRenderEngine::DrawImageString(HDC hDC, CPaintManagerUI* pManager, const RE
         }
     }
 
-	UiLib::DrawImage(hDC, pManager, rc, rcPaint, sImageName, sImageResType,
+// 	UiLib::DrawImage(hDC, pManager, rc, rcPaint, sImageName, sImageResType,
+// 		rcItem, rcBmpPart, rcCorner, dwMask, bFade, bHole, bTiledX, bTiledY);
+	if( bNeedAlpha )
+		UiLib::DrawImage(hDC, pManager, rc, rcPaint, sImageName, sImageResType,
+		rcItem, rcBmpPart, rcCorner, dwMask, bNewFade, bHole, bTiledX, bTiledY, bNeedAlpha);
+	else
+		UiLib::DrawImage(hDC, pManager, rc, rcPaint, sImageName, sImageResType,
 		rcItem, rcBmpPart, rcCorner, dwMask, bFade, bHole, bTiledX, bTiledY);
-
     return true;
 }
 

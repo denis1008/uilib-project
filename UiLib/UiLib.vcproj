@@ -330,10 +330,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Control\UIGifAnim.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\UIlib.cpp"
 				>
 			</File>
@@ -377,11 +373,19 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Control\UIGifAnim.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Control\UILabel.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\Control\UIList.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Control\UIMenu.cpp"
 					>
 				</File>
 				<File
@@ -584,10 +588,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Control\UIGifAnim.h"
-				>
-			</File>
-			<File
 				RelativePath=".\UIlib.h"
 				>
 			</File>
@@ -631,11 +631,19 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Control\UIGifAnim.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Control\UILabel.h"
 					>
 				</File>
 				<File
 					RelativePath=".\Control\UIList.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Control\UIMenu.h"
 					>
 				</File>
 				<File
