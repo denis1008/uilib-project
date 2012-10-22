@@ -28,7 +28,7 @@ namespace UiLib
 		CAnimationSpooler();
 		~CAnimationSpooler();
 
-		enum { MAX_BUFFERS = 40 };
+		enum { MAX_BUFFERS = 80 };
 
 		bool Init(HWND hWnd);
 		bool PrepareAnimation(HWND hWnd);

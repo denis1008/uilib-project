@@ -17,7 +17,8 @@
 	<Styles name="LateStyle" stylefile="WndBtn.xml">
 		<Style stylename="BtnStyle" name="EffectsDemo" mouseclickeffects="EffectsDemo" animeffects="true" font="1" width="70" height="60" textpadding="0,40,0,0" textcolor="#C1C1C1" hottextcolor="#FFFFFF" selectedtextcolor="#010101" disabledtextcolor="#FFa3c6f2" normalimage="" foreimage="file='Icon/CtrlDemo.png' dest='10,0,57,53'" />
 		<Style stylename="MainWnd" bkcolor="#FFFFFFFF" bkimage="file='WndFrame/WndFrameBK.png' corner='6,96,6,2'" inset="1,0,1,1" colorhsl="true" vscrollbar="true" />
-		<Style stylename="FadeButtonDemo" width="100" height="22" />
+		<Style stylename="FadeButtonDemo" width="100" height="22" textcolor="#000000" hottextcolor="#FFFFFF" focusedtextcolor="#000000" pushedtextcolor="#77a8de" normalimage="file='Button/btn.png' corner='5,11,5,11' source='0,0,96,24'" hotimage="file='Button/btn.png' corner='5,11,5,11' source='0,24,96,48'" pushedimage="file='Button/btn.png' corner='5,11,5,11' source='0,48,96,72'" disabledimage="file='Button/btn.png' corner='5,11,5,11' source='0,72,96,96'" />
+		<Style stylename="treenode" folderattr="padding=&quot;0,1,0,0&quot; width=&quot;16&quot; height=&quot;16&quot; normalimage=&quot;file='Icon/treeview_b.png' source='0,0,16,16' &quot; hotimage=&quot;file='Icon/treeview_b.png' source='16,0,32,16' &quot; selectedimage=&quot;file='Icon/treeview_a.png' source='0,0,16,16' &quot; selectedhotimage=&quot;file='Icon/treeview_a.png' source='16,0,32,16' &quot;" checkboxattr="width=&quot;16&quot; height=&quot;16&quot; normalimage=&quot;file='Icon/unchecked.png' &quot; selectedimage=&quot;file='Icon/checked.png' &quot;" />
 	</Styles>
 	<Styles name="LangChinese" inherit="LateStyle" >
 		<Style stylename="BtnStyle" text="语言切换" />

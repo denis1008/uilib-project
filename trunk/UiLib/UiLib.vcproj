@@ -751,6 +751,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Utils\Internal.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Utils\IWindowBase.h"
 					>
 				</File>

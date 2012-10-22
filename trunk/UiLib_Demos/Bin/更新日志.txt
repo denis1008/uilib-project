@@ -1,8 +1,11 @@
 2012-10-22
 #同步UiLib 至 Duilib 347
+#完善树控件的动态添加与插入功能
 *修正Edit 的删除键无效的 BUG
 *移除Edit 的独立定时器，使用Dui自带的定时器代替
+*SetStyleName增加指定CPaintManagerUI的参数，用在new出来的控件的样式设置
 +增加RadioBox控件
++增加动态添加和删除树节点的演示
 
 2012-10-10
 #同步UiLib 至 Duilib 335
