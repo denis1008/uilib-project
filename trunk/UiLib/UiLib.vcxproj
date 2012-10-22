@@ -205,8 +205,6 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="Control\LebelEx\IOutlineText.cpp" />
-    <None Include="Control\LebelEx\MaskColor.cpp" />
     <ClCompile Include="Control\UICalendar.cpp" />
     <ClCompile Include="Control\UIGifAnim.cpp" />
     <ClCompile Include="Control\UIActiveX.cpp" />
@@ -221,6 +219,7 @@
     <ClCompile Include="Control\UIList.cpp" />
     <ClCompile Include="Control\UIOption.cpp" />
     <ClCompile Include="Control\UIProgress.cpp" />
+    <ClCompile Include="Control\UIRadioBox.cpp" />
     <ClCompile Include="Control\UIRichEdit.cpp" />
     <ClCompile Include="Control\UIScrollBar.cpp" />
     <ClCompile Include="Control\UISlider.cpp" />
@@ -285,6 +284,7 @@
     <ClInclude Include="Control\UIList.h" />
     <ClInclude Include="Control\UIOption.h" />
     <ClInclude Include="Control\UIProgress.h" />
+    <ClInclude Include="Control\UIRadioBox.h" />
     <ClInclude Include="Control\UIRichEdit.h" />
     <ClInclude Include="Control\UIScrollBar.h" />
     <ClInclude Include="Control\UISlider.h" />

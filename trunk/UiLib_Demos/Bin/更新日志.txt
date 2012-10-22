@@ -1,3 +1,9 @@
+2012-10-22
+#同步UiLib 至 Duilib 347
+*修正Edit 的删除键无效的 BUG
+*移除Edit 的独立定时器，使用Dui自带的定时器代替
++增加RadioBox控件
+
 2012-10-10
 #同步UiLib 至 Duilib 335
 *修复FadeButton 相关BUG

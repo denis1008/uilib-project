@@ -3,9 +3,6 @@
 
 #include "stdafx.h"
 
-#define USE_ZIP_SKIN 0
-#define USE_EMBEDED_RESOURCE 0
-
 namespace UiLib
 {
 	enum UILIB_RESOURCETYPE

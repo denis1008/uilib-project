@@ -2,9 +2,7 @@
 #define __UIACTIVEX_H__
 
 #pragma once
-#include <mshtmhst.h>
-#include "Utils/downloadmgr.h"
-#include "Utils/Internal.h"
+
 struct IOleObject;
 
 
@@ -45,9 +43,6 @@ public:
     void DoPaint(HDC hDC, const RECT& rcPaint);
 
     void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
-	void SetExternalUIHandler(IDocHostUIHandler* handler);
-	void SetDownloadManager(IDownloadManager* handler);
-	void SetDispatchHandler(IDispatch* handler);
 
     LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled);
 
@@ -63,11 +58,8 @@ protected:
     IOleObject* m_pUnk;
     CActiveXCtrl* m_pControl;
     HWND m_hwndHost;
-	IDocHostUIHandler* m_HostUIHandler;
-	IDownloadManager* m_pDownMan;
-	IDispatch*	m_pHostDispatch;
 };
 
-} // namespace UiLib
+} // namespace DuiLib
 
 #endif // __UIACTIVEX_H__

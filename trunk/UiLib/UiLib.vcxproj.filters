@@ -159,6 +159,9 @@
     <ClCompile Include="Utils\WinImplBase.cpp">
       <Filter>源文件\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Control\UIRadioBox.cpp">
+      <Filter>源文件\Control</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h">
@@ -296,14 +299,11 @@
     <ClInclude Include="Core\UIDefine.h">
       <Filter>头文件\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Control\UIRadioBox.h">
+      <Filter>头文件\Control</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Control\LebelEx\IOutlineText.cpp">
-      <Filter>源文件</Filter>
-    </None>
-    <None Include="Control\LebelEx\MaskColor.cpp">
-      <Filter>源文件</Filter>
-    </None>
     <None Include="StdAfx.cpp">
       <Filter>源文件</Filter>
     </None>

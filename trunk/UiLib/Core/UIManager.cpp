@@ -534,7 +534,7 @@ namespace UiLib {
 		//    case WM_SETCURSOR:
 		//       break;
 		//    default:
-		//       TRACE(_T("MSG: %-20s (%08ld)"), TRACEMSG(uMsg), ::GetTickCount());
+		//       DUITRACE(_T("MSG: %-20s (%08ld)"), TRACEMSG(uMsg), ::GetTickCount());
 		//    }
 		//#endif
 		// Not ready yet?
@@ -1848,7 +1848,7 @@ namespace UiLib {
 				try{
 					::DispatchMessage(&msg);
 				} catch(...) {
-					TRACE(_T("EXCEPTION: %s(%d)\n"), __FILET__, __LINE__);
+					DUITRACE(_T("EXCEPTION: %s(%d)\n"), __FILET__, __LINE__);
 #ifdef _DEBUG
 					throw "CPaintManagerUI::MessageLoop";
 #endif
@@ -2911,25 +2911,48 @@ namespace UiLib {
 		// Pretranslate Message takes care of system-wide messages, such as
 		// tabbing and shortcut key-combos. We'll look for all messages for
 		// each window and any child control attached.
-
-		HWND hwndParent = ::GetParent(pMsg->hwnd);
 		UINT uStyle = GetWindowStyle(pMsg->hwnd);
+		UINT uChildRes = uStyle & WS_CHILD;	
 		LRESULT lRes = 0;
-		for (int i = 0; i < m_aPreMessages.GetSize(); i++)
+		if (uChildRes != 0)
 		{
-			CPaintManagerUI *pT = static_cast<CPaintManagerUI *>(m_aPreMessages[i]);
+			HWND hWndParent = ::GetParent(pMsg->hwnd);
 
-			if (	pMsg->hwnd == pT->GetPaintWindow()
-				|| (hwndParent == pT->GetPaintWindow()
-				&& ((uStyle & WS_CHILD) != 0)))
+			for( int i = 0; i < m_aPreMessages.GetSize(); i++ ) 
 			{
-				if (pT->PreMessageHandler(pMsg->message, pMsg->wParam, pMsg->lParam, lRes)) 
-					return true;
+				CPaintManagerUI* pT = static_cast<CPaintManagerUI*>(m_aPreMessages[i]);        
+				HWND hTempParent = hWndParent;
+				while(hTempParent)
+				{
+					if(pMsg->hwnd == pT->GetPaintWindow() || hTempParent == pT->GetPaintWindow())
+					{
+						if (pT->TranslateAccelerator(pMsg))
+							return true;
+
+						if( pT->PreMessageHandler(pMsg->message, pMsg->wParam, pMsg->lParam, lRes) ) 
+							return true;
+
+						return false;
+					}
+					hTempParent = GetParent(hTempParent);
+				}
 			}
-			else if (pMsg->hwnd != pT->GetPaintWindow())
+		}
+		else
+		{
+			for( int i = 0; i < m_aPreMessages.GetSize(); i++ ) 
 			{
-				if( pT->TranslateAccelerator(pMsg) )
-					return true;
+				CPaintManagerUI* pT = static_cast<CPaintManagerUI*>(m_aPreMessages[i]);
+				if(pMsg->hwnd == pT->GetPaintWindow())
+				{
+					if (pT->TranslateAccelerator(pMsg))
+						return true;
+
+					if( pT->PreMessageHandler(pMsg->message, pMsg->wParam, pMsg->lParam, lRes) ) 
+						return true;
+
+					return false;
+				}
 			}
 		}
 		return false;

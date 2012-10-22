@@ -583,6 +583,10 @@
 		<Attribute name="bindtablayoutname" default="" type="STRING" comment="绑定TabLayout控件"/>
 		<Attribute name="bindtabindex" default="" type="INT" comment="点击后将触发绑定TabLayout控件的对应索引号"/>
 	</Option>
+	<!--UiLib 扩展的UI元素对象-->
+	<CheckBox parent="Option" notifies="setfocus killfocus timer menu click selectchanged windowinit(root)" />
+	<!--UiLib 扩展的UI元素对象-->
+	<CheckBox parent="Option" notifies="setfocus killfocus timer menu click selectchanged windowinit(root)" />
 	<Text parent="Label" notifies="setfocus killfocus timer menu link windowinit(root)">
 		<Attribute name="name" default="" type="STRING" comment="控件名字，同一窗口内必须唯一，如(testbtn)"/>
 		<Attribute name="pos" default="0,0,0,0" type="RECT" comment="位置，如果为float控件则指定位置和大小，否则只指定大小,如(0,0,100,100)"/>
