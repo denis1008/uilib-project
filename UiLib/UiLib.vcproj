@@ -385,10 +385,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Control\UIMenu.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\Control\UIOption.cpp"
 					>
 				</File>
@@ -640,10 +636,6 @@
 				</File>
 				<File
 					RelativePath=".\Control\UIList.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Control\UIMenu.h"
 					>
 				</File>
 				<File

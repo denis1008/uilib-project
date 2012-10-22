@@ -1,6 +1,8 @@
 #pragma once
 #include <ExDisp.h>
 #include <ExDispid.h>
+#include <mshtml.h>
+#include <MsHtmHst.h>
 
 namespace UiLib
 {

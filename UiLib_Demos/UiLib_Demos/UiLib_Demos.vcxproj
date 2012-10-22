@@ -77,7 +77,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\$(ProjectName)\Bin\</OutDir>
     <IntDir>$(SolutionDir)\Temp\$(Configuration)_201X\$(ProjectName)\</IntDir>
-    <TargetName>$(ProjectName)_D201X</TargetName>
+    <TargetName>$(ProjectName)_DD201X</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -89,7 +89,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)\$(ProjectName)\Bin\</OutDir>
     <IntDir>$(SolutionDir)\Temp\$(Configuration)_201X\$(ProjectName)\</IntDir>
-    <TargetName>$(ProjectName)_201X</TargetName>
+    <TargetName>$(ProjectName)_D201X</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)\Common\$(Configuration)_201X\</OutDir>

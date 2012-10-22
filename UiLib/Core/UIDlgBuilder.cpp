@@ -588,7 +588,7 @@ namespace UiLib
 			if( pControl == NULL )
 			{
 #ifdef _DEBUG
-				TRACE(_T("未知控件:%s"),pstrClass);
+				DUITRACE(_T("未知控件:%s"),pstrClass);
 #else
 				continue;
 #endif
