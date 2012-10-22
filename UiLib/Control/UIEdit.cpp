@@ -2,12 +2,7 @@
 #include "UIEdit.h"
 
 #include <regex>
-#include <atltime.h>
-#include "MMSystem.h"
-
-#pragma comment(lib,"Winmm.lib")
-
-using namespace std::tr1;
+#include <atlstr.h>
 
 namespace UiLib
 {
@@ -102,21 +97,19 @@ namespace UiLib
 		LRESULT lRes = 0;
 		BOOL bHandled = TRUE;
 
-		if( uMsg == WM_SETFOCUS && !m_pOwner->GetTipValue().IsEmpty() )
+		if(m_hWnd && uMsg == WM_SETFOCUS && !m_pOwner->GetTipValue().IsEmpty() )
 		{
 			if(CDuiString(_T("__IsTipValue__"))+m_pOwner->GetText() == m_pOwner->GetTipValue())
 				m_pOwner->SetText(_T(""));
 			m_pOwner->m_RegluarSrcText = m_pOwner->GetText();
-			m_pOwner->m_Timer.pEditUI = m_pOwner;
-			m_pOwner->m_Timer.m_CurTickCount = ::GetTickCount();
-			m_pOwner->m_Timer.Start();
+			m_pOwner->GetManager()->SetTimer(m_pOwner,1650,m_pOwner->GetTimerDelay());
 		}
 		
 		if( uMsg == WM_KILLFOCUS )
 		{
 			if(m_pOwner->GetTipValue().GetLength() > 0 && m_pOwner->GetText().GetLength() == 0)
 				m_pOwner->SetText(m_pOwner->GetSrcTipValue());
-			m_pOwner->m_Timer.Stop();
+			m_pOwner->GetManager()->KillTimer(m_pOwner);
 
 			lRes = OnKillFocus(uMsg, wParam, lParam, bHandled);
 		}
@@ -141,7 +134,8 @@ namespace UiLib
 				m_pOwner->GetManager()->SendNotify(m_pOwner, _T("return"));
 
 		}
-		else if( uMsg == OCM__BASE + WM_CTLCOLOREDIT  || uMsg == OCM__BASE + WM_CTLCOLORSTATIC ) {
+		
+		if( uMsg == OCM__BASE + WM_CTLCOLOREDIT  || uMsg == OCM__BASE + WM_CTLCOLORSTATIC ) {
 			if( m_pOwner->GetNativeEditBkColor() == 0xFFFFFFFF ) return NULL;
 			::SetBkMode((HDC)wParam, TRANSPARENT);
 			DWORD dwTextColor = m_pOwner->GetTextColor();
@@ -160,6 +154,7 @@ namespace UiLib
 	LRESULT CEditWnd::OnKillFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 	{
 		LRESULT lRes = ::DefWindowProc(m_hWnd, uMsg, wParam, lParam);
+		m_pOwner->m_pWindow = NULL;
 		PostMessage(WM_CLOSE);
 		return lRes;
 	}
@@ -179,249 +174,13 @@ namespace UiLib
 		return 0;
 	}
 
-	//************************************
-	// Method:    CTimer
-	// FullName:  CEditUI::CTimer::CTimer
-	// Access:    public 
-	// Returns:   
-	// Qualifier:
-	// Note:	  
-	//************************************
-	CEditUI::CTimer::CTimer()
-	{
-		try
-		{
-			mIsRun			= false;
-			pEditUI			= NULL;
-			m_Delay			= 1000;
-			m_CurTickCount	= ::GetTickCount();
-
-			TIMECAPS tc;
-			//利用函数timeGetDevCaps取出系统分辨率的取值范围，如果无错则继续;
-			if(timeGetDevCaps(&tc,sizeof(TIMECAPS))==TIMERR_NOERROR)
-			{
-				m_TimerAccuracy=min(max(tc.wPeriodMin,1),tc.wPeriodMax);//分辨率的值不能超出系统的取值范围
-				timeBeginPeriod(m_TimerAccuracy);//调用timeBeginPeriod函数设置定时器的分辨率
-			}
-		}
-		catch(...)
-		{
-			throw "CEditUI::CTimer::CTimer";
-		}
-	}
-
-	//************************************
-	// Method:    ~CTimer
-	// FullName:  CEditUI::CTimer::~CTimer
-	// Access:    public 
-	// Returns:   
-	// Qualifier:
-	// Note:	  
-	//************************************
-	CEditUI::CTimer::~CTimer()
-	{
-		try
-		{
-		}
-		catch(...)
-		{
-			throw "CEditUI::CTimer::~CTimer";
-		}
-	}
-
-	//************************************
-	// Method:    Start
-	// FullName:  CEditUI::CTimer::Start
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Note:	  
-	//************************************
-	void CEditUI::CTimer::Start()
-	{
-		try
-		{
-			if(!pEditUI || !pEditUI->GetEnableTimer())
-				return;
-
-			m_TimerID	= timeSetEvent(m_Delay,m_TimerAccuracy,TimerProc,(DWORD_PTR)this,TIME_PERIODIC);
-			mIsRun = true;
-		}
-		catch(...)
-		{
-			throw "CEditUI::CTimer::Start";
-		}
-	}
-
-	//************************************
-	// Method:    Stop
-	// FullName:  CEditUI::CTimer::Stop
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Note:	  
-	//************************************
-	void CEditUI::CTimer::Stop()
-	{
-		try
-		{
-			if(!mIsRun)
-				return;
-
-			timeKillEvent(m_TimerID); // 删除设置的分辨率
-			timeEndPeriod(m_TimerAccuracy);
-		}
-		catch(...)
-		{
-			throw "CEditUI::CTimer::Stop";
-		}
-	}
-
-	//************************************
-	// Method:    SetDelay
-	// FullName:  CEditUI::CTimer::SetDelay
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: UINT _Delay
-	// Note:	  
-	//************************************
-	void CEditUI::CTimer::SetDelay( UINT _Delay /*= 1000*/ )
-	{
-		try
-		{
-			m_Delay = _Delay;
-
-			if(!IsRun())
-				return;
-
-			Stop();
-			Start();
-		}
-		catch(...)
-		{
-			throw "CEditUI::CTimer::SetDelay";
-		}
-	}
-
-	//************************************
-	// Method:    GetDelay
-	// FullName:  CEditUI::CTimer::GetDelay
-	// Access:    public 
-	// Returns:   UINT
-	// Qualifier:
-	// Note:	  
-	//************************************
-	UINT CEditUI::CTimer::GetDelay()
-	{
-		try
-		{
-			return m_Delay;
-		}
-		catch(...)
-		{
-			throw "CEditUI::CTimer::GetDelay";
-		}
-	}
-
-	//************************************
-	// Method:    SetCurTickCount
-	// FullName:  CEditUI::CTimer::SetCurTickCount
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Note:	  
-	//************************************
-	void CEditUI::CTimer::SetCurTickCount()
-	{
-		try
-		{
-			m_CurTickCount = ::timeGetTime();
-		}
-		catch(...)
-		{
-			throw "CEditUI::CTimer::SetCurTickCount";
-		}
-	}
-
-	//************************************
-	// Method:    CheckTickDaYuDelay
-	// FullName:  CEditUI::CTimer::CheckTickDaYuDelay
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Note:	  
-	//************************************
-	bool CEditUI::CTimer::CheckTickDaYuDelay()
-	{
-		try
-		{
-			return ::timeGetTime() - m_CurTickCount > m_Delay;
-		}
-		catch(...)
-		{
-			throw "CEditUI::CTimer::CheckTickDaYuDelay";
-		}
-	}
-
-	//************************************
-	// Method:    IsRun
-	// FullName:  CEditUI::CTimer::IsRun
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Note:	  
-	//************************************
-	bool CEditUI::CTimer::IsRun()
-	{
-		try
-		{
-			return mIsRun;
-		}
-		catch(...)
-		{
-			throw "CEditUI::CTimer::IsRun";
-		}
-	}
-
-	//************************************
-	// Method:    TimerProc
-	// FullName:  CEditUI::CTimer::TimerProc
-	// Access:    public static 
-	// Returns:   void CALLBACK
-	// Qualifier:
-	// Parameter: UINT uTimerID
-	// Parameter: UINT uMsg
-	// Parameter: DWORD_PTR dwUser
-	// Parameter: DWORD_PTR dw1
-	// Parameter: DWORD_PTR dw2
-	// Note:	  
-	//************************************
-	void CALLBACK CEditUI::CTimer::TimerProc( UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2 )
-	{
-		try
-		{
-			CEditUI::CTimer* pthis = (CEditUI::CTimer*)dwUser;
-
-			if(pthis && pthis->pEditUI && pthis->CheckTickDaYuDelay() && _tcscmp(pthis->pEditUI->m_sCheckVal.GetData(),pthis->pEditUI->GetText().GetData()) != 0)
-			{
-				pthis->pEditUI->m_sCheckVal = pthis->pEditUI->GetText();
-				pthis->pEditUI->GetManager()->SendNotify(pthis->pEditUI,_T("OnEditTimer"));
-			}
-		}
-		catch(...)
-		{
-			throw "CEditUI::CTimer::TimerProc";
-		}
-	}
-
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
 
 	CEditUI::CEditUI() : m_pWindow(NULL), m_uMaxChar(255), m_bReadOnly(false), 
 		m_bPasswordMode(false), m_cPasswordChar(_T('*')), m_uButtonState(0), 
-		m_dwEditbkColor(0xFFFFFFFF), m_iWindowStyls(0),m_Hwnd(0)
+		m_dwEditbkColor(0xFFFFFFFF), m_iWindowStyls(0)
 	{
 		SetBorderSize(1);
 		SetBorderColor(0xFFBAC0C5);
@@ -454,7 +213,8 @@ namespace UiLib
 			else CLabelUI::DoEvent(event);
 			return;
 		}
-
+		if( event.Type == UIEVENT_TIMER && event.pSender == this && m_pWindow )
+			return OnTimer(event.wParam );
 		if( event.Type == UIEVENT_SETCURSOR && IsEnabled() )
 		{
 			::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_IBEAM)));
@@ -1197,31 +957,43 @@ MatchFailed:
 	{
 		try
 		{
-			m_Timer.SetDelay(nDelay);
+			m_uDelay = nDelay;
+
+			if(!m_bEnableTime)
+				return;
+
+			GetManager()->KillTimer(this);
+			GetManager()->SetTimer(this,1650,m_uDelay);
 		}
 		catch(...)
 		{
 			throw "CEditUI::SetTimerDelay";
 		}
 	}
-
+	
 	//************************************
-	// Method:    GetTimerObj
-	// FullName:  CEditUI::GetTimerObj
-	// Access:    public 
-	// Returns:   CTimer*
-	// Qualifier:
-	// Note:	  
+	// 函数名称: OnTimer
+	// 返回类型: void
+	// 参数信息: UINT iTimerID
+	// 函数说明:
 	//************************************
-	CEditUI::CTimer* CEditUI::GetTimerObj()
+	void CEditUI::OnTimer( UINT iTimerID )
 	{
-		try
+		if(_tcscmp(m_sCheckVal.GetData(),GetText().GetData()) != 0)
 		{
-			return &m_Timer;
-		}
-		catch(...)
-		{
-			throw "CEditUI::GetTimerObj";
+			m_sCheckVal = GetText();
+			GetManager()->SendNotify(this,_T("OnEditTimer"));
 		}
 	}
+
+	//************************************
+	// 函数名称: GetTimerDelay
+	// 返回类型: UINT
+	// 函数说明:
+	//************************************
+	UINT CEditUI::GetTimerDelay()
+	{
+		return m_uDelay;
+	}
+
 }
