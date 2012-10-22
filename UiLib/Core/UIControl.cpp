@@ -671,40 +671,37 @@ namespace UiLib
 			throw "CControlUI::GetStyleName";
 		}
 	}
-
+	
 	//************************************
-	// Method:    SetStyleName
-	// FullName:  CControlUI::SetStyleName
-	// Access:    virtual public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: LPCTSTR pStrStyleName
-	// Node:	  
+	// 函数名称: SetStyleName
+	// 返回类型: void
+	// 参数信息: LPCTSTR pStrStyleName
+	// 参数信息: CPaintManagerUI * pm
+	// 函数说明:
 	//************************************
-	void CControlUI::SetStyleName( LPCTSTR pStrStyleName )
+	void CControlUI::SetStyleName( LPCTSTR pStrStyleName,CPaintManagerUI* pm /*= NULL*/ )
 	{
-		try
-		{
-			if(!pStrStyleName)
-				return;
+		if(!pStrStyleName || !GetManager())
+			return;
 
-			CStdStringPtrMap* pStyleMap = GetManager()->GetControlStyles(pStrStyleName);
-			if(!pStyleMap)
-				return;
+		CStdStringPtrMap* pStyleMap = NULL;
 
-			for(int nIndex = 0;nIndex < pStyleMap->GetSize();nIndex++)
-			{
-				CDuiString nKey = pStyleMap->GetAt(nIndex);
-				CDuiString* nVal = static_cast<CDuiString*>(pStyleMap->Find(nKey));
-				SetAttribute(nKey.GetData(),nVal->GetData());
-			}
-			m_sStyleName = pStrStyleName;
-			Invalidate();
-		}
-		catch(...)
+		if(pm)
+			pStyleMap = pm->GetControlStyles(pStrStyleName);
+		else 
+			pStyleMap = GetManager()->GetControlStyles(pStrStyleName);
+
+		if(!pStyleMap)
+			return;
+
+		for(int nIndex = 0;nIndex < pStyleMap->GetSize();nIndex++)
 		{
-			throw "CControlUI::SetStyleName";
+			CDuiString nKey = pStyleMap->GetAt(nIndex);
+			CDuiString* nVal = static_cast<CDuiString*>(pStyleMap->Find(nKey));
+			SetAttribute(nKey.GetData(),nVal->GetData());
 		}
+		m_sStyleName = pStrStyleName;
+		Invalidate();
 	}
 
 	CControlUI* CControlUI::FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags)
@@ -955,6 +952,7 @@ namespace UiLib
 		else if( _tcscmp(pstrName, _T("mouseinstyle")) == 0 ) SetEffectsStyle(pstrValue,&m_tMouseInEffects);
 		else if( _tcscmp(pstrName, _T("mouseoutstyle")) == 0 ) SetEffectsStyle(pstrValue,&m_tMouseOutEffects);
 		else if( _tcscmp(pstrName, _T("mouseclickstyle")) == 0 ) SetEffectsStyle(pstrValue,&m_tMouseClickEffects);
+		else if( _tcscmp(pstrName, _T("style")) == 0 ) SetStyleName(pstrValue);
 	}
 
 	CControlUI* CControlUI::ApplyAttributeList(LPCTSTR pstrList)

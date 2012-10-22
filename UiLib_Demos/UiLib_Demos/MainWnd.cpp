@@ -156,41 +156,94 @@ void CMainWnd::Notify( TNotifyUI& msg )
 {
 	try
 	{
-		if(msg.pSender->GetName() == _T("EffectsDemo"))
-		{
-			pAnimWnd->SetAnimEffects(true);
-			pEffectsDemo->SetTag(pEffectsDemo->GetTag()+1);
+		if(msg.sType == _T("click")){
+			if(msg.pSender->GetName() == _T("EffectsDemo")){
+				pAnimWnd->SetAnimEffects(true);
+				pEffectsDemo->SetTag(pEffectsDemo->GetTag()+1);
 
-			pm.SetCurStyles(pEffectsDemo->GetTag()%2?_T("LangChinese"):_T("LangEnglish"));
+				pm.SetCurStyles(pEffectsDemo->GetTag()%2?_T("LangChinese"):_T("LangEnglish"));
 
-			if(pEffectsDemo->GetTag() == 1)
-				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='left2right' offset='180'"));
-			else if(msg.pSender->GetTag() == 2)
-				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='right2left' offset='180'"));
-			else if(pEffectsDemo->GetTag() == 3)
-				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='top2bottom' offset='180'"));
-			else if(pEffectsDemo->GetTag() == 4)
-				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='bottom2top' offset='180'"));
-			else if(pEffectsDemo->GetTag() == 5)
-				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='zoom+' offset='180'"));
-			else if(pEffectsDemo->GetTag() == 6)
-				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='zoom-' offset='180'"));
-			else if(pEffectsDemo->GetTag() == 7)
-				pAnimWnd->SetAttribute(_T("adveffects"),_T("offsetx='180' rotation='0.3'"));
-			else if(pEffectsDemo->GetTag() == 8)
-				pAnimWnd->SetAttribute(_T("adveffects"),_T("offsetx='180' rotation='-0.3'"));
-			else if(pEffectsDemo->GetTag() == 9)
-				pAnimWnd->SetAttribute(_T("adveffects"),_T("offsety='180' rotation='0.3'"));
-			else if(pEffectsDemo->GetTag() == 10)
-				pAnimWnd->SetAttribute(_T("adveffects"),_T("offsety='180' rotation='-0.3'"));
-			else
-			{
-				pEffectsDemo->SetTag(1);
-				pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='left2right' offset='80'"));
+				if(pEffectsDemo->GetTag() == 1)
+					pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='left2right' offset='180'"));
+				else if(msg.pSender->GetTag() == 2)
+					pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='right2left' offset='180'"));
+				else if(pEffectsDemo->GetTag() == 3)
+					pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='top2bottom' offset='180'"));
+				else if(pEffectsDemo->GetTag() == 4)
+					pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='bottom2top' offset='180'"));
+				else if(pEffectsDemo->GetTag() == 5)
+					pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='zoom+' offset='180'"));
+				else if(pEffectsDemo->GetTag() == 6)
+					pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='zoom-' offset='180'"));
+				else if(pEffectsDemo->GetTag() == 7)
+					pAnimWnd->SetAttribute(_T("adveffects"),_T("offsetx='180' rotation='0.3'"));
+				else if(pEffectsDemo->GetTag() == 8)
+					pAnimWnd->SetAttribute(_T("adveffects"),_T("offsetx='180' rotation='-0.3'"));
+				else if(pEffectsDemo->GetTag() == 9)
+					pAnimWnd->SetAttribute(_T("adveffects"),_T("offsety='180' rotation='0.3'"));
+				else if(pEffectsDemo->GetTag() == 10)
+					pAnimWnd->SetAttribute(_T("adveffects"),_T("offsety='180' rotation='-0.3'"));
+				else
+				{
+					pEffectsDemo->SetTag(1);
+					pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='left2right' offset='80'"));
+				}
+				pAnimWnd->TriggerEffects();
 			}
-			pAnimWnd->TriggerEffects();
+			else if(msg.pSender->GetName() == _T("AddNode")){
+				CEditUI* pEdit = static_cast<CEditUI*>(pm.FindControl(_T("AddNodeText")));
+				if(!pEdit && pEdit->GetText().GetLength() > 0)
+					return;
+
+				CTreeNodeUI* pParentNode = static_cast<CTreeNodeUI*>(msg.pSender->GetParent()->GetParent());
+				if(!pParentNode || !pParentNode->GetInterface(_T("TreeNode")))
+					return;
+
+				CFadeButtonUI* pRemoveBtn = new CFadeButtonUI();
+				pRemoveBtn->SetText(_T("删除节点"));
+				pRemoveBtn->SetName(_T("RemoveNodeBtn"));
+
+				CTreeNodeUI* pNewNode = new CTreeNodeUI();
+				pNewNode->SetItemText(pEdit->GetText().GetData());
+				pParentNode->Add(pNewNode);
+				pNewNode->GetTreeNodeHoriznotal()->Add(pRemoveBtn);
+
+				pNewNode->SetStyleName(_T("treenode"));
+				pRemoveBtn->SetStyleName(_T("FadeButtonDemo"),&pm);
+				pRemoveBtn->SetFixedWidth(60);
+			}
+			else if(msg.pSender->GetName() == _T("AddAtNode")){
+				CEditUI* pEdit = static_cast<CEditUI*>(pm.FindControl(_T("AddAtNodeText")));
+				if(!pEdit && pEdit->GetText().GetLength() > 0)
+					return;
+
+				CTreeNodeUI* pParentNode = static_cast<CTreeNodeUI*>(msg.pSender->GetParent()->GetParent());
+				if(!pParentNode || !pParentNode->GetInterface(_T("TreeNode")))
+					return;
+
+				CFadeButtonUI* pRemoveBtn = new CFadeButtonUI();
+				pRemoveBtn->SetText(_T("删除节点"));
+				pRemoveBtn->SetName(_T("RemoveNodeBtn"));
+
+				CTreeNodeUI* pNewNode = new CTreeNodeUI();
+				pNewNode->SetItemText(pEdit->GetText().GetData());
+				pParentNode->AddAt(pNewNode,0);
+				pNewNode->GetTreeNodeHoriznotal()->Add(pRemoveBtn);
+
+				pNewNode->SetStyleName(_T("treenode"));
+				pRemoveBtn->SetStyleName(_T("FadeButtonDemo"),&pm);
+				pRemoveBtn->SetFixedWidth(60);
+			}
+			else if(msg.pSender->GetName() == _T("RemoveNodeBtn")){
+				CTreeNodeUI* pParentNode = static_cast<CTreeNodeUI*>(msg.pSender->GetParent()->GetParent());
+				if(!pParentNode || !pParentNode->GetInterface(_T("TreeNode")))
+					return;
+
+				if(pParentNode->GetParentNode())
+					pParentNode->GetParentNode()->Remove(pParentNode);
+			}
 		}
-		else if(msg.sType == _T("OnEditTimer") && msg.pSender == pTestEdit){
+		if(msg.sType == _T("OnEditTimer") && msg.pSender == pTestEdit){
 			pTestLabel->SetText(msg.pSender->GetText().GetData());
 			pTestLabel->NeedUpdate();
 		}

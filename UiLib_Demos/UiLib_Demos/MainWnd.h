@@ -19,7 +19,7 @@ public:
 	void Init();
 	void Notify(TNotifyUI& msg);
 	void OnFinalMessage(HWND hWnd);
-
+	
 private:
 	CLabelUI*		pTestLabel;
 	CEditUI*		pTestEdit;

@@ -248,8 +248,10 @@ namespace UiLib
 			if(!mTreeNodes.InsertAt(iIndex,pControl))
 				return false;
 
+			pControl = CalLocation((CTreeNodeUI*)pControl);
+			
 			if(pTreeView)
-				return pTreeView->AddAt((CTreeNodeUI*)pControl,this);
+				return pTreeView->AddAt((CTreeNodeUI*)pControl,pIndexNode);
 
 			return true;
 		}
@@ -460,18 +462,22 @@ namespace UiLib
 			if (_tcsicmp(_pTreeNodeUI->GetClass(), _T("TreeNodeUI")) != 0)
 				return false;
 
-			_pTreeNodeUI->GetDottedLine()->SetVisible(true);
-			_pTreeNodeUI->GetDottedLine()->SetFixedWidth(pDottedLine->GetFixedWidth()+16);
-			_pTreeNodeUI->SetParentNode(this);
-			_pTreeNodeUI->GetItemButton()->SetGroup(pItemButton->GetGroup());
-			mTreeNodes.Add(_pTreeNodeUI);
-
+			_pTreeNodeUI = CalLocation(_pTreeNodeUI);
 			m_bIsHasChild = true;
 
-			if(pTreeView)
-				return pTreeView->AddAt(_pTreeNodeUI,this);
+			bool nRet = true;
 
-			return true;
+			if(pTreeView){
+				CTreeNodeUI* pNode = static_cast<CTreeNodeUI*>(mTreeNodes.GetAt(mTreeNodes.GetSize()-1));
+				if(!pNode || !pNode->GetLastNode())
+					nRet = false;
+				else nRet = pTreeView->AddAt(_pTreeNodeUI,pNode->GetLastNode()->GetNodeIndex()+1) >= 0;
+			}
+
+			if(nRet)
+				mTreeNodes.Add(_pTreeNodeUI);
+
+			return nRet;
 		}
 		catch(...)
 		{
@@ -499,6 +505,9 @@ namespace UiLib
 				while(pNode->IsHasChild())
 					RemoveAt(static_cast<CTreeNodeUI*>(pNode->mTreeNodes.GetAt(0)));
 				mTreeNodes.Remove(nIndex);
+
+				if(pTreeView)
+					pTreeView->Remove(_pTreeNodeUI);
 				return true;
 			}
 			return false;
@@ -732,6 +741,69 @@ namespace UiLib
 			throw "CTreeNodeUI::GetVisibleCheckBtn";
 		}
 	}
+	
+	//************************************
+	// 函数名称: GetNodeIndex
+	// 返回类型: int
+	// 函数说明:
+	//************************************
+	int CTreeNodeUI::GetNodeIndex()
+	{
+		if(!pTreeView)
+			return -1;
+
+		for(int nIndex = 0;nIndex < pTreeView->GetCount();nIndex++){
+			if(this == pTreeView->GetItemAt(nIndex))
+				return nIndex;
+		}
+
+		return -1;
+	}
+
+	//************************************
+	// 函数名称: GetLastNode
+	// 返回类型: CTreeNodeUI*
+	// 函数说明:
+	//************************************
+	CTreeNodeUI* CTreeNodeUI::GetLastNode( )
+	{
+		if(!IsHasChild())
+			return this;
+
+		CTreeNodeUI* nRetNode = NULL;
+
+		for(int nIndex = 0;nIndex < GetTreeNodes().GetSize();nIndex++){
+			CTreeNodeUI* pNode = static_cast<CTreeNodeUI*>(GetTreeNodes().GetAt(nIndex));
+			if(!pNode)
+				continue;
+
+			CDuiString aa = pNode->GetItemText();
+
+			if(pNode->IsHasChild())
+				nRetNode = pNode->GetLastNode();
+			else 
+				nRetNode = pNode;
+		}
+		
+		return nRetNode;
+	}
+	
+	//************************************
+	// 函数名称: CalLocation
+	// 返回类型: CTreeNodeUI*
+	// 参数信息: CTreeNodeUI * _pTreeNodeUI
+	// 函数说明: 缩进计算
+	//************************************
+	CTreeNodeUI* CTreeNodeUI::CalLocation( CTreeNodeUI* _pTreeNodeUI )
+	{
+		_pTreeNodeUI->GetDottedLine()->SetVisible(true);
+		_pTreeNodeUI->GetDottedLine()->SetFixedWidth(pDottedLine->GetFixedWidth()+16);
+		_pTreeNodeUI->SetParentNode(this);
+		_pTreeNodeUI->GetItemButton()->SetGroup(pItemButton->GetGroup());
+		_pTreeNodeUI->SetTreeView(pTreeView);
+
+		return _pTreeNodeUI;
+	}
 
 	/*****************************************************************************/
 	/*****************************************************************************/
@@ -874,7 +946,7 @@ namespace UiLib
 	// Qualifier:
 	// Parameter: CTreeNodeUI * pControl
 	// Parameter: int iIndex
-	// Note:	  
+	// Note:	  该方法不会将待插入的节点进行缩位处理，若打算插入的节点为非根节点，请使用AddAt(CTreeNodeUI* pControl,CTreeNodeUI* _IndexNode) 方法
 	//************************************
 	long CTreeViewUI::AddAt( CTreeNodeUI* pControl, int iIndex )
 	{
@@ -925,7 +997,7 @@ namespace UiLib
 	//************************************
 	bool CTreeViewUI::AddAt( CTreeNodeUI* pControl,CTreeNodeUI* _IndexNode )
 	{
-		if(!_IndexNode)
+		if(!_IndexNode && !pControl)
 			return false;
 
 		int nItemIndex = -1;

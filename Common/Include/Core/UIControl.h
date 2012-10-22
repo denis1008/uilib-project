@@ -116,7 +116,7 @@ public:
     virtual bool IsFloat() const;
     virtual void SetFloat(bool bFloat = true);
 	virtual const CDuiString& GetStyleName();
-	virtual void SetStyleName(LPCTSTR pStrStyleName);
+	virtual void SetStyleName(LPCTSTR pStrStyleName,CPaintManagerUI* pm = NULL);
 
     virtual CControlUI* FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags);
 

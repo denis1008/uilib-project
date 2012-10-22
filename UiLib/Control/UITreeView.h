@@ -53,6 +53,11 @@ namespace UiLib
 		void	SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
 		CStdPtrArray			GetTreeNodes();
+
+		int			 GetNodeIndex();
+	private:
+		CTreeNodeUI* GetLastNode();
+		CTreeNodeUI* CalLocation(CTreeNodeUI* _pTreeNodeUI);
 	public:
 		CHorizontalLayoutUI*	GetTreeNodeHoriznotal() const {return pHoriz;};
 		CCheckBoxUI*			GetFolderButton() const {return pFolderButton;};
@@ -105,7 +110,7 @@ namespace UiLib
 		virtual bool GetVisibleCheckBtn();
 
 		virtual void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
-
+		
 	private:
 		bool m_bVisibleFolderBtn;
 		bool m_bVisibleCheckBtn;
