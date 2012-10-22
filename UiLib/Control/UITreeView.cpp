@@ -124,6 +124,25 @@ namespace UiLib
 			throw "CTreeNodeUI::GetInterface";
 		}
 	}
+	
+	//************************************
+	// 函数名称: DoEvent
+	// 返回类型: void
+	// 参数信息: TEventUI & event
+	// 函数说明:
+	//************************************
+	void CTreeNodeUI::DoEvent( TEventUI& event )
+	{
+		if( event.Type == UIEVENT_DBLCLICK )
+		{
+			if( IsEnabled() ) {
+				m_pManager->SendNotify(this, _T("itemdbclick"));
+				Invalidate();
+			}
+			return;
+		}
+		CListContainerElementUI::DoEvent(event);
+	}
 
 	//************************************
 	// Method:    Invalidate
@@ -215,14 +234,24 @@ namespace UiLib
 	// Returns:   bool
 	// Qualifier:
 	// Parameter: CControlUI * pControl
-	// Parameter: int iIndex
-	// Note:	  暂时屏蔽，后续完善
+	// Parameter: int iIndex			该参数仅针对当前节点下的兄弟索引，并非列表视图索引
+	// Note:	  
 	//************************************
 	bool CTreeNodeUI::AddAt( CControlUI* pControl, int iIndex )
 	{
 		try
 		{
-			return false;
+			CTreeNodeUI* pIndexNode = static_cast<CTreeNodeUI*>(mTreeNodes.GetAt(iIndex));
+			if(!pIndexNode || NULL == static_cast<CTreeNodeUI*>(pControl->GetInterface(_T("TreeNode"))))
+				return false;
+
+			if(!mTreeNodes.InsertAt(iIndex,pControl))
+				return false;
+
+			if(pTreeView)
+				return pTreeView->AddAt((CTreeNodeUI*)pControl,this);
+
+			return true;
 		}
 		catch (...)
 		{
@@ -438,6 +467,10 @@ namespace UiLib
 			mTreeNodes.Add(_pTreeNodeUI);
 
 			m_bIsHasChild = true;
+
+			if(pTreeView)
+				return pTreeView->AddAt(_pTreeNodeUI,this);
+
 			return true;
 		}
 		catch(...)
@@ -804,6 +837,7 @@ namespace UiLib
 			if (_tcsicmp(pControl->GetClass(), _T("TreeNodeUI")) != 0)
 				return false;
 
+			pControl->OnNotify += MakeDelegate(this,&CTreeViewUI::OnDBClickItem);
 			pControl->GetFolderButton()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnFolderChanged);
 			pControl->GetCheckBox()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnCheckBoxChanged);
 			
@@ -880,6 +914,33 @@ namespace UiLib
 		{
 			throw "UITreeView::AddAt";
 		}
+	}
+
+	//************************************
+	// 函数名称: AddAt
+	// 返回类型: bool
+	// 参数信息: CTreeNodeUI * pControl
+	// 参数信息: CTreeNodeUI * _IndexNode
+	// 函数说明:
+	//************************************
+	bool CTreeViewUI::AddAt( CTreeNodeUI* pControl,CTreeNodeUI* _IndexNode )
+	{
+		if(!_IndexNode)
+			return false;
+
+		int nItemIndex = -1;
+
+		for(int nIndex = 0;nIndex < GetCount();nIndex++){
+			if(_IndexNode == GetItemAt(nIndex)){
+				nItemIndex = nIndex;
+				break;
+			}
+		}
+
+		if(nItemIndex == -1)
+			return false;
+
+		return AddAt(pControl,nItemIndex) >= 0;
 	}
 
 	//************************************
@@ -998,6 +1059,7 @@ namespace UiLib
 				CCheckBoxUI* pCheckBox = (CCheckBoxUI*)pMsg->pSender;
 				CTreeNodeUI* pItem = (CTreeNodeUI*)pCheckBox->GetParent()->GetParent();
 				SetItemCheckBox(pCheckBox->GetCheck(),pItem);
+				return true;
 			}
 			return true;
 		}
@@ -1027,6 +1089,7 @@ namespace UiLib
 				CTreeNodeUI* pItem = (CTreeNodeUI*)pFolder->GetParent()->GetParent();
 				pItem->SetVisibleTag(!pFolder->GetCheck());
 				SetItemExpand(!pFolder->GetCheck(),pItem);
+				return true;
 			}
 			return true;
 		}
@@ -1036,6 +1099,27 @@ namespace UiLib
 		}
 	}
 	
+	//************************************
+	// 函数名称: OnDBClickItem
+	// 返回类型: bool
+	// 参数信息: void * param
+	// 函数说明:
+	//************************************
+	bool CTreeViewUI::OnDBClickItem( void* param )
+	{
+		TNotifyUI* pMsg = (TNotifyUI*)param;
+		if(pMsg->sType == _T("itemdbclick"))
+		{
+			CTreeNodeUI* pItem		= static_cast<CTreeNodeUI*>(pMsg->pSender);
+			CCheckBoxUI* pFolder	= pItem->GetFolderButton();
+			pFolder->Selected(!pFolder->IsSelected());
+			pItem->SetVisibleTag(!pFolder->GetCheck());
+			SetItemExpand(!pFolder->GetCheck(),pItem);
+			return true;
+		}
+		return false;
+	}
+
 	//************************************
 	// Method:    SetItemCheckBox
 	// FullName:  CTreeViewUI::SetItemCheckBox

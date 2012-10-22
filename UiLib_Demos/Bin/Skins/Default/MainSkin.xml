@@ -14,21 +14,16 @@
 		<EffectsStyle name="EffectsDemo" value="anim='zoom+' offset='80' " />
 		<EffectsStyle name="clickeffect" value="anim='zoom-' offset='80' " />
 	</EffectsStyles>
-	<Styles name="LateStyle">
-		<Style stylename="MenuBtn" name="MenuBtn" width="26" maxheight="17" hotimage="file='WndFrame/sys_btn_menu.png' source='26,0,52,17'" normalimage="file='WndFrame/sys_btn_menu.png' source='0,0,26,17'" pushedimage="file='WndFrame/sys_btn_menu.png' source='52,0,78,17'" />
-		<Style stylename="SysMinBtn" name="SysMinBtn" width="26" maxheight="17" hotimage="file='WndFrame/sys_btn_min.png' source='26,0,52,17'" normalimage="file='WndFrame/sys_btn_min.png' source='0,0,26,17'" pushedimage="file='WndFrame/sys_btn_min.png' source='52,0,78,17'" />
-		<Style stylename="SysMaxBtn" name="SysMaxBtn" width="26" maxheight="17" hotimage="file='WndFrame/sys_btn_max.png' source='26,0,52,17'" normalimage="file='WndFrame/sys_btn_max.png' source='0,0,26,17'" pushedimage="file='WndFrame/sys_btn_max.png' source='52,0,78,17'" />
-		<Style stylename="SysRestoreBtn" name="SysRestoreBtn" width="26" maxheight="17" visible="false" hotimage="file='WndFrame/sys_btn_restore.png' source='26,0,52,17'" normalimage="file='WndFrame/sys_btn_restore.png' source='0,0,26,17'" pushedimage="file='WndFrame/sys_btn_restore.png' source='52,0,78,17'" />
-		<Style stylename="SysCloseBtn" name="SysCloseBtn" animeffects="true" mouseineffects="sysMenu" width="45" maxheight="17" hotimage="file='WndFrame/sys_btn_close.png' source='45,0,90,17'" normalimage="file='WndFrame/sys_btn_close.png' source='0,0,45,17'" pushedimage="file='WndFrame/sys_btn_close.png' source='90,0,135,17'"/>
-		<Style stylename="BtnStyle" name="EffectsDemo" mouseineffects="EffectsDemo" mouseclickeffects="EffectsDemo" animeffects="true" font="1" width="70" height="60" textpadding="0,40,0,0" textcolor="#C1C1C1" hottextcolor="#FFFFFF" selectedtextcolor="#010101" disabledtextcolor="#FFa3c6f2" normalimage="" foreimage="file='Icon/CtrlDemo.png' dest='10,0,57,53'" />
+	<Styles name="LateStyle" stylefile="WndBtn.xml">
+		<Style stylename="BtnStyle" name="EffectsDemo" mouseclickeffects="EffectsDemo" animeffects="true" font="1" width="70" height="60" textpadding="0,40,0,0" textcolor="#C1C1C1" hottextcolor="#FFFFFF" selectedtextcolor="#010101" disabledtextcolor="#FFa3c6f2" normalimage="" foreimage="file='Icon/CtrlDemo.png' dest='10,0,57,53'" />
 		<Style stylename="MainWnd" bkcolor="#FFFFFFFF" bkimage="file='WndFrame/WndFrameBK.png' corner='6,96,6,2'" inset="1,0,1,1" colorhsl="true" vscrollbar="true" />
 		<Style stylename="FadeButtonDemo" width="100" height="22" />
 	</Styles>
 	<Styles name="LangChinese" inherit="LateStyle" >
-		<Style stylename="BtnStyle" text="动画演示" />
+		<Style stylename="BtnStyle" text="语言切换" />
 	</Styles>
 	<Styles name="LangEnglish" inherit="LateStyle" default="true" >
-		<Style stylename="BtnStyle" text="AnimDemo" />
+		<Style stylename="BtnStyle" text="LangSwitch" />
 	</Styles>
 	<VerticalLayout style="MainWnd" >
 		<HorizontalLayout bkimage="file='WndFrame/BannerBG.png' source='2,0,4,96' xtiled='true' ytiled='true'" height="95" >
