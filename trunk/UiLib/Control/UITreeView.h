@@ -22,6 +22,7 @@ namespace UiLib
 	public:
 		LPCTSTR GetClass() const;
 		LPVOID	GetInterface(LPCTSTR pstrName);
+		void	DoEvent(TEventUI& event);
 		void	Invalidate();
 
 		bool	Add(CControlUI* _pTreeNodeUI);
@@ -88,11 +89,13 @@ namespace UiLib
 		virtual LPVOID	GetInterface(LPCTSTR pstrName);
 		virtual bool Add(CTreeNodeUI* pControl );
 		virtual long AddAt(CTreeNodeUI* pControl, int iIndex );
+		virtual bool AddAt(CTreeNodeUI* pControl,CTreeNodeUI* _IndexNode);
 		virtual bool Remove(CTreeNodeUI* pControl);
 		virtual bool RemoveAt(int iIndex);
 		virtual void RemoveAll();
 		virtual bool OnCheckBoxChanged(void* param);
 		virtual bool OnFolderChanged(void* param);
+		virtual bool OnDBClickItem(void* param);
 		virtual bool SetItemCheckBox(bool _Selected,CTreeNodeUI* _TreeNode = NULL);
 		virtual void SetItemExpand(bool _Expanded,CTreeNodeUI* _TreeNode = NULL);
 		virtual void Notify(TNotifyUI& msg);

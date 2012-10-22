@@ -167,17 +167,17 @@ namespace UiLib
 						else if( _tcscmp(pstrName, _T("stylefile")) == 0 ){
 							CMarkup nStyleFile;
 							if(nStyleFile.LoadFromFile(pstrValue)){
-								for(CMarkupNode nStyleNode = nStyleFile.GetRoot();nStyleNode.IsValid();nStyleNode = nStyleNode.GetSibling())
+								for(CMarkupNode nStyleNode = nStyleFile.GetRoot().GetChild();nStyleNode.IsValid();nStyleNode = nStyleNode.GetSibling())
 								{
 									LPCTSTR pstrClass = nStyleNode.GetName();
 
 									if( _tcscmp(pstrClass, _T("Style")) != 0)
 										continue;
 
-									nAttributes = node.GetAttributeCount();
+									int nStyleAttributes = nStyleNode.GetAttributeCount();
 									LPCTSTR pStrStyleName = NULL;
 									CStdStringPtrMap* pStyleMap = new CStdStringPtrMap();
-									for( int nIndex = 0; nIndex < nAttributes; nIndex++ ) {
+									for( int nIndex = 0; nIndex < nStyleAttributes; nIndex++ ) {
 										pstrName = nStyleNode.GetAttributeName(nIndex);
 										pstrValue = nStyleNode.GetAttributeValue(nIndex);
 										if( _tcscmp(pstrName, _T("stylename")) == 0 ) {
@@ -212,10 +212,10 @@ namespace UiLib
 						if( _tcscmp(pstrClass, _T("Style")) != 0)
 							continue;
 
-						nAttributes = nStyleNode.GetAttributeCount();
+						int nStyleAttributes = nStyleNode.GetAttributeCount();
 						LPCTSTR pStrStyleName = NULL;
 						CStdStringPtrMap* pStyleMap = new CStdStringPtrMap();
-						for( int i = 0; i < nAttributes; i++ ) {
+						for( int i = 0; i < nStyleAttributes; i++ ) {
 							pstrName = nStyleNode.GetAttributeName(i);
 							pstrValue = nStyleNode.GetAttributeValue(i);
 							if( _tcscmp(pstrName, _T("stylename")) == 0 ) {
@@ -224,7 +224,7 @@ namespace UiLib
 							}
 						}
 						if(pStrStyleName){
-							for( int i = 0; i < nAttributes; i++ ) {
+							for( int i = 0; i < nStyleAttributes; i++ ) {
 								pstrName = nStyleNode.GetAttributeName(i);
 								pstrValue = nStyleNode.GetAttributeValue(i);
 								if( _tcscmp(pstrName, _T("stylename")) == 0 )
@@ -252,7 +252,7 @@ namespace UiLib
 							CMarkup mEffectsStyleFile;
 							if(mEffectsStyleFile.LoadFromFile(pstrValue))
 							{
-								for( CMarkupNode nEffectsStyleNode = mEffectsStyleFile.GetRoot(); nEffectsStyleNode.IsValid(); nEffectsStyleNode = nEffectsStyleNode.GetSibling() ) {
+								for( CMarkupNode nEffectsStyleNode = mEffectsStyleFile.GetRoot().GetChild(); nEffectsStyleNode.IsValid(); nEffectsStyleNode = nEffectsStyleNode.GetSibling() ) {
 									LPCTSTR pstrClass = nEffectsStyleNode.GetName();
 
 									if( _tcscmp(pstrClass, _T("EffectsStyle")) != 0)
