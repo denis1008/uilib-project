@@ -31,6 +31,7 @@ namespace UiLib
 			pItemButton		= new COptionUI();
 
 			this->SetFixedHeight(18);
+			this->SetFixedWidth(250);
 			pFolderButton->SetFixedWidth(GetFixedHeight());
 			pDottedLine->SetFixedWidth(2);
 			pCheckBox->SetFixedWidth(GetFixedHeight());
@@ -818,7 +819,7 @@ namespace UiLib
 	// Parameter: void
 	// Note:	  
 	//************************************
-	CTreeViewUI::CTreeViewUI( void ) : m_bVisibleFolderBtn(true),m_bVisibleCheckBtn(false)
+	CTreeViewUI::CTreeViewUI( void ) : m_bVisibleFolderBtn(true),m_bVisibleCheckBtn(false),m_uItemMinWidth(0)
 	{
 		try
 		{
@@ -915,6 +916,8 @@ namespace UiLib
 			
 			pControl->SetVisibleFolderBtn(m_bVisibleFolderBtn);
 			pControl->SetVisibleCheckBtn(m_bVisibleCheckBtn);
+			if(m_uItemMinWidth > 0)
+			pControl->SetMinWidth(m_uItemMinWidth);
 
 			CListUI::Add(pControl);
 
@@ -1388,6 +1391,34 @@ namespace UiLib
 	}
 
 	//************************************
+	// 函数名称: SetItemMinWidth
+	// 返回类型: void
+	// 参数信息: UINT _ItemMinWidth
+	// 函数说明: 
+	//************************************
+	void CTreeViewUI::SetItemMinWidth( UINT _ItemMinWidth )
+	{
+		m_uItemMinWidth = _ItemMinWidth;
+
+		for(int nIndex = 0;nIndex < GetCount();nIndex++){
+			CTreeNodeUI* pTreeNode = static_cast<CTreeNodeUI*>(GetItemAt(nIndex));
+			if(pTreeNode)
+				pTreeNode->SetMinWidth(GetItemMinWidth());
+		}
+		Invalidate();
+	}
+
+	//************************************
+	// 函数名称: GetItemMinWidth
+	// 返回类型: UINT
+	// 函数说明: 
+	//************************************
+	UINT CTreeViewUI::GetItemMinWidth()
+	{
+		return m_uItemMinWidth;
+	}
+
+	//************************************
 	// Method:    SetAttribute
 	// FullName:  CTreeViewUI::SetAttribute
 	// Access:    virtual public 
@@ -1405,6 +1436,8 @@ namespace UiLib
 				SetVisibleFolderBtn(_tcscmp(pstrValue,_T("true")) == 0);
 			else if(_tcscmp(pstrName,_T("visiblecheckbtn")) == 0)
 				SetVisibleCheckBtn(_tcscmp(pstrValue,_T("true")) == 0);
+			else if(_tcscmp(pstrName,_T("itemminwidth")) == 0)
+				SetItemMinWidth(_ttoi(pstrValue));
 			else CListUI::SetAttribute(pstrName,pstrValue);
 		}
 		catch(...)
@@ -1412,4 +1445,5 @@ namespace UiLib
 			throw "CTreeViewUI::SetAttribute";
 		}
 	}
+
 }

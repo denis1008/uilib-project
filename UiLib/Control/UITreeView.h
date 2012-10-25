@@ -108,10 +108,13 @@ namespace UiLib
 		virtual bool GetVisibleFolderBtn();
 		virtual void SetVisibleCheckBtn(bool _IsVisibled);
 		virtual bool GetVisibleCheckBtn();
+		virtual void SetItemMinWidth(UINT _ItemMinWidth);
+		virtual UINT GetItemMinWidth();
 
 		virtual void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 		
 	private:
+		UINT m_uItemMinWidth;
 		bool m_bVisibleFolderBtn;
 		bool m_bVisibleCheckBtn;
 	};

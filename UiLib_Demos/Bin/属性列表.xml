@@ -1264,6 +1264,7 @@
 
 		<Attribute name="visiblefolderbtn" default="true" type="BOOL" comment="是否显示展开与收缩按钮对象"/>
 		<Attribute name="visiblecheckbtn" default="false" type="BOOL" comment="是否显示复选框对象"/>
+		<Attribute name="itemminwidth" default="0" type="UINT" comment="设置Item的最小宽度，当hscrollbar为真且itemminwidth大于TreeView宽度时才会显示横向滚动条"/>
 	</TreeView>
 	<!--UiLib 扩展的UI元素对象-->
 	<TreeNode parent="ListContainerElement" notifies="setfocus killfocus timer itemactivate itemclick itemexpanded itemcollapsed windowinit(root)">
