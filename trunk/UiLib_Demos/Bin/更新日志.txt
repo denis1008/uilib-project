@@ -1,3 +1,8 @@
+2012-10-24 
+#同步UiLib 至 Duilib 349
+*修复WebBrowser默认首页地址拼写错误Bug
+*修复CDuiString部分方法处理参数为NULL的Bug By：125308142@qq.com
+
 2012-10-22
 #同步UiLib 至 Duilib 347
 #完善树控件的动态添加与插入功能
