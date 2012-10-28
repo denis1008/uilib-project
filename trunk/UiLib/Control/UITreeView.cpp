@@ -5,123 +5,84 @@
 namespace UiLib
 {
 	//************************************
-	// Method:    CTreeNodeUI
-	// FullName:  CTreeNodeUI::CTreeNodeUI
-	// Access:    public 
-	// Returns:   
-	// Qualifier:
-	// Parameter: CTreeNodeUI * _ParentNode
-	// Note:	  
+	// 函数名称: CTreeNodeUI
+	// 返回类型: 
+	// 参数信息: CTreeNodeUI * _ParentNode
+	// 函数说明: 
 	//************************************
-	CTreeNodeUI::CTreeNodeUI( CTreeNodeUI* _ParentNode ) : CListContainerElementUI()
+	CTreeNodeUI::CTreeNodeUI( CTreeNodeUI* _ParentNode /*= NULL*/ )
 	{
-		try
+		pTreeView		= NULL;
+		m_bIsVisable	= true;
+		m_bIsCheckBox	= false;
+		pParentTreeNode	= NULL;
+
+		pHoriz			= new CHorizontalLayoutUI();
+		pFolderButton	= new CCheckBoxUI();
+		pDottedLine		= new CLabelUI();
+		pCheckBox		= new CCheckBoxUI();
+		pItemButton		= new COptionUI();
+
+		this->SetFixedHeight(18);
+		this->SetFixedWidth(250);
+		pFolderButton->SetFixedWidth(GetFixedHeight());
+		pDottedLine->SetFixedWidth(2);
+		pCheckBox->SetFixedWidth(GetFixedHeight());
+		pItemButton->SetAttribute(_T("align"),_T("left"));
+
+		pDottedLine->SetVisible(false);
+		pCheckBox->SetVisible(false);
+		pItemButton->SetMouseEnabled(false);
+
+		if(_ParentNode)
 		{
-			pTreeView		= NULL;
-			m_bIsVisable	= true;
-			m_bIsCheckBox	= false;
-			pParentTreeNode	= NULL;
+			if (_tcsicmp(_ParentNode->GetClass(), _T("TreeNodeUI")) != 0)
+				return;
 
-			pHoriz			= new CHorizontalLayoutUI();
-			pFolderButton	= new CCheckBoxUI();
-			pDottedLine		= new CLabelUI();
-			pCheckBox		= new CCheckBoxUI();
-			pItemButton		= new COptionUI();
-
-			this->SetFixedHeight(18);
-			this->SetFixedWidth(250);
-			pFolderButton->SetFixedWidth(GetFixedHeight());
-			pDottedLine->SetFixedWidth(2);
-			pCheckBox->SetFixedWidth(GetFixedHeight());
-			pItemButton->SetAttribute(_T("align"),_T("left"));
-
-			pDottedLine->SetVisible(false);
-			pCheckBox->SetVisible(false);
-			pItemButton->SetMouseEnabled(false);
-
-			if(_ParentNode)
-			{
-				if (_tcsicmp(_ParentNode->GetClass(), _T("TreeNodeUI")) != 0)
-					return;
-
-				pDottedLine->SetVisible(_ParentNode->IsVisible());
-				pDottedLine->SetFixedWidth(_ParentNode->GetDottedLine()->GetFixedWidth()+16);
-				this->SetParentNode(_ParentNode);
-			}
-
-			pHoriz->Add(pDottedLine);
-			pHoriz->Add(pFolderButton);
-			pHoriz->Add(pCheckBox);
-			pHoriz->Add(pItemButton);
-			Add(pHoriz);
+			pDottedLine->SetVisible(_ParentNode->IsVisible());
+			pDottedLine->SetFixedWidth(_ParentNode->GetDottedLine()->GetFixedWidth()+16);
+			this->SetParentNode(_ParentNode);
 		}
-		catch (...)
-		{
-			throw "CTreeNodeUI::CTreeNodeUI";
-		}
+
+		pHoriz->Add(pDottedLine);
+		pHoriz->Add(pFolderButton);
+		pHoriz->Add(pCheckBox);
+		pHoriz->Add(pItemButton);
+		Add(pHoriz);
 	}
-
+	
 	//************************************
-	// Method:    ~CTreeNodeUI
-	// FullName:  CTreeNodeUI::~CTreeNodeUI
-	// Access:    public 
-	// Returns:   
-	// Qualifier:
-	// Parameter: void
-	// Note:	  
+	// 函数名称: ~CTreeNodeUI
+	// 返回类型: 
+	// 参数信息: void
+	// 函数说明: 
 	//************************************
 	CTreeNodeUI::~CTreeNodeUI( void )
 	{
-		try
-		{
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::~CTreeNodeUI";
-		}
+
 	}
 
 	//************************************
-	// Method:    GetClass
-	// FullName:  CTreeNodeUI::GetClass
-	// Access:    public 
-	// Returns:   LPCTSTR
-	// Qualifier: const
-	// Note:	  
+	// 函数名称: GetClass
+	// 返回类型: LPCTSTR
+	// 函数说明: 
 	//************************************
 	LPCTSTR CTreeNodeUI::GetClass() const
 	{
-		try
-		{
-			return _T("TreeNodeUI");
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::GetClass";
-		}
+		return _T("TreeNodeUI");
 	}
 
 	//************************************
-	// Method:    GetInterface
-	// FullName:  CTreeNodeUI::GetInterface
-	// Access:    public 
-	// Returns:   LPVOID
-	// Qualifier:
-	// Parameter: LPCTSTR pstrName
-	// Note:	  
+	// 函数名称: GetInterface
+	// 返回类型: LPVOID
+	// 参数信息: LPCTSTR pstrName
+	// 函数说明: 
 	//************************************
 	LPVOID CTreeNodeUI::GetInterface( LPCTSTR pstrName )
 	{
-		try
-		{
-			if( _tcscmp(pstrName, _T("TreeNode")) == 0 )
-				return static_cast<CTreeNodeUI*>(this);
-			return CListContainerElementUI::GetInterface(pstrName);
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::GetInterface";
-		}
+		if( _tcscmp(pstrName, _T("TreeNode")) == 0 )
+			return static_cast<CTreeNodeUI*>(this);
+		return CListContainerElementUI::GetInterface(pstrName);
 	}
 	
 	//************************************
@@ -144,589 +105,379 @@ namespace UiLib
 	}
 
 	//************************************
-	// Method:    Invalidate
-	// FullName:  CTreeNodeUI::Invalidate
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Note:	  
+	// 函数名称: Invalidate
+	// 返回类型: void
+	// 函数说明: 
 	//************************************
 	void CTreeNodeUI::Invalidate()
 	{
-		try
-		{
-			if( !IsVisible() )
-				return;
+		if( !IsVisible() )
+			return;
 
-			if( GetParent() ) {
-				CContainerUI* pParentContainer = static_cast<CContainerUI*>(GetParent()->GetInterface(_T("Container")));
-				if( pParentContainer ) {
-					RECT rc = pParentContainer->GetPos();
-					RECT rcInset = pParentContainer->GetInset();
-					rc.left += rcInset.left;
-					rc.top += rcInset.top;
-					rc.right -= rcInset.right;
-					rc.bottom -= rcInset.bottom;
-					CScrollBarUI* pVerticalScrollBar = pParentContainer->GetVerticalScrollBar();
-					if( pVerticalScrollBar && pVerticalScrollBar->IsVisible() ) rc.right -= pVerticalScrollBar->GetFixedWidth();
-					CScrollBarUI* pHorizontalScrollBar = pParentContainer->GetHorizontalScrollBar();
-					if( pHorizontalScrollBar && pHorizontalScrollBar->IsVisible() ) rc.bottom -= pHorizontalScrollBar->GetFixedHeight();
+		if( GetParent() ) {
+			CContainerUI* pParentContainer = static_cast<CContainerUI*>(GetParent()->GetInterface(_T("Container")));
+			if( pParentContainer ) {
+				RECT rc = pParentContainer->GetPos();
+				RECT rcInset = pParentContainer->GetInset();
+				rc.left += rcInset.left;
+				rc.top += rcInset.top;
+				rc.right -= rcInset.right;
+				rc.bottom -= rcInset.bottom;
+				CScrollBarUI* pVerticalScrollBar = pParentContainer->GetVerticalScrollBar();
+				if( pVerticalScrollBar && pVerticalScrollBar->IsVisible() ) rc.right -= pVerticalScrollBar->GetFixedWidth();
+				CScrollBarUI* pHorizontalScrollBar = pParentContainer->GetHorizontalScrollBar();
+				if( pHorizontalScrollBar && pHorizontalScrollBar->IsVisible() ) rc.bottom -= pHorizontalScrollBar->GetFixedHeight();
 
-					RECT invalidateRc = m_rcItem;
-					if( !::IntersectRect(&invalidateRc, &m_rcItem, &rc) ) 
+				RECT invalidateRc = m_rcItem;
+				if( !::IntersectRect(&invalidateRc, &m_rcItem, &rc) ) 
+					return;
+
+				CControlUI* pParent = GetParent();
+				RECT rcTemp;
+				RECT rcParent;
+				while( pParent = pParent->GetParent() )
+				{
+					rcTemp = invalidateRc;
+					rcParent = pParent->GetPos();
+					if( !::IntersectRect(&invalidateRc, &rcTemp, &rcParent) ) 
 						return;
-
-					CControlUI* pParent = GetParent();
-					RECT rcTemp;
-					RECT rcParent;
-					while( pParent = pParent->GetParent() )
-					{
-						rcTemp = invalidateRc;
-						rcParent = pParent->GetPos();
-						if( !::IntersectRect(&invalidateRc, &rcTemp, &rcParent) ) 
-							return;
-					}
-
-					if( m_pManager != NULL ) m_pManager->Invalidate(invalidateRc);
 				}
-				else {
-					CContainerUI::Invalidate();
-				}
+
+				if( m_pManager != NULL ) m_pManager->Invalidate(invalidateRc);
 			}
 			else {
 				CContainerUI::Invalidate();
 			}
 		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::Invalidate";
+		else {
+			CContainerUI::Invalidate();
 		}
 	}
 
 	//************************************
-	// Method:    Add
-	// FullName:  CTreeNodeUI::Add
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: CControlUI * _pTreeNodeUI
-	// Note:	  
+	// 函数名称: Add
+	// 返回类型: bool
+	// 参数信息: CControlUI * _pTreeNodeUI
+	// 函数说明: 通过节点对象添加节点
 	//************************************
 	bool CTreeNodeUI::Add( CControlUI* _pTreeNodeUI )
 	{
-		try
-		{
-			if (_tcsicmp(_pTreeNodeUI->GetClass(), _T("TreeNodeUI")) == 0)
-				return AddChildNode((CTreeNodeUI*)_pTreeNodeUI);
-			
-			return CListContainerElementUI::Add(_pTreeNodeUI);
-		}
-		catch (...)
-		{
-			throw "CTreeNodeUI::Add";
-		}
+		if (_tcsicmp(_pTreeNodeUI->GetClass(), _T("TreeNodeUI")) == 0)
+			return AddChildNode((CTreeNodeUI*)_pTreeNodeUI);
+
+		return CListContainerElementUI::Add(_pTreeNodeUI);
 	}
+
 	//************************************
-	// Method:    AddAt
-	// FullName:  CTreeNodeUI::AddAt
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: CControlUI * pControl
-	// Parameter: int iIndex			该参数仅针对当前节点下的兄弟索引，并非列表视图索引
-	// Note:	  
+	// 函数名称: AddAt
+	// 返回类型: bool
+	// 参数信息: CControlUI * pControl
+	// 参数信息: int iIndex				该参数仅针对当前节点下的兄弟索引，并非列表视图索引
+	// 函数说明: 
 	//************************************
 	bool CTreeNodeUI::AddAt( CControlUI* pControl, int iIndex )
 	{
-		try
-		{
-			if(NULL == static_cast<CTreeNodeUI*>(pControl->GetInterface(_T("TreeNode"))))
+		if(NULL == static_cast<CTreeNodeUI*>(pControl->GetInterface(_T("TreeNode"))))
+			return false;
+
+		CTreeNodeUI* pIndexNode = static_cast<CTreeNodeUI*>(mTreeNodes.GetAt(iIndex));
+		if(!pIndexNode){
+			if(!mTreeNodes.Add(pControl))
 				return false;
-
-			CTreeNodeUI* pIndexNode = static_cast<CTreeNodeUI*>(mTreeNodes.GetAt(iIndex));
-			if(!pIndexNode){
-				if(!mTreeNodes.Add(pControl))
-					return false;
-			}
-			else if(pIndexNode && !mTreeNodes.InsertAt(iIndex,pControl))
-				return false;
-
-			if(!pIndexNode && pTreeView)
-				pIndexNode = static_cast<CTreeNodeUI*>(pTreeView->GetItemAt(GetTreeIndex()+1)->GetInterface(_T("TreeNode")));
-
-			pControl = CalLocation((CTreeNodeUI*)pControl);
-			
-			if(pTreeView)
-				return pTreeView->AddAt((CTreeNodeUI*)pControl,pIndexNode);
-
-			return true;
 		}
-		catch (...)
-		{
-			throw "CTreeNodeUI::AddAt";
-		}
+		else if(pIndexNode && !mTreeNodes.InsertAt(iIndex,pControl))
+			return false;
+
+		if(!pIndexNode && pTreeView && pTreeView->GetItemAt(GetTreeIndex()+1))
+			pIndexNode = static_cast<CTreeNodeUI*>(pTreeView->GetItemAt(GetTreeIndex()+1)->GetInterface(_T("TreeNode")));
+
+		pControl = CalLocation((CTreeNodeUI*)pControl);
+
+		if(pTreeView && pIndexNode)
+			return pTreeView->AddAt((CTreeNodeUI*)pControl,pIndexNode);
+		else 
+			return pTreeView->Add((CTreeNodeUI*)pControl);
+
+		return true;
 	}
+
 	//************************************
-	// Method:    Remove
-	// FullName:  CTreeNodeUI::Remove
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: CControlUI * pControl
-	// Note:	  
+	// 函数名称: Remove
+	// 返回类型: bool
+	// 参数信息: CControlUI * pControl
+	// 函数说明: 
 	//************************************
 	bool CTreeNodeUI::Remove( CControlUI* pControl )
 	{
-		try
-		{
-			return RemoveAt((CTreeNodeUI*)pControl);
-		}
-		catch (...)
-		{
-			throw "CTreeNodeUI::Remove";
-		}
+		return RemoveAt((CTreeNodeUI*)pControl);
 	}
 
 	//************************************
-	// Method:    PutVisible
-	// FullName:  CTreeNodeUI::SetVisibleTag
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: bool _IsVisible
-	// Note:	  
+	// 函数名称: SetVisibleTag
+	// 返回类型: void
+	// 参数信息: bool _IsVisible
+	// 函数说明: 
 	//************************************
 	void CTreeNodeUI::SetVisibleTag( bool _IsVisible )
 	{
-		try
-		{
-			m_bIsVisable = _IsVisible;
-		}
-		catch (...)
-		{
-			throw "CTreeNodeUI::PutVisible";
-		}
+		m_bIsVisable = _IsVisible;
 	}
+
 	//************************************
-	// Method:    GetVisible
-	// FullName:  CTreeNodeUI::GetVisibleTag
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Note:	  
+	// 函数名称: GetVisibleTag
+	// 返回类型: bool
+	// 函数说明: 
 	//************************************
 	bool CTreeNodeUI::GetVisibleTag()
 	{
-		try
-		{
-			return m_bIsVisable;
-		}
-		catch (...)
-		{
-			throw "CTreeNodeUI::GetVisible";
-		}
+		return m_bIsVisable;
 	}
 
 	//************************************
-	// Method:    SetItemText
-	// FullName:  CTreeNodeUI::SetItemText
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: LPCTSTR pstrValue
-	// Note:	  
+	// 函数名称: SetItemText
+	// 返回类型: void
+	// 参数信息: LPCTSTR pstrValue
+	// 函数说明: 
 	//************************************
 	void CTreeNodeUI::SetItemText( LPCTSTR pstrValue )
 	{
-		try
-		{
-			pItemButton->SetText(pstrValue);
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::SetItemText";
-		}
+		pItemButton->SetText(pstrValue);
 	}
 
 	//************************************
-	// Method:    GetItemText
-	// FullName:  CTreeNodeUI::GetItemText
-	// Access:    public 
-	// Returns:   CDuiString
-	// Qualifier:
-	// Note:	  
+	// 函数名称: GetItemText
+	// 返回类型: UiLib::CDuiString
+	// 函数说明: 
 	//************************************
 	CDuiString CTreeNodeUI::GetItemText()
 	{
-		try
-		{
-			return pItemButton->GetText();
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::GetItemText";
-		}
+		return pItemButton->GetText();
 	}
 
 	//************************************
-	// Method:    CheckBoxSelected
-	// FullName:  CTreeNodeUI::CheckBoxSelected
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: bool _Selected
-	// Note:	  
+	// 函数名称: CheckBoxSelected
+	// 返回类型: void
+	// 参数信息: bool _Selected
+	// 函数说明: 
 	//************************************
 	void CTreeNodeUI::CheckBoxSelected( bool _Selected )
 	{
-		try
-		{
-			pCheckBox->Selected(_Selected);
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::CheckBoxSelected";
-		}
+		pCheckBox->Selected(_Selected);
 	}
 
 	//************************************
-	// Method:    IsCheckBoxSelected
-	// FullName:  CTreeNodeUI::IsCheckBoxSelected
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier: const
-	// Note:	  
+	// 函数名称: IsCheckBoxSelected
+	// 返回类型: bool
+	// 函数说明: 
 	//************************************
 	bool CTreeNodeUI::IsCheckBoxSelected() const
 	{
-		try
-		{
-			return pCheckBox->IsSelected();
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::IsCheckBoxSelected";
-		}
+		return pCheckBox->IsSelected();
 	}
 
 	//************************************
-	// Method:    IsHasChild
-	// FullName:  CTreeNodeUI::IsHasChild
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier: const
-	// Note:	  
+	// 函数名称: IsHasChild
+	// 返回类型: bool
+	// 函数说明: 
 	//************************************
 	bool CTreeNodeUI::IsHasChild() const
 	{
-		try
-		{
-			return !mTreeNodes.IsEmpty();
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::IsHasChild";
-		}
+		return !mTreeNodes.IsEmpty();
 	}
 	
 	//************************************
-	// Method:    AddChildNode
-	// FullName:  CTreeNodeUI::AddChildNode
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: CTreeNodeUI * _pTreeNodeUI
-	// Note:	  
+	// 函数名称: AddChildNode
+	// 返回类型: bool
+	// 参数信息: CTreeNodeUI * _pTreeNodeUI
+	// 函数说明: 
 	//************************************
 	bool CTreeNodeUI::AddChildNode( CTreeNodeUI* _pTreeNodeUI )
 	{
-		try
-		{
-			if (!_pTreeNodeUI)
-				return false;
+		if (!_pTreeNodeUI)
+			return false;
 
-			if (_tcsicmp(_pTreeNodeUI->GetClass(), _T("TreeNodeUI")) != 0)
-				return false;
+		if (_tcsicmp(_pTreeNodeUI->GetClass(), _T("TreeNodeUI")) != 0)
+			return false;
 
-			_pTreeNodeUI = CalLocation(_pTreeNodeUI);
+		_pTreeNodeUI = CalLocation(_pTreeNodeUI);
 
-			bool nRet = true;
+		bool nRet = true;
 
-			if(pTreeView){
-				CTreeNodeUI* pNode = static_cast<CTreeNodeUI*>(mTreeNodes.GetAt(mTreeNodes.GetSize()-1));
-				if(!pNode || !pNode->GetLastNode())
-					nRet = pTreeView->AddAt(_pTreeNodeUI,GetNodeIndex()+1) >= 0;
-				else nRet = pTreeView->AddAt(_pTreeNodeUI,pNode->GetLastNode()->GetNodeIndex()+1) >= 0;
-			}
-
-			if(nRet)
-				mTreeNodes.Add(_pTreeNodeUI);
-
-			return nRet;
+		if(pTreeView){
+			CTreeNodeUI* pNode = static_cast<CTreeNodeUI*>(mTreeNodes.GetAt(mTreeNodes.GetSize()-1));
+			if(!pNode || !pNode->GetLastNode())
+				nRet = pTreeView->AddAt(_pTreeNodeUI,GetNodeIndex()+1) >= 0;
+			else nRet = pTreeView->AddAt(_pTreeNodeUI,pNode->GetLastNode()->GetNodeIndex()+1) >= 0;
 		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::AddChildNode";
-		}
+
+		if(nRet)
+			mTreeNodes.Add(_pTreeNodeUI);
+
+		return nRet;
 	}
 
 	//************************************
-	// Method:    RemoveAt
-	// FullName:  CTreeNodeUI::RemoveAt
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: CTreeNodeUI * _pTreeNodeUI
-	// Note:	  
+	// 函数名称: RemoveAt
+	// 返回类型: bool
+	// 参数信息: CTreeNodeUI * _pTreeNodeUI
+	// 函数说明: 
 	//************************************
 	bool CTreeNodeUI::RemoveAt( CTreeNodeUI* _pTreeNodeUI )
 	{
-		try
+		int nIndex = mTreeNodes.Find(_pTreeNodeUI);
+		CTreeNodeUI* pNode = static_cast<CTreeNodeUI*>(mTreeNodes.GetAt(nIndex));
+		if(pNode && pNode == _pTreeNodeUI)
 		{
-			int nIndex = mTreeNodes.Find(_pTreeNodeUI);
-			CTreeNodeUI* pNode = static_cast<CTreeNodeUI*>(mTreeNodes.GetAt(nIndex));
-			if(pNode && pNode == _pTreeNodeUI)
-			{
-				while(pNode->IsHasChild())
-					pNode->RemoveAt(static_cast<CTreeNodeUI*>(pNode->mTreeNodes.GetAt(0)));
-				
-				mTreeNodes.Remove(nIndex);
+			while(pNode->IsHasChild())
+				pNode->RemoveAt(static_cast<CTreeNodeUI*>(pNode->mTreeNodes.GetAt(0)));
 
-				if(pTreeView)
-					pTreeView->Remove(_pTreeNodeUI);
+			mTreeNodes.Remove(nIndex);
 
-				return true;
-			}
-			return false;
+			if(pTreeView)
+				pTreeView->Remove(_pTreeNodeUI);
+
+			return true;
 		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::RemoveAt";
-		}
+		return false;
 	}
 
 	//************************************
-	// Method:    SetParentNode
-	// FullName:  CTreeNodeUI::SetParentNode
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: CTreeNodeUI * _pParentTreeNode
-	// Note:	  
+	// 函数名称: SetParentNode
+	// 返回类型: void
+	// 参数信息: CTreeNodeUI * _pParentTreeNode
+	// 函数说明: 
 	//************************************
 	void CTreeNodeUI::SetParentNode( CTreeNodeUI* _pParentTreeNode )
 	{
-		try
-		{
-			pParentTreeNode = _pParentTreeNode;
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::SetParentNode";
-		}
+		pParentTreeNode = _pParentTreeNode;
 	}
 
 	//************************************
-	// Method:    GetParentNode
-	// FullName:  CTreeNodeUI::GetParentNode
-	// Access:    public 
-	// Returns:   CTreeNodeUI*
-	// Qualifier:
-	// Note:	  
+	// 函数名称: GetParentNode
+	// 返回类型: CTreeNodeUI*
+	// 函数说明: 
 	//************************************
 	CTreeNodeUI* CTreeNodeUI::GetParentNode()
 	{
-		try
-		{
-			return pParentTreeNode;
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::GetParentNode";
-		}
+		return pParentTreeNode;
 	}
 
 	//************************************
-	// Method:    GetCountChild
-	// FullName:  CTreeNodeUI::GetCountChild
-	// Access:    public 
-	// Returns:   long
-	// Qualifier:
-	// Note:	  
+	// 函数名称: GetCountChild
+	// 返回类型: long
+	// 函数说明: 
 	//************************************
 	long CTreeNodeUI::GetCountChild()
 	{
-		try
-		{
-			return mTreeNodes.GetSize();
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::GetCountChild";
-		}
+		return mTreeNodes.GetSize();
 	}
 
 	//************************************
-	// Method:    SetTreeView
-	// FullName:  CTreeNodeUI::SetTreeView
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: CTreeViewUI * _CTreeViewUI
-	// Note:	  
+	// 函数名称: SetTreeView
+	// 返回类型: void
+	// 参数信息: CTreeViewUI * _CTreeViewUI
+	// 函数说明: 
 	//************************************
 	void CTreeNodeUI::SetTreeView( CTreeViewUI* _CTreeViewUI )
 	{
-		try
-		{
-			pTreeView = _CTreeViewUI;
-		}
-		catch (...)
-		{
-			throw "CTreeNodeUI::SetTreeView";
-		}
+		pTreeView = _CTreeViewUI;
 	}
+
 	//************************************
-	// Method:    GetTreeView
-	// FullName:  CTreeNodeUI::GetTreeView
-	// Access:    public 
-	// Returns:   CTreeViewUI*
-	// Qualifier:
-	// Note:	  
+	// 函数名称: GetTreeView
+	// 返回类型: CTreeViewUI*
+	// 函数说明: 
 	//************************************
 	CTreeViewUI* CTreeNodeUI::GetTreeView()
 	{
-		try
-		{
-			return pTreeView;
-		}
-		catch (...)
-		{
-			throw "CTreeNodeUI::GetTreeView";
-		}
+		return pTreeView;
 	}
 
 	//************************************
-	// Method:    SetAttribute
-	// FullName:  CTreeNodeUI::SetAttribute
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: LPCTSTR pstrName
-	// Parameter: LPCTSTR pstrValue
-	// Note:	  
+	// 函数名称: SetAttribute
+	// 返回类型: void
+	// 参数信息: LPCTSTR pstrName
+	// 参数信息: LPCTSTR pstrValue
+	// 函数说明: 
 	//************************************
 	void CTreeNodeUI::SetAttribute( LPCTSTR pstrName, LPCTSTR pstrValue )
 	{
-		try
-		{
-			if(_tcscmp(pstrName, _T("text")) == 0 )
-				pItemButton->SetText(pstrValue);
-			else if(_tcscmp(pstrName, _T("horizattr")) == 0 )
-				pHoriz->ApplyAttributeList(pstrValue);
-			else if(_tcscmp(pstrName, _T("dotlineattr")) == 0 )
-				pDottedLine->ApplyAttributeList(pstrValue);
-			else if(_tcscmp(pstrName, _T("folderattr")) == 0 )
-				pFolderButton->ApplyAttributeList(pstrValue);
-			else if(_tcscmp(pstrName, _T("checkboxattr")) == 0 )
-				pCheckBox->ApplyAttributeList(pstrValue);
-			else if(_tcscmp(pstrName, _T("itemattr")) == 0 )
-				pItemButton->ApplyAttributeList(pstrValue);
-			else CListContainerElementUI::SetAttribute(pstrName,pstrValue);
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::SetAttribute";
-		}
+		if(_tcscmp(pstrName, _T("text")) == 0 )
+			pItemButton->SetText(pstrValue);
+		else if(_tcscmp(pstrName, _T("horizattr")) == 0 )
+			pHoriz->ApplyAttributeList(pstrValue);
+		else if(_tcscmp(pstrName, _T("dotlineattr")) == 0 )
+			pDottedLine->ApplyAttributeList(pstrValue);
+		else if(_tcscmp(pstrName, _T("folderattr")) == 0 )
+			pFolderButton->ApplyAttributeList(pstrValue);
+		else if(_tcscmp(pstrName, _T("checkboxattr")) == 0 )
+			pCheckBox->ApplyAttributeList(pstrValue);
+		else if(_tcscmp(pstrName, _T("itemattr")) == 0 )
+			pItemButton->ApplyAttributeList(pstrValue);
+		else CListContainerElementUI::SetAttribute(pstrName,pstrValue);
 	}
 
+	//************************************
+	// 函数名称: GetTreeNodes
+	// 返回类型: UiLib::CStdPtrArray
+	// 函数说明: 
+	//************************************
 	CStdPtrArray CTreeNodeUI::GetTreeNodes()
 	{
 		return mTreeNodes;
 	}
 
+	//************************************
+	// 函数名称: GetChildNode
+	// 返回类型: CTreeNodeUI*
+	// 参数信息: int _nIndex
+	// 函数说明: 
+	//************************************
 	CTreeNodeUI* CTreeNodeUI::GetChildNode( int _nIndex )
 	{
 		return static_cast<CTreeNodeUI*>(mTreeNodes.GetAt(_nIndex));
 	}
 
 	//************************************
-	// Method:    SetVisibleFolderBtn
-	// FullName:  CTreeNodeUI::SetVisibleFolderBtn
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: bool _IsVisibled
-	// Node:	  
+	// 函数名称: SetVisibleFolderBtn
+	// 返回类型: void
+	// 参数信息: bool _IsVisibled
+	// 函数说明: 
 	//************************************
 	void CTreeNodeUI::SetVisibleFolderBtn( bool _IsVisibled )
 	{
-		try
-		{
-			pFolderButton->SetVisible(_IsVisibled);
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::SetVisibleFolderBtn";
-		}
+		pFolderButton->SetVisible(_IsVisibled);
 	}
+
 	//************************************
-	// Method:    GetVisibleFolderBtn
-	// FullName:  CTreeNodeUI::GetVisibleFolderBtn
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Node:	  
+	// 函数名称: GetVisibleFolderBtn
+	// 返回类型: bool
+	// 函数说明: 
 	//************************************
 	bool CTreeNodeUI::GetVisibleFolderBtn()
 	{
-		try
-		{
-			return pFolderButton->IsVisible();
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::GetVisibleFolderBtn";
-		}
+		return pFolderButton->IsVisible();
 	}
+
 	//************************************
-	// Method:    SetVisibleCheckBtn
-	// FullName:  CTreeNodeUI::SetVisibleCheckBtn
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: bool _IsVisibled
-	// Node:	  
+	// 函数名称: SetVisibleCheckBtn
+	// 返回类型: void
+	// 参数信息: bool _IsVisibled
+	// 函数说明: 
 	//************************************
 	void CTreeNodeUI::SetVisibleCheckBtn( bool _IsVisibled )
 	{
-		try
-		{
-			pCheckBox->SetVisible(_IsVisibled);
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::SetVisibleCheckBtn";
-		}
+		pCheckBox->SetVisible(_IsVisibled);
 	}
+
 	//************************************
-	// Method:    GetVisibleCheckBtn
-	// FullName:  CTreeNodeUI::GetVisibleCheckBtn
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Node:	  
+	// 函数名称: GetVisibleCheckBtn
+	// 返回类型: bool
+	// 函数说明: 
 	//************************************
 	bool CTreeNodeUI::GetVisibleCheckBtn()
 	{
-		try
-		{
-			return pCheckBox->IsVisible();
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::GetVisibleCheckBtn";
-		}
+		return pCheckBox->IsVisible();
 	}
 	
 	//************************************
@@ -813,191 +564,134 @@ namespace UiLib
 	/*****************************************************************************/
 	
 	//************************************
-	// Method:    CTreeViewUI
-	// FullName:  CTreeViewUI::CTreeViewUI
-	// Access:    public 
-	// Returns:   
-	// Qualifier:
-	// Parameter: void
-	// Note:	  
+	// 函数名称: CTreeViewUI
+	// 返回类型: 
+	// 参数信息: void
+	// 函数说明: 
 	//************************************
 	CTreeViewUI::CTreeViewUI( void ) : m_bVisibleFolderBtn(true),m_bVisibleCheckBtn(false),m_uItemMinWidth(0)
 	{
-		try
-		{
-			this->GetHeader()->SetVisible(false);
-		}
-		catch(...)
-		{
-			throw "CTreeViewUI::CTreeViewUI";
-		}
+		this->GetHeader()->SetVisible(false);
 	}
 	
 	//************************************
-	// Method:    ~CTreeViewUI
-	// FullName:  CTreeViewUI::~CTreeViewUI
-	// Access:    public 
-	// Returns:   
-	// Qualifier:
-	// Parameter: void
-	// Note:	  
+	// 函数名称: ~CTreeViewUI
+	// 返回类型: 
+	// 参数信息: void
+	// 函数说明: 
 	//************************************
 	CTreeViewUI::~CTreeViewUI( void )
 	{
-		try
-		{
-		}
-		catch(...)
-		{
-			throw "CTreeViewUI::~CTreeViewUI";
-		}
+		
 	}
 
-		//************************************
-	// Method:    GetClass
-	// FullName:  UiLib::CTreeViewUI::GetClass
-	// Access:    virtual public 
-	// Returns:   LPCTSTR
-	// Qualifier: const
+	//************************************
+	// 函数名称: GetClass
+	// 返回类型: LPCTSTR
+	// 函数说明: 
 	//************************************
 	LPCTSTR CTreeViewUI::GetClass() const
 	{
-		try
-		{
-			return _T("TreeViewUI");
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::GetClass";
-		}
+		return _T("TreeViewUI");
 	}
 
 	//************************************
-	// Method:    GetInterface
-	// FullName:  UiLib::CTreeViewUI::GetInterface
-	// Access:    virtual public 
-	// Returns:   LPVOID
-	// Qualifier:
-	// Parameter: LPCTSTR pstrName
+	// 函数名称: GetInterface
+	// 返回类型: LPVOID
+	// 参数信息: LPCTSTR pstrName
+	// 函数说明: 
 	//************************************
 	LPVOID CTreeViewUI::GetInterface( LPCTSTR pstrName )
 	{
-		try
-		{
-			if( _tcscmp(pstrName, _T("TreeView")) == 0 ) return static_cast<CTreeViewUI*>(this);
-			return CListUI::GetInterface(pstrName);
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::GetClass";
-		}
+		if( _tcscmp(pstrName, _T("TreeView")) == 0 ) return static_cast<CTreeViewUI*>(this);
+		return CListUI::GetInterface(pstrName);
 	}
 
 	//************************************
-	// Method:    Add
-	// FullName:  CTreeViewUI::Add
-	// Access:    virtual public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: CTreeNodeUI * pControl
-	// Note:	  
+	// 函数名称: Add
+	// 返回类型: bool
+	// 参数信息: CTreeNodeUI * pControl
+	// 函数说明: 
 	//************************************
 	bool CTreeViewUI::Add( CTreeNodeUI* pControl )
 	{
-		try
+		if (!pControl)
+			return false;
+
+		if (_tcsicmp(pControl->GetClass(), _T("TreeNodeUI")) != 0)
+			return false;
+
+		pControl->OnNotify += MakeDelegate(this,&CTreeViewUI::OnDBClickItem);
+		pControl->GetFolderButton()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnFolderChanged);
+		pControl->GetCheckBox()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnCheckBoxChanged);
+
+		pControl->SetVisibleFolderBtn(m_bVisibleFolderBtn);
+		pControl->SetVisibleCheckBtn(m_bVisibleCheckBtn);
+		if(m_uItemMinWidth > 0)
+			pControl->SetMinWidth(m_uItemMinWidth);
+
+		CListUI::Add(pControl);
+
+		if(pControl->GetCountChild() > 0)
 		{
-			if (!pControl)
-				return false;
-
-			if (_tcsicmp(pControl->GetClass(), _T("TreeNodeUI")) != 0)
-				return false;
-
-			pControl->OnNotify += MakeDelegate(this,&CTreeViewUI::OnDBClickItem);
-			pControl->GetFolderButton()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnFolderChanged);
-			pControl->GetCheckBox()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnCheckBoxChanged);
-			
-			pControl->SetVisibleFolderBtn(m_bVisibleFolderBtn);
-			pControl->SetVisibleCheckBtn(m_bVisibleCheckBtn);
-			if(m_uItemMinWidth > 0)
-				pControl->SetMinWidth(m_uItemMinWidth);
-
-			CListUI::Add(pControl);
-
-			if(pControl->GetCountChild() > 0)
+			int nCount = pControl->GetCountChild();
+			for(int nIndex = 0;nIndex < nCount;nIndex++)
 			{
-				int nCount = pControl->GetCountChild();
-				for(int nIndex = 0;nIndex < nCount;nIndex++)
-				{
-					CTreeNodeUI* pNode = pControl->GetChildNode(nIndex);
-					if(pNode)
-						Add(pNode);
-				}
+				CTreeNodeUI* pNode = pControl->GetChildNode(nIndex);
+				if(pNode)
+					Add(pNode);
 			}
+		}
 
-			pControl->SetTreeView(this);
-			return true;
-		}
-		catch(...)
-		{
-			throw "UITreeView::Add";
-		}
+		pControl->SetTreeView(this);
+		return true;
 	}
 
 	//************************************
-	// Method:    AddAt
-	// FullName:  CTreeViewUI::AddAt
-	// Access:    virtual public 
-	// Returns:   long
-	// Qualifier:
-	// Parameter: CTreeNodeUI * pControl
-	// Parameter: int iIndex
-	// Note:	  该方法不会将待插入的节点进行缩位处理，若打算插入的节点为非根节点，请使用AddAt(CTreeNodeUI* pControl,CTreeNodeUI* _IndexNode) 方法
+	// 函数名称: AddAt
+	// 返回类型: long
+	// 参数信息: CTreeNodeUI * pControl
+	// 参数信息: int iIndex
+	// 函数说明: 该方法不会将待插入的节点进行缩位处理，若打算插入的节点为非根节点，请使用AddAt(CTreeNodeUI* pControl,CTreeNodeUI* _IndexNode) 方法
 	//************************************
 	long CTreeViewUI::AddAt( CTreeNodeUI* pControl, int iIndex )
 	{
-		try
-		{
-			if (!pControl)
-				return -1;
-
-			if (_tcsicmp(pControl->GetClass(), _T("TreeNodeUI")) != 0)
-				return -1;
-
-			CTreeNodeUI* pParent = static_cast<CTreeNodeUI*>(GetItemAt(iIndex));
-			if(!pParent)
-				return -1;
-
-			pControl->OnNotify += MakeDelegate(this,&CTreeViewUI::OnDBClickItem);
-			pControl->GetFolderButton()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnFolderChanged);
-			pControl->GetCheckBox()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnCheckBoxChanged);
-
-			pControl->SetVisibleFolderBtn(m_bVisibleFolderBtn);
-			pControl->SetVisibleCheckBtn(m_bVisibleCheckBtn);
-
-			if(m_uItemMinWidth > 0)
-				pControl->SetMinWidth(m_uItemMinWidth);
-
-			CListUI::AddAt(pControl,iIndex);
-
-			if(pControl->GetCountChild() > 0)
-			{
-				int nCount = pControl->GetCountChild();
-				for(int nIndex = 0;nIndex < nCount;nIndex++)
-				{
-					CTreeNodeUI* pNode = pControl->GetChildNode(nIndex);
-					if(pNode)
-						return AddAt(pNode,iIndex+1);
-				}
-			}
-			else
-				return iIndex+1;
-
+		if (!pControl)
 			return -1;
-		}
-		catch(...)
+
+		if (_tcsicmp(pControl->GetClass(), _T("TreeNodeUI")) != 0)
+			return -1;
+
+		CTreeNodeUI* pParent = static_cast<CTreeNodeUI*>(GetItemAt(iIndex));
+		if(!pParent)
+			return -1;
+
+		pControl->OnNotify += MakeDelegate(this,&CTreeViewUI::OnDBClickItem);
+		pControl->GetFolderButton()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnFolderChanged);
+		pControl->GetCheckBox()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnCheckBoxChanged);
+
+		pControl->SetVisibleFolderBtn(m_bVisibleFolderBtn);
+		pControl->SetVisibleCheckBtn(m_bVisibleCheckBtn);
+
+		if(m_uItemMinWidth > 0)
+			pControl->SetMinWidth(m_uItemMinWidth);
+
+		CListUI::AddAt(pControl,iIndex);
+
+		if(pControl->GetCountChild() > 0)
 		{
-			throw "UITreeView::AddAt";
+			int nCount = pControl->GetCountChild();
+			for(int nIndex = 0;nIndex < nCount;nIndex++)
+			{
+				CTreeNodeUI* pNode = pControl->GetChildNode(nIndex);
+				if(pNode)
+					return AddAt(pNode,iIndex+1);
+			}
 		}
+		else
+			return iIndex+1;
+
+		return -1;
 	}
 
 	//************************************
@@ -1028,160 +722,95 @@ namespace UiLib
 	}
 
 	//************************************
-	// Method:    Remove
-	// FullName:  CTreeViewUI::Remove
-	// Access:    virtual public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: CTreeNodeUI * pControl
-	// Note:	  
+	// 函数名称: Remove
+	// 返回类型: bool
+	// 参数信息: CTreeNodeUI * pControl
+	// 函数说明: pControl 对象以及下的所有节点将被一并移除
 	//************************************
 	bool CTreeViewUI::Remove( CTreeNodeUI* pControl )
 	{
-		try
+		if(pControl->GetCountChild() > 0)
 		{
-			if(pControl->GetCountChild() > 0)
+			int nCount = pControl->GetCountChild();
+			for(int nIndex = 0;nIndex < nCount;nIndex++)
 			{
-				int nCount = pControl->GetCountChild();
-				for(int nIndex = 0;nIndex < nCount;nIndex++)
-				{
-					CTreeNodeUI* pNode = pControl->GetChildNode(nIndex);
-					if(pNode){
-						pControl->Remove(pNode);
-					}
+				CTreeNodeUI* pNode = pControl->GetChildNode(nIndex);
+				if(pNode){
+					pControl->Remove(pNode);
 				}
 			}
-			CListUI::Remove(pControl);
-			return true;
 		}
-		catch(...)
-		{
-			throw "CTreeViewUI::Remove";
-		}
+		CListUI::Remove(pControl);
+		return true;
 	}
 
 	//************************************
-	// Method:    RemoveAt
-	// FullName:  CTreeViewUI::RemoveAt
-	// Access:    virtual public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: int iIndex
-	// Note:	  
+	// 函数名称: RemoveAt
+	// 返回类型: bool
+	// 参数信息: int iIndex
+	// 函数说明: iIndex 索引以及下的所有节点将被一并移除
 	//************************************
 	bool CTreeViewUI::RemoveAt( int iIndex )
 	{
-		try
-		{
-			CTreeNodeUI* pItem = (CTreeNodeUI*)GetItemAt(iIndex);
-			if(pItem->GetCountChild())
-				Remove(pItem);
-			return true;
-		}
-		catch(...)
-		{
-			throw "CTreeViewUI::RemoveAt";
-		}
+		CTreeNodeUI* pItem = (CTreeNodeUI*)GetItemAt(iIndex);
+		if(pItem->GetCountChild())
+			Remove(pItem);
+		return true;
 	}
 
-	//************************************
-	// Method:    RemoveAll
-	// FullName:  CTreeViewUI::RemoveAll
-	// Access:    virtual public 
-	// Returns:   void
-	// Qualifier:
-	// Note:	  
-	//************************************
 	void CTreeViewUI::RemoveAll()
 	{
-		try
-		{
-			CListUI::RemoveAll();
-		}
-		catch(...)
-		{
-			throw "CTreeViewUI::RemoveAll";
-		}
+		CListUI::RemoveAll();
 	}
 
 	//************************************
-	// Method:    Notify
-	// FullName:  CTreeViewUI::Notify
-	// Access:    virtual public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: TNotifyUI & msg
-	// Note:	  
+	// 函数名称: Notify
+	// 返回类型: void
+	// 参数信息: TNotifyUI & msg
+	// 函数说明: 
 	//************************************
 	void CTreeViewUI::Notify( TNotifyUI& msg )
 	{
-		try
-		{
-			
-		}
-		catch(...)
-		{
-			throw "CTreeViewUI::Notify";
-		}
+		
 	}
 	
 	//************************************
-	// Method:    OnChanged
-	// FullName:  CTreeViewUI::OnCheckBoxChanged
-	// Access:    virtual public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: void * param
-	// Note:	  
+	// 函数名称: OnCheckBoxChanged
+	// 返回类型: bool
+	// 参数信息: void * param
+	// 函数说明: 
 	//************************************
 	bool CTreeViewUI::OnCheckBoxChanged( void* param )
 	{
-		try
+		TNotifyUI* pMsg = (TNotifyUI*)param;
+		if(pMsg->sType == _T("selectchanged"))
 		{
-			TNotifyUI* pMsg = (TNotifyUI*)param;
-			if(pMsg->sType == _T("selectchanged"))
-			{
-				CCheckBoxUI* pCheckBox = (CCheckBoxUI*)pMsg->pSender;
-				CTreeNodeUI* pItem = (CTreeNodeUI*)pCheckBox->GetParent()->GetParent();
-				SetItemCheckBox(pCheckBox->GetCheck(),pItem);
-				return true;
-			}
+			CCheckBoxUI* pCheckBox = (CCheckBoxUI*)pMsg->pSender;
+			CTreeNodeUI* pItem = (CTreeNodeUI*)pCheckBox->GetParent()->GetParent();
+			SetItemCheckBox(pCheckBox->GetCheck(),pItem);
 			return true;
 		}
-		catch(...)
-		{
-			throw "CTreeViewUI::OnChanged";
-		}
+		return true;
 	}
 	
 	//************************************
-	// Method:    OnFolderChanged
-	// FullName:  CTreeViewUI::OnFolderChanged
-	// Access:    virtual public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: void * param
-	// Note:	  
+	// 函数名称: OnFolderChanged
+	// 返回类型: bool
+	// 参数信息: void * param
+	// 函数说明: 
 	//************************************
 	bool CTreeViewUI::OnFolderChanged( void* param )
 	{
-		try
+		TNotifyUI* pMsg = (TNotifyUI*)param;
+		if(pMsg->sType == _T("selectchanged"))
 		{
-			TNotifyUI* pMsg = (TNotifyUI*)param;
-			if(pMsg->sType == _T("selectchanged"))
-			{
-				CCheckBoxUI* pFolder = (CCheckBoxUI*)pMsg->pSender;
-				CTreeNodeUI* pItem = (CTreeNodeUI*)pFolder->GetParent()->GetParent();
-				pItem->SetVisibleTag(!pFolder->GetCheck());
-				SetItemExpand(!pFolder->GetCheck(),pItem);
-				return true;
-			}
+			CCheckBoxUI* pFolder = (CCheckBoxUI*)pMsg->pSender;
+			CTreeNodeUI* pItem = (CTreeNodeUI*)pFolder->GetParent()->GetParent();
+			pItem->SetVisibleTag(!pFolder->GetCheck());
+			SetItemExpand(!pFolder->GetCheck(),pItem);
 			return true;
 		}
-		catch(...)
-		{
-			throw "CTreeViewUI::OnFolderChanged";
-		}
+		return true;
 	}
 	
 	//************************************
@@ -1206,198 +835,141 @@ namespace UiLib
 	}
 
 	//************************************
-	// Method:    SetItemCheckBox
-	// FullName:  CTreeViewUI::SetItemCheckBox
-	// Access:    virtual public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: bool _Selected
-	// Parameter: CTreeNodeUI * _TreeNode
-	// Note:	  
+	// 函数名称: SetItemCheckBox
+	// 返回类型: bool
+	// 参数信息: bool _Selected
+	// 参数信息: CTreeNodeUI * _TreeNode
+	// 函数说明: 
 	//************************************
 	bool CTreeViewUI::SetItemCheckBox( bool _Selected,CTreeNodeUI* _TreeNode /*= NULL*/ )
 	{
-		try
+		if(_TreeNode)
 		{
-			if(_TreeNode)
+			if(_TreeNode->GetCountChild() > 0)
 			{
-				if(_TreeNode->GetCountChild() > 0)
+				int nCount = _TreeNode->GetCountChild();
+				for(int nIndex = 0;nIndex < nCount;nIndex++)
 				{
-					int nCount = _TreeNode->GetCountChild();
-					for(int nIndex = 0;nIndex < nCount;nIndex++)
-					{
-						CTreeNodeUI* pItem = _TreeNode->GetChildNode(nIndex);
-						pItem->GetCheckBox()->Selected(_Selected);
-						if(pItem->GetCountChild())
-							SetItemCheckBox(_Selected,pItem);
-					}
-				}
-				return true;
-			}
-			else
-			{
-				int nIndex = 0;
-				int nCount = GetCount();
-				while(nIndex < nCount)
-				{
-					CTreeNodeUI* pItem = (CTreeNodeUI*)GetItemAt(nIndex);
+					CTreeNodeUI* pItem = _TreeNode->GetChildNode(nIndex);
 					pItem->GetCheckBox()->Selected(_Selected);
 					if(pItem->GetCountChild())
 						SetItemCheckBox(_Selected,pItem);
-
-					nIndex++;
 				}
-				return true;
 			}
-			return false;
+			return true;
 		}
-		catch(...)
+		else
 		{
-			throw "CTreeViewUI::SetItemCheckBox";
+			int nIndex = 0;
+			int nCount = GetCount();
+			while(nIndex < nCount)
+			{
+				CTreeNodeUI* pItem = (CTreeNodeUI*)GetItemAt(nIndex);
+				pItem->GetCheckBox()->Selected(_Selected);
+				if(pItem->GetCountChild())
+					SetItemCheckBox(_Selected,pItem);
+
+				nIndex++;
+			}
+			return true;
 		}
+		return false;
 	}
 
 	//************************************
-	// Method:    SetExpand
-	// FullName:  CTreeViewUI::SetItemExpand
-	// Access:    virtual public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: bool _Expanded
-	// Parameter: CTreeNodeUI * _TreeNode
-	// Note:	  
+	// 函数名称: SetItemExpand
+	// 返回类型: void
+	// 参数信息: bool _Expanded
+	// 参数信息: CTreeNodeUI * _TreeNode
+	// 函数说明: 
 	//************************************
 	void CTreeViewUI::SetItemExpand( bool _Expanded,CTreeNodeUI* _TreeNode /*= NULL*/ )
 	{
-		try
+		if(_TreeNode)
 		{
-			if(_TreeNode)
+			if(_TreeNode->GetCountChild() > 0)
 			{
-				if(_TreeNode->GetCountChild() > 0)
+				int nCount = _TreeNode->GetCountChild();
+				for(int nIndex = 0;nIndex < nCount;nIndex++)
 				{
-					int nCount = _TreeNode->GetCountChild();
-					for(int nIndex = 0;nIndex < nCount;nIndex++)
-					{
-						CTreeNodeUI* pItem = _TreeNode->GetChildNode(nIndex);
-						pItem->SetVisible(_Expanded);
-
-						if(pItem->GetCountChild() && !pItem->GetFolderButton()->IsSelected())
-							SetItemExpand(_Expanded,pItem);
-					}
-				}
-			}
-			else
-			{
-				int nIndex = 0;
-				int nCount = GetCount();
-				while(nIndex < nCount)
-				{
-					CTreeNodeUI* pItem = (CTreeNodeUI*)GetItemAt(nIndex);
-
+					CTreeNodeUI* pItem = _TreeNode->GetChildNode(nIndex);
 					pItem->SetVisible(_Expanded);
 
 					if(pItem->GetCountChild() && !pItem->GetFolderButton()->IsSelected())
 						SetItemExpand(_Expanded,pItem);
-
-					nIndex++;
 				}
 			}
 		}
-		catch(...)
+		else
 		{
-			throw "CTreeViewUI::SetExpand";
+			int nIndex = 0;
+			int nCount = GetCount();
+			while(nIndex < nCount)
+			{
+				CTreeNodeUI* pItem = (CTreeNodeUI*)GetItemAt(nIndex);
+
+				pItem->SetVisible(_Expanded);
+
+				if(pItem->GetCountChild() && !pItem->GetFolderButton()->IsSelected())
+					SetItemExpand(_Expanded,pItem);
+
+				nIndex++;
+			}
 		}
 	}
 
 	//************************************
-	// Method:    SetVisibleFolderBtn
-	// FullName:  CTreeViewUI::SetVisibleFolderBtn
-	// Access:    virtual public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: bool _IsVisibled
-	// Node:	  
+	// 函数名称: SetVisibleFolderBtn
+	// 返回类型: void
+	// 参数信息: bool _IsVisibled
+	// 函数说明: 
 	//************************************
 	void CTreeViewUI::SetVisibleFolderBtn( bool _IsVisibled )
 	{
-		try
+		m_bVisibleFolderBtn = _IsVisibled;
+		int nCount = this->GetCount();
+		for(int nIndex = 0;nIndex < nCount;nIndex++)
 		{
-			m_bVisibleFolderBtn = _IsVisibled;
-			int nCount = this->GetCount();
-			for(int nIndex = 0;nIndex < nCount;nIndex++)
-			{
-				CTreeNodeUI* pItem = static_cast<CTreeNodeUI*>(this->GetItemAt(nIndex));
-				pItem->GetFolderButton()->SetVisible(m_bVisibleFolderBtn);
-			}
-		}
-		catch(...)
-		{
-			throw "CTreeViewUI::SetVisibleFolderBtn";
+			CTreeNodeUI* pItem = static_cast<CTreeNodeUI*>(this->GetItemAt(nIndex));
+			pItem->GetFolderButton()->SetVisible(m_bVisibleFolderBtn);
 		}
 	}
+
 	//************************************
-	// Method:    GetVisibleFolderBtn
-	// FullName:  CTreeViewUI::GetVisibleFolderBtn
-	// Access:    virtual public 
-	// Returns:   bool
-	// Qualifier:
-	// Node:	  
+	// 函数名称: GetVisibleFolderBtn
+	// 返回类型: bool
+	// 函数说明: 
 	//************************************
 	bool CTreeViewUI::GetVisibleFolderBtn()
 	{
-		try
-		{
-			return m_bVisibleFolderBtn;
-		}
-		catch(...)
-		{
-			throw "CTreeViewUI::GetVisibleFolderBtn";
-		}
+		return m_bVisibleFolderBtn;
 	}
+
 	//************************************
-	// Method:    SetVisibleCheckBtn
-	// FullName:  CTreeViewUI::SetVisibleCheckBtn
-	// Access:    virtual public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: bool _IsVisibled
-	// Node:	  
+	// 函数名称: SetVisibleCheckBtn
+	// 返回类型: void
+	// 参数信息: bool _IsVisibled
+	// 函数说明: 
 	//************************************
 	void CTreeViewUI::SetVisibleCheckBtn( bool _IsVisibled )
 	{
-		try
+		m_bVisibleCheckBtn = _IsVisibled;
+		int nCount = this->GetCount();
+		for(int nIndex = 0;nIndex < nCount;nIndex++)
 		{
-			m_bVisibleCheckBtn = _IsVisibled;
-			int nCount = this->GetCount();
-			for(int nIndex = 0;nIndex < nCount;nIndex++)
-			{
-				CTreeNodeUI* pItem = static_cast<CTreeNodeUI*>(this->GetItemAt(nIndex));
-				pItem->GetCheckBox()->SetVisible(m_bVisibleCheckBtn);
-			}
-		}
-		catch(...)
-		{
-			throw "CTreeViewUI::SetVisibleCheckBtn";
+			CTreeNodeUI* pItem = static_cast<CTreeNodeUI*>(this->GetItemAt(nIndex));
+			pItem->GetCheckBox()->SetVisible(m_bVisibleCheckBtn);
 		}
 	}
+
 	//************************************
-	// Method:    GetVisibleCheckBtn
-	// FullName:  CTreeViewUI::GetVisibleCheckBtn
-	// Access:    virtual public 
-	// Returns:   bool
-	// Qualifier:
-	// Node:	  
+	// 函数名称: GetVisibleCheckBtn
+	// 返回类型: bool
+	// 函数说明: 
 	//************************************
 	bool CTreeViewUI::GetVisibleCheckBtn()
 	{
-		try
-		{
-			return m_bVisibleCheckBtn;
-		}
-		catch(...)
-		{
-			throw "CTreeViewUI::GetVisibleCheckBtn";
-		}
+		return m_bVisibleCheckBtn;
 	}
 
 	//************************************
@@ -1429,31 +1001,20 @@ namespace UiLib
 	}
 
 	//************************************
-	// Method:    SetAttribute
-	// FullName:  CTreeViewUI::SetAttribute
-	// Access:    virtual public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: LPCTSTR pstrName
-	// Parameter: LPCTSTR pstrValue
-	// Note:	  
+	// 函数名称: SetAttribute
+	// 返回类型: void
+	// 参数信息: LPCTSTR pstrName
+	// 参数信息: LPCTSTR pstrValue
+	// 函数说明: 
 	//************************************
 	void CTreeViewUI::SetAttribute( LPCTSTR pstrName, LPCTSTR pstrValue )
 	{
-		try
-		{
-			if(_tcscmp(pstrName,_T("visiblefolderbtn")) == 0)
-				SetVisibleFolderBtn(_tcscmp(pstrValue,_T("true")) == 0);
-			else if(_tcscmp(pstrName,_T("visiblecheckbtn")) == 0)
-				SetVisibleCheckBtn(_tcscmp(pstrValue,_T("true")) == 0);
-			else if(_tcscmp(pstrName,_T("itemminwidth")) == 0)
-				SetItemMinWidth(_ttoi(pstrValue));
-			else CListUI::SetAttribute(pstrName,pstrValue);
-		}
-		catch(...)
-		{
-			throw "CTreeViewUI::SetAttribute";
-		}
+		if(_tcscmp(pstrName,_T("visiblefolderbtn")) == 0)
+			SetVisibleFolderBtn(_tcscmp(pstrValue,_T("true")) == 0);
+		else if(_tcscmp(pstrName,_T("visiblecheckbtn")) == 0)
+			SetVisibleCheckBtn(_tcscmp(pstrValue,_T("true")) == 0);
+		else if(_tcscmp(pstrName,_T("itemminwidth")) == 0)
+			SetItemMinWidth(_ttoi(pstrValue));
+		else CListUI::SetAttribute(pstrName,pstrValue);
 	}
-
 }
