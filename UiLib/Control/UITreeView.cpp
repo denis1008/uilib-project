@@ -18,9 +18,7 @@ namespace UiLib
 		try
 		{
 			pTreeView		= NULL;
-			m_iTreeLavel	= 0;
 			m_bIsVisable	= true;
-			m_bIsHasChild	= false;
 			m_bIsCheckBox	= false;
 			pParentTreeNode	= NULL;
 
@@ -242,12 +240,19 @@ namespace UiLib
 	{
 		try
 		{
-			CTreeNodeUI* pIndexNode = static_cast<CTreeNodeUI*>(mTreeNodes.GetAt(iIndex));
-			if(!pIndexNode || NULL == static_cast<CTreeNodeUI*>(pControl->GetInterface(_T("TreeNode"))))
+			if(NULL == static_cast<CTreeNodeUI*>(pControl->GetInterface(_T("TreeNode"))))
 				return false;
 
-			if(!mTreeNodes.InsertAt(iIndex,pControl))
+			CTreeNodeUI* pIndexNode = static_cast<CTreeNodeUI*>(mTreeNodes.GetAt(iIndex));
+			if(!pIndexNode){
+				if(!mTreeNodes.Add(pControl))
+					return false;
+			}
+			else if(pIndexNode && !mTreeNodes.InsertAt(iIndex,pControl))
 				return false;
+
+			if(!pIndexNode && pTreeView)
+				pIndexNode = static_cast<CTreeNodeUI*>(pTreeView->GetItemAt(GetTreeIndex()+1)->GetInterface(_T("TreeNode")));
 
 			pControl = CalLocation((CTreeNodeUI*)pControl);
 			
@@ -416,34 +421,14 @@ namespace UiLib
 	{
 		try
 		{
-			return m_bIsHasChild;
+			return !mTreeNodes.IsEmpty();
 		}
 		catch(...)
 		{
 			throw "CTreeNodeUI::IsHasChild";
 		}
 	}
-
-	//************************************
-	// Method:    GetTreeLevel
-	// FullName:  CTreeNodeUI::GetTreeLevel
-	// Access:    public 
-	// Returns:   long
-	// Qualifier: const
-	// Note:	  
-	//************************************
-	long CTreeNodeUI::GetTreeLevel() const
-	{
-		try
-		{
-			return m_iTreeLavel;
-		}
-		catch(...)
-		{
-			throw "CTreeNodeUI::GetTreeLevel";
-		}
-	}
-
+	
 	//************************************
 	// Method:    AddChildNode
 	// FullName:  CTreeNodeUI::AddChildNode
@@ -464,15 +449,19 @@ namespace UiLib
 				return false;
 
 			_pTreeNodeUI = CalLocation(_pTreeNodeUI);
-			m_bIsHasChild = true;
 
 			bool nRet = true;
 
 			if(pTreeView){
 				CTreeNodeUI* pNode = static_cast<CTreeNodeUI*>(mTreeNodes.GetAt(mTreeNodes.GetSize()-1));
 				if(!pNode || !pNode->GetLastNode())
+<<<<<<< .mine
+					nRet = pTreeView->AddAt(_pTreeNodeUI,GetTreeIndex()+1) >= 0;
+				else nRet = pTreeView->AddAt(_pTreeNodeUI,pNode->GetLastNode()->GetTreeIndex()+1) >= 0;
+=======
 					nRet = pTreeView->AddAt(_pTreeNodeUI,GetNodeIndex()+1) >= 0;
 				else nRet = pTreeView->AddAt(_pTreeNodeUI,pNode->GetLastNode()->GetNodeIndex()+1) >= 0;
+>>>>>>> .r15
 			}
 
 			if(nRet)
@@ -504,11 +493,13 @@ namespace UiLib
 			if(pNode && pNode == _pTreeNodeUI)
 			{
 				while(pNode->IsHasChild())
-					RemoveAt(static_cast<CTreeNodeUI*>(pNode->mTreeNodes.GetAt(0)));
+					pNode->RemoveAt(static_cast<CTreeNodeUI*>(pNode->mTreeNodes.GetAt(0)));
+				
 				mTreeNodes.Remove(nIndex);
 
 				if(pTreeView)
 					pTreeView->Remove(_pTreeNodeUI);
+
 				return true;
 			}
 			return false;
@@ -746,9 +737,9 @@ namespace UiLib
 	//************************************
 	// 函数名称: GetNodeIndex
 	// 返回类型: int
-	// 函数说明:
+	// 函数说明: 取得全局树视图的索引
 	//************************************
-	int CTreeNodeUI::GetNodeIndex()
+	int CTreeNodeUI::GetTreeIndex()
 	{
 		if(!pTreeView)
 			return -1;
@@ -759,6 +750,22 @@ namespace UiLib
 		}
 
 		return -1;
+	}
+	
+	//************************************
+	// 函数名称: GetNodeIndex
+	// 返回类型: int
+	// 函数说明: 取得相对于兄弟节点的当前索引
+	//************************************
+	int CTreeNodeUI::GetNodeIndex()
+	{
+		if(!GetParentNode() && !pTreeView)
+			return -1;
+
+		if(!GetParentNode() && pTreeView)
+			return GetTreeIndex();
+
+		return GetParentNode()->GetTreeNodes().Find(this);
 	}
 
 	//************************************
@@ -917,7 +924,7 @@ namespace UiLib
 			pControl->SetVisibleFolderBtn(m_bVisibleFolderBtn);
 			pControl->SetVisibleCheckBtn(m_bVisibleCheckBtn);
 			if(m_uItemMinWidth > 0)
-			pControl->SetMinWidth(m_uItemMinWidth);
+				pControl->SetMinWidth(m_uItemMinWidth);
 
 			CListUI::Add(pControl);
 
@@ -965,10 +972,17 @@ namespace UiLib
 			if(!pParent)
 				return -1;
 
-			CListUI::AddAt(pControl,iIndex);
+			pControl->OnNotify += MakeDelegate(this,&CTreeViewUI::OnDBClickItem);
+			pControl->GetFolderButton()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnFolderChanged);
+			pControl->GetCheckBox()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnCheckBoxChanged);
 
 			pControl->SetVisibleFolderBtn(m_bVisibleFolderBtn);
 			pControl->SetVisibleCheckBtn(m_bVisibleCheckBtn);
+
+			if(m_uItemMinWidth > 0)
+				pControl->SetMinWidth(m_uItemMinWidth);
+
+			CListUI::AddAt(pControl,iIndex);
 
 			if(pControl->GetCountChild() > 0)
 			{
@@ -1037,8 +1051,9 @@ namespace UiLib
 				for(int nIndex = 0;nIndex < nCount;nIndex++)
 				{
 					CTreeNodeUI* pNode = pControl->GetChildNode(nIndex);
-					if(pNode)
-						Remove(pNode);
+					if(pNode){
+						pControl->Remove(pNode);
+					}
 				}
 			}
 			CListUI::Remove(pControl);
