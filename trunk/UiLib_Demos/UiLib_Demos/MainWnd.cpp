@@ -157,7 +157,8 @@ void CMainWnd::Notify( TNotifyUI& msg )
 	try
 	{
 		if(msg.sType == _T("click")){
-			if(msg.pSender->GetName() == _T("EffectsDemo")){
+			if(msg.pSender->GetName() == _T("EffectsDemo"))
+			{
 				pAnimWnd->SetAnimEffects(true);
 				pEffectsDemo->SetTag(pEffectsDemo->GetTag()+1);
 
@@ -213,26 +214,40 @@ void CMainWnd::Notify( TNotifyUI& msg )
 				pRemoveBtn->SetFixedWidth(60);
 			}
 			else if(msg.pSender->GetName() == _T("AddAtNode")){
-				CEditUI* pEdit = static_cast<CEditUI*>(pm.FindControl(_T("AddAtNodeText")));
-				if(!pEdit && pEdit->GetText().GetLength() > 0)
-					return;
-
 				CTreeNodeUI* pParentNode = static_cast<CTreeNodeUI*>(msg.pSender->GetParent()->GetParent());
 				if(!pParentNode || !pParentNode->GetInterface(_T("TreeNode")))
 					return;
 
+				CEditUI* pEdit = static_cast<CEditUI*>(pParentNode->GetTreeNodeHoriznotal()->FindSubControl(_T("AddAtNodeText")));
+				if(!pEdit && pEdit->GetText().GetLength() > 0)
+					return;
+
 				CFadeButtonUI* pRemoveBtn = new CFadeButtonUI();
-				pRemoveBtn->SetText(_T("删除节点"));
+				pRemoveBtn->SetText(_T("删"));
 				pRemoveBtn->SetName(_T("RemoveNodeBtn"));
+
+				CFadeButtonUI* pAddAtBtn = new CFadeButtonUI();
+				pAddAtBtn->SetText(_T("插入节点"));
+				pAddAtBtn->SetName(_T("AddAtNode"));
+
+				CEditUI* pAddEdit = new CEditUI();
+				pAddEdit->SetName(_T("AddAtNodeText"));
+				pAddEdit->SetText(_T("节点名称"));
+				pAddEdit->SetTipValue(_T("节点名称"));
 
 				CTreeNodeUI* pNewNode = new CTreeNodeUI();
 				pNewNode->SetItemText(pEdit->GetText().GetData());
 				pParentNode->AddAt(pNewNode,0);
+				pNewNode->GetTreeNodeHoriznotal()->Add(pAddEdit);
+				pNewNode->GetTreeNodeHoriznotal()->Add(pAddAtBtn);
 				pNewNode->GetTreeNodeHoriznotal()->Add(pRemoveBtn);
 
 				pNewNode->SetStyleName(_T("treenode"));
+				pAddAtBtn->SetStyleName(_T("FadeButtonDemo"),&pm);
 				pRemoveBtn->SetStyleName(_T("FadeButtonDemo"),&pm);
-				pRemoveBtn->SetFixedWidth(60);
+				pAddEdit->SetFixedWidth(50);
+				pAddAtBtn->SetFixedWidth(60);
+				pRemoveBtn->SetFixedWidth(20);
 			}
 			else if(msg.pSender->GetName() == _T("RemoveNodeBtn")){
 				CTreeNodeUI* pParentNode = static_cast<CTreeNodeUI*>(msg.pSender->GetParent()->GetParent());
