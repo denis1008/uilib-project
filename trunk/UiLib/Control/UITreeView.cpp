@@ -455,13 +455,8 @@ namespace UiLib
 			if(pTreeView){
 				CTreeNodeUI* pNode = static_cast<CTreeNodeUI*>(mTreeNodes.GetAt(mTreeNodes.GetSize()-1));
 				if(!pNode || !pNode->GetLastNode())
-<<<<<<< .mine
-					nRet = pTreeView->AddAt(_pTreeNodeUI,GetTreeIndex()+1) >= 0;
-				else nRet = pTreeView->AddAt(_pTreeNodeUI,pNode->GetLastNode()->GetTreeIndex()+1) >= 0;
-=======
 					nRet = pTreeView->AddAt(_pTreeNodeUI,GetNodeIndex()+1) >= 0;
 				else nRet = pTreeView->AddAt(_pTreeNodeUI,pNode->GetLastNode()->GetNodeIndex()+1) >= 0;
->>>>>>> .r15
 			}
 
 			if(nRet)
