@@ -180,7 +180,7 @@ namespace UiLib
 
 	CEditUI::CEditUI() : m_pWindow(NULL), m_uMaxChar(255), m_bReadOnly(false), 
 		m_bPasswordMode(false), m_cPasswordChar(_T('*')), m_uButtonState(0), 
-		m_dwEditbkColor(0xFFFFFFFF), m_iWindowStyls(0)
+		m_dwEditbkColor(0xFFFFFFFF), m_iWindowStyls(0),m_sTipValueColor(0xFFBAC0C5)
 	{
 		SetBorderSize(1);
 		SetBorderColor(0xFFBAC0C5);
