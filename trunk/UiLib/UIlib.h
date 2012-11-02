@@ -83,3 +83,4 @@
 #include "Core/UIDlgBuilder.h"
 #include "Core/UIRender.h"
 
+namespace DuiLib = UiLib;
