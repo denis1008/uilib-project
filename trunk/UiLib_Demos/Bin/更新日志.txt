@@ -1,5 +1,6 @@
 2012-10-05
 +Control 控件基类增加borderstyle属性，以实现所有控件支持边框样式的设置。
++Control 控件基类增加定向边框属性分别为 leftbordersize/topbordersize/rightbordersize/bottombordersize ，以实现指定方向的边框绘制
 
 2012-10-02
 #增加Duilib命名空间别名的支持，增加后编译出来的DLL完全兼容Duilib现有的Demo

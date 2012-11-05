@@ -53,6 +53,15 @@ public:
 	void SetBorderStyle(int nStyle);
     SIZE GetBorderRound() const;
     void SetBorderRound(SIZE cxyRound);
+	int GetLeftBorderSize() const;
+	void SetLeftBorderSize(int nSize);
+	int GetTopBorderSize() const;
+	void SetTopBorderSize(int nSize);
+	int GetRightBorderSize() const;
+	void SetRightBorderSize(int nSize);
+	int GetBottomBorderSize() const;
+	void SetBottomBorderSize(int nSize);
+
 	bool DrawImage(HDC hDC, LPCTSTR pStrImage, LPCTSTR pStrModify = NULL, bool bNeedAlpha = FALSE, BYTE bNewFade = 255);
 
     // 位置相关
@@ -241,6 +250,7 @@ protected:
 	int m_nBorderStyle;
     SIZE m_cxyBorderRound;
     RECT m_rcPaint;
+	RECT m_rcBorderSize;
 public:
 
 	// 取控件图片非透明色区域

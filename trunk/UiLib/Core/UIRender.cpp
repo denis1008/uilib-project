@@ -1169,12 +1169,17 @@ void CRenderEngine::DrawGradient(HDC hDC, const RECT& rc, DWORD dwFirst, DWORD d
     }
 }
 
-void CRenderEngine::DrawLine(HDC hDC, const RECT& rc, int nSize, DWORD dwPenColor)
+void CRenderEngine::DrawLine(HDC hDC, const RECT& rc, int nSize, DWORD dwPenColor,int nStyle/* = PS_SOLID*/)
 {
     ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
-    POINT ptTemp = { 0 };
-    HPEN hPen = ::CreatePen(PS_SOLID, nSize, RGB(GetBValue(dwPenColor), GetGValue(dwPenColor), GetRValue(dwPenColor)));
-    HPEN hOldPen = (HPEN)::SelectObject(hDC, hPen);
+   
+	LOGPEN lg;
+	lg.lopnColor = RGB(GetBValue(dwPenColor), GetGValue(dwPenColor), GetRValue(dwPenColor));
+	lg.lopnStyle = nStyle;
+	lg.lopnWidth.x = nSize;
+	HPEN hPen = CreatePenIndirect(&lg);
+	HPEN hOldPen = (HPEN)::SelectObject(hDC, hPen);
+	POINT ptTemp = { 0 };
     ::MoveToEx(hDC, rc.left, rc.top, &ptTemp);
     ::LineTo(hDC, rc.right, rc.bottom);
     ::SelectObject(hDC, hOldPen);

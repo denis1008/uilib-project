@@ -49,6 +49,7 @@ namespace UiLib
 		::ZeroMemory(&m_rcPadding, sizeof(m_rcPadding));
 		::ZeroMemory(&m_rcItem, sizeof(RECT));
 		::ZeroMemory(&m_rcPaint, sizeof(RECT));
+		::ZeroMemory(&m_rcBorderSize, sizeof(RECT));
 		::ZeroMemory(&m_tRelativePos, sizeof(TRelativePosUI));
 
 		m_hRgn = CreateRectRgn(0,0,0,0); //定义新的空的HRGN.不能初始化为NULL
@@ -261,6 +262,98 @@ namespace UiLib
 	void CControlUI::SetBorderRound(SIZE cxyRound)
 	{
 		m_cxyBorderRound = cxyRound;
+		Invalidate();
+	}
+	
+	//************************************
+	// 函数名称: GetLeftBorderSize
+	// 返回类型: int
+	// 函数说明: 
+	//************************************
+	int CControlUI::GetLeftBorderSize() const
+	{
+		return m_rcBorderSize.left;
+	}
+
+	//************************************
+	// 函数名称: SetLeftBorderSize
+	// 返回类型: void
+	// 参数信息: int nSize
+	// 函数说明: 
+	//************************************
+	void CControlUI::SetLeftBorderSize( int nSize )
+	{
+		if(m_rcBorderSize.left == nSize || nSize < 0 ) return;
+		m_rcBorderSize.left = nSize;
+		Invalidate();
+	}
+
+	//************************************
+	// 函数名称: GetTopBorderSize
+	// 返回类型: int
+	// 函数说明: 
+	//************************************
+	int CControlUI::GetTopBorderSize() const
+	{
+		return m_rcBorderSize.top;
+	}
+
+	//************************************
+	// 函数名称: SetTopBorderSize
+	// 返回类型: void
+	// 参数信息: int nSize
+	// 函数说明: 
+	//************************************
+	void CControlUI::SetTopBorderSize( int nSize )
+	{
+		if(m_rcBorderSize.top == nSize || nSize < 0 ) return;
+		m_rcBorderSize.top = nSize;
+		Invalidate();
+	}
+
+	//************************************
+	// 函数名称: GetRightBorderSize
+	// 返回类型: int
+	// 函数说明: 
+	//************************************
+	int CControlUI::GetRightBorderSize() const
+	{
+		return m_rcBorderSize.right;
+	}
+
+	//************************************
+	// 函数名称: SetRightBorderSize
+	// 返回类型: void
+	// 参数信息: int nSize
+	// 函数说明: 
+	//************************************
+	void CControlUI::SetRightBorderSize( int nSize )
+	{
+		if(m_rcBorderSize.right == nSize || nSize < 0 ) return;
+		m_rcBorderSize.right = nSize;
+		Invalidate();
+	}
+
+	//************************************
+	// 函数名称: GetBottomBorderSize
+	// 返回类型: int
+	// 函数说明: 
+	//************************************
+	int CControlUI::GetBottomBorderSize() const
+	{
+		return m_rcBorderSize.bottom;
+	}
+
+	//************************************
+	// 函数名称: SetBottomBorderSize
+	// 返回类型: void
+	// 参数信息: int nSize
+	// 函数说明: 
+	//************************************
+	void CControlUI::SetBottomBorderSize( int nSize )
+	{
+		if(m_rcBorderSize.bottom == nSize || nSize < 0 ) return;
+		m_rcBorderSize.bottom = nSize;
 		Invalidate();
 	}
 
@@ -964,6 +1057,10 @@ namespace UiLib
 		}
 		else if( _tcscmp(pstrName, _T("colorhsl")) == 0 ) SetColorHSL(_tcscmp(pstrValue, _T("true")) == 0);
 		else if( _tcscmp(pstrName, _T("bordersize")) == 0 ) SetBorderSize(_ttoi(pstrValue));
+		else if( _tcscmp(pstrName, _T("leftbordersize")) == 0 ) SetLeftBorderSize(_ttoi(pstrValue));
+		else if( _tcscmp(pstrName, _T("topbordersize")) == 0 ) SetTopBorderSize(_ttoi(pstrValue));
+		else if( _tcscmp(pstrName, _T("rightbordersize")) == 0 ) SetRightBorderSize(_ttoi(pstrValue));
+		else if( _tcscmp(pstrName, _T("bottombordersize")) == 0 ) SetBottomBorderSize(_ttoi(pstrValue));
 		else if( _tcscmp(pstrName, _T("borderstyle")) == 0 ) SetBorderStyle(_ttoi(pstrValue));
 		else if( _tcscmp(pstrName, _T("borderround")) == 0 ) {
 			SIZE cxyRound = { 0 };
@@ -1106,9 +1203,9 @@ namespace UiLib
 
 	void CControlUI::PaintBorder(HDC hDC)
 	{
-		if( m_nBorderSize > 0 )
+		if(m_dwBorderColor != 0 || m_dwFocusBorderColor != 0)
 		{
-			if( m_cxyBorderRound.cx > 0 || m_cxyBorderRound.cy > 0 )//画圆角边框
+			if(m_nBorderSize > 0 && ( m_cxyBorderRound.cx > 0 || m_cxyBorderRound.cy > 0 ))//画圆角边框
 			{
 				if (IsFocused() && m_dwFocusBorderColor != 0)
 					CRenderEngine::DrawRoundRect(hDC, m_rcItem, m_nBorderSize, m_cxyBorderRound.cx, m_cxyBorderRound.cy, GetAdjustColor(m_dwFocusBorderColor));
@@ -1117,12 +1214,38 @@ namespace UiLib
 			}
 			else
 			{
-				if (IsFocused() && m_dwFocusBorderColor != 0)
+				if (IsFocused() && m_dwFocusBorderColor != 0 && m_nBorderSize > 0)
 					CRenderEngine::DrawRect(hDC, m_rcItem, m_nBorderSize, GetAdjustColor(m_dwFocusBorderColor));
-				else
+				else if(m_rcBorderSize.left > 0 || m_rcBorderSize.top > 0 || m_rcBorderSize.right > 0 || m_rcBorderSize.bottom > 0)
+				{
+					RECT rcBorder;
+
+					if(m_rcBorderSize.left > 0){
+						rcBorder		= m_rcItem;
+						rcBorder.right	= m_rcItem.left;
+						CRenderEngine::DrawLine(hDC,rcBorder,m_rcBorderSize.left,GetAdjustColor(m_dwBorderColor),m_nBorderStyle);
+					}
+					if(m_rcBorderSize.top > 0){
+						rcBorder		= m_rcItem;
+						rcBorder.bottom	= m_rcItem.top;
+						CRenderEngine::DrawLine(hDC,rcBorder,m_rcBorderSize.top,GetAdjustColor(m_dwBorderColor),m_nBorderStyle);
+					}
+					if(m_rcBorderSize.right > 0){
+						rcBorder		= m_rcItem;
+						rcBorder.left	= m_rcItem.right;
+						CRenderEngine::DrawLine(hDC,rcBorder,m_rcBorderSize.right,GetAdjustColor(m_dwBorderColor),m_nBorderStyle);
+					}
+					if(m_rcBorderSize.bottom > 0){
+						rcBorder		= m_rcItem;
+						rcBorder.top	= m_rcItem.bottom;
+						CRenderEngine::DrawLine(hDC,rcBorder,m_rcBorderSize.bottom,GetAdjustColor(m_dwBorderColor),m_nBorderStyle);
+					}
+				}
+				else if(m_nBorderSize > 0)
 					CRenderEngine::DrawRect(hDC, m_rcItem, m_nBorderSize, GetAdjustColor(m_dwBorderColor));
 			}
 		}
+		
 	}
 
 	void CControlUI::DoPostPaint(HDC hDC, const RECT& rcPaint)
@@ -1823,5 +1946,6 @@ namespace UiLib
 			throw "CControlUI::TriggerEffects";
 		}
 	}
+
 
 } // namespace UiLib
