@@ -24,7 +24,8 @@ namespace UiLib
 		m_dwBorderColor(0),
 		m_dwFocusBorderColor(0),
 		m_bColorHSL(false),
-		m_nBorderSize(0)
+		m_nBorderSize(0),
+		m_nBorderStyle(PS_SOLID)
 	{
 		m_tCurEffects.m_bEnableEffect	= false;
 		m_tCurEffects.m_iZoom			= -1;
@@ -226,6 +227,29 @@ namespace UiLib
 		if( m_nBorderSize == nSize ) return;
 
 		m_nBorderSize = nSize;
+		Invalidate();
+	}
+	
+	//************************************
+	// 函数名称: GetBorderStyle
+	// 返回类型: int
+	// 函数说明: 
+	//************************************
+	int CControlUI::GetBorderStyle() const
+	{
+		return m_nBorderStyle;
+	}
+
+	//************************************
+	// 函数名称: SetBorderStyle
+	// 返回类型: void
+	// 参数信息: int nStyle
+	// 函数说明: 
+	//************************************
+	void CControlUI::SetBorderStyle( int nStyle )
+	{
+		if( m_nBorderSize == nStyle || nStyle < 0 ) return;
+		m_nBorderStyle	= nStyle;
 		Invalidate();
 	}
 
@@ -916,6 +940,7 @@ namespace UiLib
 		}
 		else if( _tcscmp(pstrName, _T("colorhsl")) == 0 ) SetColorHSL(_tcscmp(pstrValue, _T("true")) == 0);
 		else if( _tcscmp(pstrName, _T("bordersize")) == 0 ) SetBorderSize(_ttoi(pstrValue));
+		else if( _tcscmp(pstrName, _T("borderstyle")) == 0 ) SetBorderStyle(_ttoi(pstrValue));
 		else if( _tcscmp(pstrName, _T("borderround")) == 0 ) {
 			SIZE cxyRound = { 0 };
 			LPTSTR pstr = NULL;
@@ -1033,7 +1058,7 @@ namespace UiLib
 			else CRenderEngine::DrawColor(hDC, m_rcItem, GetAdjustColor(m_dwBackColor));
 		}
 	}
-
+	
 	void CControlUI::PaintBkImage(HDC hDC)
 	{
 		if( m_sBkImage.IsEmpty() ) return;
@@ -1773,4 +1798,5 @@ namespace UiLib
 			throw "CControlUI::TriggerEffects";
 		}
 	}
+
 } // namespace UiLib

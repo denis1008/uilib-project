@@ -79,6 +79,7 @@
 		<Attribute name="random" default="true" type="BOOL" comment="是否启用不规则控件类型"/>
 		
 		<!--UiLib 扩展属性-->
+		<Attribute name="borderstyle" default="0" type="INT" comment="边框样式的设置,数值范围0-5"/>
 		<Attribute name="animeffects" default="false" type="BOOL" comment="是否开启动画特效,如(true)"/>
 		<!--EffectsStyle value 属性说明-->
 		<!--zoom 整型：缩放设置 0为不缩放 小于0缩小 大于0放大-->

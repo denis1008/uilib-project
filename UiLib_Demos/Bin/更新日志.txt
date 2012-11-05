@@ -1,4 +1,26 @@
-2012-10-24 
+2012-10-05
++Control 控件基类增加borderstyle属性，以实现所有控件支持边框样式的设置。
+
+2012-10-02
+#增加Duilib命名空间别名的支持，增加后编译出来的DLL完全兼容Duilib现有的Demo
+
+2012-10-28
+*修正UITreeView最后一个节点对象动态添加子节点失败的BUG
+*修正树控件动态插入子节点无法展开的BUG，以及其它相关BUG隐患的修正。
++增加树控件的无限级动态添加与删除的Demo示例
++增加UIEdit提示文字的缺省颜色
+
+2012-10-27
+*修正TreeNode没有子节点时无法添加的BUG
+
+2010-10-26
+#同步UiLib 至 Duilib 350
+#*修复Web窗口非焦点响应加速键
++拓展CStdPtrArray增加TStdPtrArray模版类
++拓展CStdValArray增加TStdValArray模版类
++拓展CStdStringPtrMap增加TStdStringPtrMap模版类
+
+2012-10-25 
 #同步UiLib 至 Duilib 349
 *修复WebBrowser默认首页地址拼写错误Bug
 *修复CDuiString部分方法处理参数为NULL的Bug By：125308142@qq.com
