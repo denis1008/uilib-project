@@ -98,7 +98,7 @@ namespace UiLib
 	};
 
 	template<typename T = LPVOID>
-	class TStdPtrArray : public CStdPtrArray
+	class UILIB_API TStdPtrArray : public CStdPtrArray
 	{
 	public:
 		TStdPtrArray(int iPreallocSize = 0):CStdPtrArray(iPreallocSize){};
@@ -138,12 +138,12 @@ namespace UiLib
 		int m_nAllocated;
 	};
 
-	template<typename T = LPVOID>
-	class TStdValArray : public CStdValArray
+	template<typename T = LPVOID,typename T1 = T>
+	class UILIB_API TStdValArray : public CStdValArray
 	{
 	public:
 		TStdValArray(int iElementSize = sizeof(T), int iPreallocSize = 0):CStdValArray(iElementSize,iPreallocSize){};
-		bool Add(const T pData){return CStdValArray::Add((LPCVOID)pData);};
+		bool Add(const T1 pData){return CStdValArray::Add((LPCVOID)&pData);};
 		bool InsertAt(int iIndex,const T pData){
 			if( iIndex == m_nCount ) return Add(pData);
 			if( iIndex < 0 || iIndex > m_nCount ) return false;
@@ -161,12 +161,12 @@ namespace UiLib
 				}
 			}
 
-			memmove(&m_pVoid + (iIndex+1) * m_iElementSize, &m_pVoid + iIndex * m_iElementSize,sizeof(T));
+			memmove(&m_pVoid + (iIndex+1) * m_iElementSize, &m_pVoid + iIndex * m_iElementSize,m_iElementSize);
 			::CopyMemory(m_pVoid + (iIndex * m_iElementSize), &pData, m_iElementSize);
 			return true;
 		}
 		T GetData(){return static_cast<T>(CStdValArray::GetData());};
-		T GetAt(int iIndex) const {return *static_cast<T*>(CStdValArray::GetAt(iIndex));};
+		T GetAt(int iIndex) const {return *static_cast<T1*>(CStdValArray::GetAt(iIndex));};
 		T operator[] (int nIndex) const{return (T)CStdValArray:::operator[](nIndex);};
 	};
 
@@ -277,7 +277,7 @@ namespace UiLib
 	};
 
 	template<typename T = LPVOID>
-	class TStdStringPtrMap : public CStdStringPtrMap
+	class UILIB_API TStdStringPtrMap : public CStdStringPtrMap
 	{
 	public:
 		TStdStringPtrMap(int nSize = 83):CStdStringPtrMap(nSize){};

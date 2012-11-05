@@ -1,20 +1,21 @@
-#ifndef WIN_IMPL_BASE_H
-#define WIN_IMPL_BASE_H
-
-#include "stdafx.h"
+#ifndef WIN_IMPL_BASE_HPP
+#define WIN_IMPL_BASE_HPP
 
 namespace UiLib
 {
+	class CButtonUI;
+
 	enum UILIB_RESOURCETYPE
 	{
-		UILIB_FILE=1,
-		UILIB_ZIP,
-		UILIB_RESOURCE,
-		UILIB_ZIPRESOURCE,
+		UILIB_FILE=1,				// 来自磁盘文件
+		UILIB_ZIP,						// 来自磁盘zip压缩包
+		UILIB_RESOURCE,			// 来自资源
+		UILIB_ZIPRESOURCE,	// 来自资源的zip压缩包
 	};
 
 	class UILIB_API WindowImplBase
 		: public CWindowWnd
+		, public CNotifyPump
 		, public INotifyUI
 		, public IMessageFilterUI
 		, public IDialogBuilderCallback
@@ -73,4 +74,4 @@ namespace UiLib
 	};
 }
 
-#endif // WIN_IMPL_BASE_H
+#endif // WIN_IMPL_BASE_HPP
