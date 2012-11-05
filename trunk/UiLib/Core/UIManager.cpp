@@ -39,7 +39,6 @@ namespace UiLib {
 		bool bKilled;
 	} TIMERINFO;
 
-
 	/////////////////////////////////////////////////////////////////////////////////////
 	CAnimationSpooler m_anim;
 	HPEN m_hPens[UICOLOR__LAST] = { 0 };
@@ -95,6 +94,7 @@ namespace UiLib {
 		m_bMouseCapture(false),
 		m_bOffscreenPaint(true),
 		m_bAlphaBackground(false),
+		m_bUsedVirtualWnd(false),
 		m_nOpacity(255),
 		m_pParentResourcePM(NULL)
 	{
@@ -2243,6 +2243,11 @@ namespace UiLib {
 	{
 		Msg.ptMouse = m_ptLastMousePos;
 		Msg.dwTimestamp = ::GetTickCount();
+		if( m_bUsedVirtualWnd )
+		{
+			Msg.sVirtualWnd = Msg.pSender->GetVirtualWnd();
+		}
+
 		if( !bAsync ) {
 			// Send to all listeners
 			if( Msg.pSender != NULL ) {
@@ -3168,6 +3173,11 @@ namespace UiLib {
 		{
 			throw "CPaintManagerUI::GetThemeColorPair";
 		}
+	}
+
+	void CPaintManagerUI::UsedVirtualWnd(bool bUsed)
+	{
+		m_bUsedVirtualWnd = bUsed;
 	}
 
 } // namespace UiLib

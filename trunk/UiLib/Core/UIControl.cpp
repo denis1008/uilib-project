@@ -873,6 +873,30 @@ namespace UiLib
 		if( m_pParent != NULL ) m_pParent->DoEvent(event);
 	}
 
+	void CControlUI::SetVirtualWnd(LPCTSTR pstrValue)
+	{
+		m_sVirtualWnd = pstrValue;
+		m_pManager->UsedVirtualWnd(true);
+	}
+
+	CDuiString CControlUI::GetVirtualWnd() const
+	{
+		CDuiString str;
+		if( !m_sVirtualWnd.IsEmpty() ){
+			str = m_sVirtualWnd;
+		}
+		else{
+			CControlUI* pParent = GetParent();
+			if( pParent != NULL){
+				str = pParent->GetVirtualWnd();
+			}
+			else{
+				str = _T("");
+			}
+		}
+		return str;
+	}
+
 	void CControlUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
 	{
 		if( _tcscmp(pstrName, _T("pos")) == 0 ) {
@@ -978,6 +1002,7 @@ namespace UiLib
 		else if( _tcscmp(pstrName, _T("mouseoutstyle")) == 0 ) SetEffectsStyle(pstrValue,&m_tMouseOutEffects);
 		else if( _tcscmp(pstrName, _T("mouseclickstyle")) == 0 ) SetEffectsStyle(pstrValue,&m_tMouseClickEffects);
 		else if( _tcscmp(pstrName, _T("style")) == 0 ) SetStyleName(pstrValue);
+		else if( _tcscmp(pstrName, _T("virtualwnd")) == 0 ) SetVirtualWnd(pstrValue);
 	}
 
 	CControlUI* CControlUI::ApplyAttributeList(LPCTSTR pstrList)
