@@ -171,35 +171,21 @@ namespace UiLib
 								{
 									LPCTSTR pstrClass = nStyleNode.GetName();
 
-									if( _tcscmp(pstrClass, _T("Style")) != 0)
+									if( _tcscmp(pstrClass, _T("Style")) != 0 && !nStyleNode.HasAttribute(_T("stylename")))
 										continue;
 
+									CDuiString nControlStyleName = nStyleNode.GetAttributeValue(_T("stylename"));
+									if(nControlStyleName.GetLength() <= 0)
+										continue;
+									
 									int nStyleAttributes = nStyleNode.GetAttributeCount();
-									LPCTSTR pStrStyleName = NULL;
-									CStdStringPtrMap* pStyleMap = new CStdStringPtrMap();
 									for( int nIndex = 0; nIndex < nStyleAttributes; nIndex++ ) {
 										pstrName = nStyleNode.GetAttributeName(nIndex);
 										pstrValue = nStyleNode.GetAttributeValue(nIndex);
-										if( _tcscmp(pstrName, _T("stylename")) == 0 ) {
-											pStrStyleName = pstrValue;
+										if( _tcscmp(pstrName, _T("stylename")) == 0 )
 											continue;
-										}
-										pStyleMap->Set(pstrName,(LPVOID)new CDuiString(pstrValue));
+										pManager->SetControlStyle(nControlStyleName.GetData(),pstrName,pstrValue,pStrStylesName.GetData());
 									}
-									if(pStrStyleName == NULL){
-										for(int nIndex = 0;nIndex < pStyleMap->GetSize();nIndex++){
-											if(LPCTSTR nKey = pStyleMap->GetAt(nIndex)){
-												if(LPVOID pTmpDef = pStyleMap->Find(nKey)){
-													delete pTmpDef;
-													pTmpDef = NULL;
-												}
-											}
-										}
-										pStyleMap->RemoveAll();
-										delete pStyleMap;
-										continue;
-									}
-									pManager->SetControlStyle(pStrStyleName,pStyleMap,pStrStylesName.GetData());
 								}
 							}
 						}
@@ -209,30 +195,21 @@ namespace UiLib
 					{
 						LPCTSTR pstrClass = nStyleNode.GetName();
 
-						if( _tcscmp(pstrClass, _T("Style")) != 0)
+						if( _tcscmp(pstrClass, _T("Style")) != 0 && !nStyleNode.HasAttribute(_T("stylename")))
+							continue;
+
+						CDuiString nControlStyleName = nStyleNode.GetAttributeValue(_T("stylename"));
+						if(nControlStyleName.GetLength() <= 0)
 							continue;
 
 						int nStyleAttributes = nStyleNode.GetAttributeCount();
-						LPCTSTR pStrStyleName = NULL;
-						CStdStringPtrMap* pStyleMap = new CStdStringPtrMap();
 						for( int i = 0; i < nStyleAttributes; i++ ) {
 							pstrName = nStyleNode.GetAttributeName(i);
 							pstrValue = nStyleNode.GetAttributeValue(i);
-							if( _tcscmp(pstrName, _T("stylename")) == 0 ) {
-								pStrStyleName = pstrValue;
-								break;
-							}
-						}
-						if(pStrStyleName){
-							for( int i = 0; i < nStyleAttributes; i++ ) {
-								pstrName = nStyleNode.GetAttributeName(i);
-								pstrValue = nStyleNode.GetAttributeValue(i);
-								if( _tcscmp(pstrName, _T("stylename")) == 0 )
-									continue;
+							if( _tcscmp(pstrName, _T("stylename")) == 0 )
+								continue;
 
-								CDuiString* pVal = new CDuiString(pstrValue);
-								pManager->SetControlStyle(pStrStyleName,pstrName,pstrValue,pStrStylesName.GetData());
-							}
+							pManager->SetControlStyle(nControlStyleName.GetData(),pstrName,pstrValue,pStrStylesName.GetData());
 						}
 					}
 					if(nIsDefaultStyles && !pStrStylesName.IsEmpty())
