@@ -99,6 +99,7 @@ namespace UiLib {
 		m_pControlsStyle(NULL),
 		m_pParentResourcePM(NULL)
 	{
+		m_pControlsStyle				= &m_mControlsStyle;
 		m_dwDefaultDisabledColor		= 0xFFA7A6AA;
 		m_dwDefaultFontColor			= 0xFF000000;
 		m_dwDefaultLinkFontColor		= 0xFF0000FF;

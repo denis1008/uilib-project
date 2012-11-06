@@ -798,7 +798,7 @@ namespace UiLib
 	//************************************
 	void CControlUI::SetStyleName( LPCTSTR pStrStyleName,CPaintManagerUI* pm /*= NULL*/ )
 	{
-		if(!pStrStyleName || _tclen(pStrStyleName) <= 0 || !GetManager())
+		if(!pStrStyleName || _tclen(pStrStyleName) <= 0 || (!GetManager() && !pm))
 			return;
 
 		CStdStringPtrMap* pStyleMap = NULL;

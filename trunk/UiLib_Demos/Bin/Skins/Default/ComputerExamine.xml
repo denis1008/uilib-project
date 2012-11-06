@@ -1,23 +1,25 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Window>
 	<HorizontalLayout name="AnimWnd">
-		<VerticalLayout>
-			<VerticalLayout height="80" inset="1,1,10,0" bkimage="WndFrame/examine_background.bmp">
-			<HorizontalLayout childpadding="20">
-				<Control bkimage="file='WndFrame/start.png' dest='14,14,69,69,'" width="69" height="69"/>
-				<VerticalLayout>
-					<Control />
-					<Label name="TestLabel" enabledeffect="true" enabledshadow="true" enabledstroke="true" transshadow1="0" transtext1="0" textcolor="#ff0680C9" strokecolor="#ffffffff" text="源码地址：http://uilib-project.googlecode.com" shadowoffset="2,-120" mouse="true" align="center" height="27" disabledtextcolor="#FFa3c6f2" font="2" />
-					<Edit name="TestEdit" enabletimer="true" timerdelay="200" text="源码地址：http://uilib-project.googlecode.com" tipvalue="源码地址：http://uilib-project.googlecode.com" height="22" />
-					<Control />
-				</VerticalLayout>
-			</HorizontalLayout>
+		<VerticalLayout paddidng="0,0,0,0" bkimage="WndFrame/examine_background.bmp" >
+			<VerticalLayout height="80" inset="1,1,0,0" bkimage="WndFrame/examine_background.bmp">
+				<HorizontalLayout >
+					<Button name="CreateChartView" text="添加图表刻度" width="100" />
+					<VerticalLayout>
+					<Button name="AddChartDataA" text="添加正负随机图表数据（-50-100）" />
+					<Button name="AddChartDataB" text="添加正数随机图表数据（0-150）" />
+					<Button name="AddChartDataC" text="添加负数随机图表数据（-150-0）" />
+					<HorizontalLayout >
+						<Button name="LegendTop" text="图例位置（上）" />
+						<Button name="LegendRight" text="图例位置（右）" />
+						<Button name="LegendBottom" text="图例位置（下）" />
+					</HorizontalLayout>
+					</VerticalLayout>
+					<Button name="DelChartData" text="移除图表数据" width="100" />
+				</HorizontalLayout>
 			</VerticalLayout>
-			<HorizontalLayout height="180" inset="1,1,1,1" bkimage="WndFrame/examine_background.bmp">
-				<FadeButton style="FadeButtonDemo" text="FadeButtonDemoA" />
-				<FadeButton style="FadeButtonDemo" text="FadeButtonDemoB" />
-			</HorizontalLayout>
-			<Calendar inset="2,2,2,2" />
+			<Edit name="tset" bordersize="0" bottombordersize="1" />
+			<ChartView name="ChartView"  />
 		</VerticalLayout>
 		<VerticalLayout width="1" inset="0,1,0,1">
 			<Container bkimage="WndFrame/vertical_border.bmp" />
@@ -29,7 +31,7 @@
 			<HorizontalLayout height="1">
 				<Container bkimage="WndFrame/horizontal_border.bmp" />
 			</HorizontalLayout>
-			<TreeView bkcolor="#ffffffff" visiblefolderbtn="true" visiblecheckbtn="true" >
+			<TreeView bkcolor="#ffffffff" visiblefolderbtn="true" hscrollbar="true" visiblecheckbtn="true" itemminwidth="250" >
 				<TreeNode text="A1" style="treenode" >
 					<TreeNode text="B1" style="treenode" >
 						<TreeNode text="C1" style="treenode" >
@@ -55,6 +57,10 @@
 						<CheckBox text="扩展复选框" width="100" />
 					</TreeNode>
 					<CheckBox text="扩展复选框" width="100" />
+				</TreeNode>
+				<TreeNode text="A3" style="treenode" >
+					<Edit name="AddAtNodeText" text="节点名称" tipvalue="节点名称" width="70" />
+					<Button name="AddAtNode" text="添加节点" width="60" />
 				</TreeNode>
 			</TreeView>
 		</VerticalLayout>

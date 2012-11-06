@@ -247,17 +247,6 @@ typedef struct tagTEventUI
     LPARAM lParam;
 } TEventUI;
 
-// Structure for notifications to the outside world
-typedef struct tagTNotifyUI 
-{
-    CDuiString sType;
-    CControlUI* pSender;
-    DWORD dwTimestamp;
-    POINT ptMouse;
-    WPARAM wParam;
-    LPARAM lParam;
-} TNotifyUI;
-
 // Structure for relative position to the parent
 typedef struct tagTRelativePosUI
 {
@@ -419,6 +408,8 @@ public:
 	bool RemoveControlStyle(LPCTSTR pStrStyleName,LPCTSTR pStrKey = NULL,LPCTSTR pStylesName = NULL);
 	void RemoveAllControlStyle(LPCTSTR pStrStyleName = NULL,LPCTSTR pStylesName = NULL);
 	bool SetCurStyles(LPCTSTR pStylesName = NULL,bool _NowUpdate = true);
+	bool SetCurStyles(int _iStyleIndex = 0,bool _NowUpdate = true);
+	UINT GetStylesCount();
 	CDuiString GetCurStylesName();
 	bool RemoveStyles(LPCTSTR pStylesName);
 	void RemoveAllStyles();
@@ -476,6 +467,7 @@ public:
 
     bool MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lRes);
     bool PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lRes);
+	void UsedVirtualWnd(bool bUsed);
 
 	bool AddAnimationJob(const CDxAnimationUI& _DxAnimationUI);
 	HPEN GetThemePen(UITYPE_COLOR Index) const;
@@ -529,6 +521,7 @@ private:
     bool m_bAlphaBackground;
     bool m_bMouseTracking;
     bool m_bMouseCapture;
+	bool m_bUsedVirtualWnd;
 	//
 	CDuiString m_sCurStylesName;
     //
