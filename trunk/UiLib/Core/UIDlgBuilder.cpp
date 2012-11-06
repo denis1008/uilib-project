@@ -128,7 +128,7 @@ namespace UiLib
 						pManager->AddDefaultAttributeList(pControlName, pControlValue);
 					}
 				}
-				else if( _tcscmp(pstrClass, _T("Styles")) == 0 && node.HasChildren() ) {
+				else if( _tcscmp(pstrClass, _T("Styles")) == 0) {
 
 					nAttributes = node.GetAttributeCount();
 					CDuiString pStrStylesName;
@@ -398,6 +398,8 @@ namespace UiLib
 				}
 			}
 		}
+		if(pManager->GetCurStylesName().IsEmpty() && pManager->GetStylesCount() > 0)
+			pManager->SetCurStyles(0);
 		return _Parse(&root, pParent, pManager);
 	}
 
@@ -450,7 +452,7 @@ namespace UiLib
 				continue;
 			}
 			//树控件XML解析
-			else if( _tcscmp(pstrClass, _T("TreeNode")) == 0 ) {
+			else if( _tcscmp(pstrClass, _T("TreeNode")) == 0 && pParent ) {
 				CTreeNodeUI* pParentNode	= static_cast<CTreeNodeUI*>(pParent->GetInterface(_T("TreeNode")));
 				CTreeNodeUI* pNode			= new CTreeNodeUI();
 				if(pParentNode){
@@ -469,11 +471,8 @@ namespace UiLib
 					}
 				}
 
-				// 解析所有属性并覆盖默认属性
+				// 解析所有XML属性并覆盖默认属性
 				if( node.HasAttributes() ) {
-					TCHAR szValue[500] = { 0 };
-					SIZE_T cchLen = lengthof(szValue) - 1;
-					// Set ordinary attributes
 					int nAttributes = node.GetAttributeCount();
 					for( int i = 0; i < nAttributes; i++ ) {
 						pNode->SetAttribute(node.GetAttributeName(i), node.GetAttributeValue(i));
@@ -481,17 +480,9 @@ namespace UiLib
 				}
 
 				//检索子节点及附加控件
-				if(node.HasChildren()){
+				if(node.HasChildren())
 					CControlUI* pSubControl = _Parse(&node,pNode,pManager);
-					if(pSubControl && _tcscmp(pSubControl->GetClass(),_T("TreeNodeUI")) != 0)
-					{
-						// 					pSubControl->SetFixedWidth(30);
-						// 					CHorizontalLayoutUI* pHorz = pNode->GetTreeNodeHoriznotal();
-						// 					pHorz->Add(new CEditUI());
-						// 					continue;
-					}
-				}
-
+				
 				if(!pParentNode){
 					CTreeViewUI* pTreeView = static_cast<CTreeViewUI*>(pParent->GetInterface(_T("TreeView")));
 					ASSERT(pTreeView);
@@ -503,67 +494,111 @@ namespace UiLib
 				}
 				continue;
 			}
+// 			else if( (_tcscmp(pstrClass, _T("ChartXLabels")) == 0 || _tcscmp(pstrClass, _T("ChartData")) == 0) && pParent ) {
+// 				CChartViewUI* pChartView = static_cast<CChartViewUI*>(pParent->GetInterface(_T("ChartView")));
+// 				if(!pChartView)
+// 					continue;
+// 
+// 				if(_tcscmp(pstrClass, _T("ChartXLabels")) == 0 && node.HasChildren()){
+// 					for( CMarkupNode subnode = node.GetChild() ; subnode.IsValid(); subnode = subnode.GetSibling() ) {
+// 						if(_tcscmp(subnode.GetName(), _T("ChartXLabelItem")) == 0){
+// 							pChartView->AddGroup(subnode.GetAttributeValue(_T("text")));
+// 						}
+// 					}
+// 					continue;
+// 				}
+// 
+// 				if(_tcscmp(pstrClass, _T("ChartData")) == 0 && node.HasChildren()){
+// 					for( CMarkupNode subnode = node.GetChild() ; subnode.IsValid(); subnode = subnode.GetSibling() ) {
+// 						if(_tcscmp(subnode.GetName(), _T("ChartSeries")) == 0){
+// 							LPCTSTR pstrValue = subnode.GetAttributeValue(_T("bkcolor"));
+// 							if( *pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);
+// 							LPTSTR pstr = NULL;
+// 							LPCTSTR pstrValue1 = subnode.GetAttributeValue(_T("bkcolor1"));
+// 							if( *pstrValue1 == _T('#')) pstrValue1 = ::CharNext(pstrValue1);
+// 							LPTSTR pstr1 = NULL;
+// 							LPCTSTR pstrValue2 = subnode.GetAttributeValue(_T("bkcolor2"));
+// 							if( *pstrValue2 == _T('#')) pstrValue2 = ::CharNext(pstrValue2);
+// 							LPTSTR pstr2 = NULL;
+// 							long nSeriesID = pChartView->AddSeries(subnode.GetAttributeValue(_T("text")),_tcstoul(pstrValue, &pstr, 16),_tcstoul(pstrValue1, &pstr1, 16),_tcstoul(pstrValue2, &pstr2, 16));
+// 							if( nSeriesID > 0){
+// 								int nLabelID = 0;
+// 								for( CMarkupNode itemnode = subnode.GetChild() ; itemnode.IsValid(); itemnode = itemnode.GetSibling() ) {
+// 									if(_tcscmp(itemnode.GetName(), _T("ChartDataItem")) == 0){
+// 										pChartView->AddValue(nSeriesID,nLabelID,_wtof(itemnode.GetAttributeValue(_T("value"))));
+// 									}
+// 									nLabelID++;
+// 								}
+// 							}
+// 						}
+// 					}
+// 					continue;
+// 				}
+// 				continue;
+// 			}
 			else {
 				SIZE_T cchLen = _tcslen(pstrClass);
 				switch( cchLen ) {
-			case 4:
-				if( _tcscmp(pstrClass, _T("Edit")) == 0 )						pControl = new CEditUI;
-				else if( _tcscmp(pstrClass, _T("List")) == 0 )					pControl = new CListUI;
-				else if( _tcscmp(pstrClass, _T("Text")) == 0 )					pControl = new CTextUI;
-				break;
-			case 5:
-				if( _tcscmp(pstrClass, _T("Combo")) == 0 )						pControl = new CComboUI;
-				else if( _tcscmp(pstrClass, _T("Label")) == 0 )					pControl = new CLabelUI;
-				break;
-			case 6:
-				if( _tcscmp(pstrClass, _T("Button")) == 0 )						pControl = new CButtonUI;
-				else if( _tcscmp(pstrClass, _T("Option")) == 0 )				pControl = new COptionUI;
-				else if( _tcscmp(pstrClass, _T("Slider")) == 0 )				pControl = new CSliderUI;
-				break;
-			case 7:
-				if( _tcscmp(pstrClass, _T("Control")) == 0 )					pControl = new CControlUI;
-				else if( _tcscmp(pstrClass, _T("GifAnim")) == 0 )				pControl = new CGifAnimUI;
-				else if( _tcscmp(pstrClass, _T("ActiveX")) == 0 )				pControl = new CActiveXUI;
-				break;
-			case 8:
-				if( _tcscmp(pstrClass, _T("Progress")) == 0 )					pControl = new CProgressUI;
-				else if(  _tcscmp(pstrClass, _T("RichEdit")) == 0 )				pControl = new CRichEditUI;
-				// add by:zjie
-				else if (_tcscmp(pstrClass, _T("CheckBox")) == 0)				pControl = new CCheckBoxUI;
-				else if (_tcscmp(pstrClass, _T("ComboBox")) == 0)				pControl = new CComboBoxUI;
-				// add by:zjie
-				else if( _tcscmp(pstrClass, _T("TreeView")) == 0)				pControl = new CTreeViewUI;
-				else if( _tcscmp(pstrClass, _T("Calendar")) == 0)				pControl = new CCalendarUI;
-				break;
-			case 9:
-				if( _tcscmp(pstrClass, _T("Container")) == 0 )					pControl = new CContainerUI;
-				else if( _tcscmp(pstrClass, _T("TabLayout")) == 0 )				pControl = new CTabLayoutUI;
-				else if( _tcscmp(pstrClass, _T("ScrollBar")) == 0 )				pControl = new CScrollBarUI; 
-				break;
-			case 10:
-				if( _tcscmp(pstrClass, _T("ListHeader")) == 0 )					pControl = new CListHeaderUI;
-				else if( _tcscmp(pstrClass, _T("TileLayout")) == 0 )			pControl = new CTileLayoutUI;
-				else if( _tcscmp(pstrClass, _T("WebBrowser")) == 0 )			pControl = new CWebBrowserUI;
-				else if( _tcscmp(pstrClass, _T("FadeButton")) == 0 )			pControl = new CFadeButtonUI;
-				break;
-			case 11:
-				if (_tcscmp(pstrClass, _T("ChildLayout")) == 0)					pControl=new CChildLayoutUI;
-				break;
-			case 14:
-				if( _tcscmp(pstrClass, _T("VerticalLayout")) == 0 )				pControl = new CVerticalLayoutUI;
-				else if( _tcscmp(pstrClass, _T("ListHeaderItem")) == 0 )		pControl = new CListHeaderItemUI;
-				break;
-			case 15:
-				if( _tcscmp(pstrClass, _T("ListTextElement")) == 0 )			pControl = new CListTextElementUI;
-				break;
-			case 16:
-				if( _tcscmp(pstrClass, _T("HorizontalLayout")) == 0 )			pControl = new CHorizontalLayoutUI;
-				else if( _tcscmp(pstrClass, _T("ListLabelElement")) == 0 )		pControl = new CListLabelElementUI;
-				break;
-			case 20:
-				if( _tcscmp(pstrClass, _T("ListContainerElement")) == 0 )		pControl = new CListContainerElementUI;
-				else if( _tcscmp(pstrClass, _T("ListImageTextElement")) == 0 )   pControl = new CListImageTextElementUI;
-				break;
+				case 4:
+					if( _tcscmp(pstrClass, _T("Edit")) == 0 )						pControl = new CEditUI;
+					else if( _tcscmp(pstrClass, _T("List")) == 0 )					pControl = new CListUI;
+					else if( _tcscmp(pstrClass, _T("Text")) == 0 )					pControl = new CTextUI;
+					break;
+				case 5:
+					if( _tcscmp(pstrClass, _T("Combo")) == 0 )						pControl = new CComboUI;
+					else if( _tcscmp(pstrClass, _T("Label")) == 0 )					pControl = new CLabelUI;
+					break;
+				case 6:
+					if( _tcscmp(pstrClass, _T("Button")) == 0 )						pControl = new CButtonUI;
+					else if( _tcscmp(pstrClass, _T("Option")) == 0 )				pControl = new COptionUI;
+					else if( _tcscmp(pstrClass, _T("Slider")) == 0 )				pControl = new CSliderUI;
+					break;
+				case 7:
+					if( _tcscmp(pstrClass, _T("Control")) == 0 )					pControl = new CControlUI;
+					else if( _tcscmp(pstrClass, _T("GifAnim")) == 0 )				pControl = new CGifAnimUI;
+					else if( _tcscmp(pstrClass, _T("ActiveX")) == 0 )				pControl = new CActiveXUI;
+					break;
+				case 8:
+					if( _tcscmp(pstrClass, _T("Progress")) == 0 )					pControl = new CProgressUI;
+					else if(  _tcscmp(pstrClass, _T("RichEdit")) == 0 )				pControl = new CRichEditUI;
+					// add by:zjie
+					else if (_tcscmp(pstrClass, _T("CheckBox")) == 0)				pControl = new CCheckBoxUI;
+					else if (_tcscmp(pstrClass, _T("RadioBox")) == 0)				pControl = new CRadioBoxUI;
+					else if (_tcscmp(pstrClass, _T("ComboBox")) == 0)				pControl = new CComboBoxUI;
+					// add by:zjie
+					else if( _tcscmp(pstrClass, _T("TreeView")) == 0)				pControl = new CTreeViewUI;
+					else if( _tcscmp(pstrClass, _T("Calendar")) == 0)				pControl = new CCalendarUI;
+					break;
+				case 9:
+					if( _tcscmp(pstrClass, _T("Container")) == 0 )					pControl = new CContainerUI;
+					else if( _tcscmp(pstrClass, _T("TabLayout")) == 0 )				pControl = new CTabLayoutUI;
+					else if( _tcscmp(pstrClass, _T("ScrollBar")) == 0 )				pControl = new CScrollBarUI; 
+					//else if( _tcscmp(pstrClass, _T("ChartView")) == 0 )				pControl = new CChartViewUI;
+					break;
+				case 10:
+					if( _tcscmp(pstrClass, _T("ListHeader")) == 0 )					pControl = new CListHeaderUI;
+					else if( _tcscmp(pstrClass, _T("TileLayout")) == 0 )			pControl = new CTileLayoutUI;
+					else if( _tcscmp(pstrClass, _T("WebBrowser")) == 0 )			pControl = new CWebBrowserUI;
+					else if( _tcscmp(pstrClass, _T("FadeButton")) == 0 )			pControl = new CFadeButtonUI;
+					break;
+				case 11:
+					if (_tcscmp(pstrClass, _T("ChildLayout")) == 0)					pControl=new CChildLayoutUI;
+					break;
+				case 14:
+					if( _tcscmp(pstrClass, _T("VerticalLayout")) == 0 )				pControl = new CVerticalLayoutUI;
+					else if( _tcscmp(pstrClass, _T("ListHeaderItem")) == 0 )		pControl = new CListHeaderItemUI;
+					break;
+				case 15:
+					if( _tcscmp(pstrClass, _T("ListTextElement")) == 0 )			pControl = new CListTextElementUI;
+					break;
+				case 16:
+					if( _tcscmp(pstrClass, _T("HorizontalLayout")) == 0 )			pControl = new CHorizontalLayoutUI;
+					else if( _tcscmp(pstrClass, _T("ListLabelElement")) == 0 )		pControl = new CListLabelElementUI;
+					break;
+				case 20:
+					if( _tcscmp(pstrClass, _T("ListContainerElement")) == 0 )		pControl = new CListContainerElementUI;
+					else if( _tcscmp(pstrClass, _T("ListImageTextElement")) == 0 )   pControl = new CListImageTextElementUI;
+					break;
 				}
 				// User-supplied control factory
 				if( pControl == NULL ) {
@@ -629,9 +664,15 @@ namespace UiLib
 				SIZE_T cchLen = lengthof(szValue) - 1;
 				// Set ordinary attributes
 				int nAttributes = node.GetAttributeCount();
+				
+				CDuiString szName = node.GetAttributeValue(_T("name"));
+				
+				if(node.HasAttribute(_T("name")) && szName.GetLength() > 0)
+					pControl->SetStyleName(szName.GetData());
+
 				for( int i = 0; i < nAttributes; i++ ) {
 					if(_tcscmp(node.GetAttributeName(i),_T("style")) == 0){
-						pControl->SetStyleName(node.GetAttributeValue(i));
+						pControl->SetStyleName(node.GetAttributeValue(i),pManager);
 						break;
 					}
 				}

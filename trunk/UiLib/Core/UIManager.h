@@ -408,6 +408,8 @@ public:
 	bool RemoveControlStyle(LPCTSTR pStrStyleName,LPCTSTR pStrKey = NULL,LPCTSTR pStylesName = NULL);
 	void RemoveAllControlStyle(LPCTSTR pStrStyleName = NULL,LPCTSTR pStylesName = NULL);
 	bool SetCurStyles(LPCTSTR pStylesName = NULL,bool _NowUpdate = true);
+	bool SetCurStyles(int _iStyleIndex = 0,bool _NowUpdate = true);
+	UINT GetStylesCount();
 	CDuiString GetCurStylesName();
 	bool RemoveStyles(LPCTSTR pStylesName);
 	void RemoveAllStyles();
