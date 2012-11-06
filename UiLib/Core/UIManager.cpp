@@ -96,6 +96,7 @@ namespace UiLib {
 		m_bAlphaBackground(false),
 		m_bUsedVirtualWnd(false),
 		m_nOpacity(255),
+		m_pControlsStyle(NULL),
 		m_pParentResourcePM(NULL)
 	{
 		m_dwDefaultDisabledColor		= 0xFFA7A6AA;
@@ -1819,6 +1820,32 @@ namespace UiLib {
 			throw "CPaintManagerUI::SetCurStyles";
 		}
 	}
+
+	//************************************
+	// 函数名称: SetCurStyles
+	// 返回类型: bool
+	// 参数信息: int _iStyleIndex
+	// 参数信息: bool _NowUpdate
+	// 函数说明: 
+	//************************************
+	bool CPaintManagerUI::SetCurStyles( int _iStyleIndex /*= 0*/,bool _NowUpdate /*= true*/ )
+	{
+		if(_iStyleIndex < 0)
+			return false;
+
+		return SetCurStyles(m_mStyles.GetAt(_iStyleIndex),_NowUpdate);
+	}
+
+	//************************************
+	// 函数名称: GetStylesCount
+	// 返回类型: UINT
+	// 函数说明: 
+	//************************************
+	UINT CPaintManagerUI::GetStylesCount()
+	{
+		return (UINT)m_mStyles.GetSize();
+	}
+
 	//************************************
 	// Method:    GetCurStylesName
 	// FullName:  CPaintManagerUI::GetCurStylesName
@@ -1902,7 +1929,7 @@ namespace UiLib {
 	{
 		try
 		{
-			SetCurStyles();
+			SetCurStyles(NULL);
 			for(int nIndex = 0;nIndex < m_mStyles.GetSize();nIndex++)
 			{
 				CDuiString nKey = m_mStyles.GetAt(nIndex);
