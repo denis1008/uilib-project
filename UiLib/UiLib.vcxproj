@@ -107,7 +107,8 @@
       <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy .\*.h $(SolutionDir)Common\Include\ /E /S /D /Y</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'">
@@ -138,7 +139,8 @@
       <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy .\*.h $(SolutionDir)Common\Include\ /E /S /D /Y</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release|Win32'">
@@ -169,7 +171,8 @@
       <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy .\*.h $(SolutionDir)Common\Include\ /E /S /D /Y</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release|Win32'">
@@ -201,11 +204,13 @@
       <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy .\*.h $(SolutionDir)Common\Include\ /E /S /D /Y</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Control\UICalendar.cpp" />
+    <ClCompile Include="Control\UIChartView.cpp" />
     <ClCompile Include="Control\UIGifAnim.cpp" />
     <ClCompile Include="Control\UIActiveX.cpp" />
     <ClCompile Include="Control\UIAnimation.cpp" />
@@ -271,6 +276,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Control\UICalendar.h" />
+    <ClInclude Include="Control\UIChartView.h" />
     <ClInclude Include="Control\UIGifAnim.h" />
     <ClInclude Include="Control\UIActiveX.h" />
     <ClInclude Include="Control\UIAnimation.h" />

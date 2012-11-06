@@ -353,6 +353,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Control\UIChartView.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Control\UICheckBox.cpp"
 					>
 				</File>
@@ -390,6 +394,10 @@
 				</File>
 				<File
 					RelativePath=".\Control\UIProgress.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Control\UIRadioBox.cpp"
 					>
 				</File>
 				<File
@@ -607,6 +615,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Control\UIChartView.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Control\UICheckBox.h"
 					>
 				</File>
@@ -644,6 +656,10 @@
 				</File>
 				<File
 					RelativePath=".\Control\UIProgress.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Control\UIRadioBox.h"
 					>
 				</File>
 				<File

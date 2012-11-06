@@ -29,22 +29,34 @@ namespace UiLib {
 #endif
 
 #ifdef _DEBUG
-#ifndef TRACE
-#define TRACE __Trace
+#ifndef DUITRACE
+#define DUITRACE DUI__Trace
 #endif
-#define TRACEMSG __TraceMsg
+#define DUITRACEMSG DUI__TraceMsg
 #else
-#ifndef TRACE
-#define TRACE
+#ifndef DUITRACE
+#define DUITRACE
 #endif
-#define TRACEMSG _T("")
+#define DUITRACEMSG _T("")
 #endif
 
-void UILIB_API __Trace(LPCTSTR pstrFormat, ...);
-LPCTSTR UILIB_API __TraceMsg(UINT uMsg);
+void UILIB_API DUI__Trace(LPCTSTR pstrFormat, ...);
+LPCTSTR UILIB_API DUI__TraceMsg(UINT uMsg);
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
+
+class UILIB_API CNotifyPump
+{
+public:
+	bool AddVirtualWnd(CDuiString strName,CNotifyPump* pObject);
+	bool RemoveVirtualWnd(CDuiString strName);
+	void NotifyPump(TNotifyUI& msg);
+	bool LoopDispatch(TNotifyUI& msg);
+	DUI_DECLARE_MESSAGE_MAP()
+private:
+	CStdStringPtrMap m_VirtualWndMap;
+};
 
 class UILIB_API CWindowWnd
 {

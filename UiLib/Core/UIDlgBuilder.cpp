@@ -550,7 +550,7 @@ namespace UiLib
 					if( _tcscmp(pstrClass, _T("Container")) == 0 )					pControl = new CContainerUI;
 					else if( _tcscmp(pstrClass, _T("TabLayout")) == 0 )				pControl = new CTabLayoutUI;
 					else if( _tcscmp(pstrClass, _T("ScrollBar")) == 0 )				pControl = new CScrollBarUI; 
-					//else if( _tcscmp(pstrClass, _T("ChartView")) == 0 )				pControl = new CChartViewUI;
+					else if( _tcscmp(pstrClass, _T("ChartView")) == 0 )				pControl = new CChartViewUI;
 					break;
 				case 10:
 					if( _tcscmp(pstrClass, _T("ListHeader")) == 0 )					pControl = new CListHeaderUI;

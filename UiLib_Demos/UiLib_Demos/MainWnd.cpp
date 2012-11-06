@@ -6,6 +6,7 @@
 
 CMainWnd::CMainWnd(void)
 {
+	mChartDataPos = 0;
 } 
 
 
@@ -120,6 +121,7 @@ void CMainWnd::Init()
 		pAnimWnd		= static_cast<CHorizontalLayoutUI*>(pm.FindControl(_T("AnimWnd")));
 		pTestEdit		= static_cast<CEditUI*>(pm.FindControl(_T("TestEdit")));
 		pTestLabel		= static_cast<CLabelUI*>(pm.FindControl(_T("TestLabel")));
+		pChartView		= static_cast<CChartViewUI*>(pm.FindControl(_T("ChartView")));
 		pEffectsDemo	= static_cast<CButtonUI*>(pm.FindControl(_T("EffectsDemo")));
 		
 		nid.cbSize				= (DWORD)sizeof(NOTIFYICONDATA);
@@ -256,6 +258,57 @@ void CMainWnd::Notify( TNotifyUI& msg )
 
 				if(pParentNode->GetParentNode())
 					pParentNode->GetParentNode()->Remove(pParentNode);
+			}
+			else if(msg.pSender->GetName() == _T("CreateChartView")){
+
+				//pChartView->GetXYAxis().SetTickLimis(-50,100,20);
+				pChartView->AddLabel(_T("一月"));
+				pChartView->AddLabel(_T("二月"));
+				pChartView->AddLabel(_T("三月"));
+				pChartView->AddLabel(_T("四月"));
+
+			}
+			else if(msg.pSender->GetName() == _T("AddChartDataA") && pChartView->GetGroupCount()){
+				CDuiString mLegend;
+				mLegend.Format(_T("测试图例%d"),mChartDataPos++);
+				CChartSeries* pSeriesA = new CChartSeries(mLegend,Color(rand()%256,rand()%256,rand()%256).GetValue(),Color(rand()%256,rand()%256,rand()%256).GetValue());
+
+				for(int nIndex = 0;(UINT)nIndex < pChartView->GetGroupCount();nIndex++){
+					pSeriesA->AddSeriesData(rand()%100-50);
+				}
+				pChartView->AddSeries(pSeriesA);
+			}
+			else if(msg.pSender->GetName() == _T("AddChartDataB") && pChartView->GetGroupCount()){
+				CDuiString mLegend;
+				mLegend.Format(_T("测试图例%d"),mChartDataPos++);
+				CChartSeries* pSeriesA = new CChartSeries(mLegend,Color(rand()%256,rand()%256,rand()%256).GetValue(),Color(rand()%256,rand()%256,rand()%256).GetValue());
+
+				for(int nIndex = 0;(UINT)nIndex < pChartView->GetGroupCount();nIndex++){
+					pSeriesA->AddSeriesData(rand()%151);
+				}
+				pChartView->AddSeries(pSeriesA);
+			}
+			else if(msg.pSender->GetName() == _T("AddChartDataC") && pChartView->GetGroupCount()){
+				CDuiString mLegend;
+				mLegend.Format(_T("测试图例%d"),mChartDataPos++);
+				CChartSeries* pSeriesA = new CChartSeries(mLegend,Color(rand()%256,rand()%256,rand()%256).GetValue(),Color(rand()%256,rand()%256,rand()%256).GetValue());
+
+				for(int nIndex = 0;(UINT)nIndex < pChartView->GetGroupCount();nIndex++){
+					pSeriesA->AddSeriesData(rand()%151-151);
+				}
+				pChartView->AddSeries(pSeriesA);
+			}
+			else if(msg.pSender->GetName() == _T("LegendTop")){
+				pChartView->GetXYAxis().SetLegendLocation(LOCATION_TOP);
+			}
+			else if(msg.pSender->GetName() == _T("LegendRight")){
+				pChartView->GetXYAxis().SetLegendLocation(LOCATION_RIGHT);
+			}
+			else if(msg.pSender->GetName() == _T("LegendBottom")){
+				pChartView->GetXYAxis().SetLegendLocation(LOCATION_BOTTOM);
+			}
+			else if(msg.pSender->GetName() == _T("DelChartData")){
+				pChartView->RemoveSeries(0);
 			}
 		}
 		if(msg.sType == _T("OnEditTimer") && msg.pSender == pTestEdit){

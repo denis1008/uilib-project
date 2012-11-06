@@ -49,8 +49,19 @@ public:
     void SetColorHSL(bool bColorHSL);
     int GetBorderSize() const;
     void SetBorderSize(int nSize);
+	int GetBorderStyle() const;
+	void SetBorderStyle(int nStyle);
     SIZE GetBorderRound() const;
     void SetBorderRound(SIZE cxyRound);
+	int GetLeftBorderSize() const;
+	void SetLeftBorderSize(int nSize);
+	int GetTopBorderSize() const;
+	void SetTopBorderSize(int nSize);
+	int GetRightBorderSize() const;
+	void SetRightBorderSize(int nSize);
+	int GetBottomBorderSize() const;
+	void SetBottomBorderSize(int nSize);
+
 	bool DrawImage(HDC hDC, LPCTSTR pStrImage, LPCTSTR pStrModify = NULL, bool bNeedAlpha = FALSE, BYTE bNewFade = 255);
 
     // 位置相关
@@ -142,9 +153,13 @@ public:
     virtual void PaintBkImage(HDC hDC);
     virtual void PaintStatusImage(HDC hDC);
     virtual void PaintText(HDC hDC);
-    virtual void PaintBorder(HDC hDC);
+	virtual void PaintBorder(HDC hDC);
 
     virtual void DoPostPaint(HDC hDC, const RECT& rcPaint);
+
+	//虚拟窗口参数
+	void SetVirtualWnd(LPCTSTR pstrValue);
+	CDuiString GetVirtualWnd() const;
 
 	virtual CDuiString GetEffectStyle() const;
 	virtual void SetAnimEffects(bool bEnableEffect);
@@ -193,6 +208,7 @@ public:
 protected:
     CPaintManagerUI* m_pManager;
     CControlUI* m_pParent;
+	CDuiString m_sVirtualWnd;
     CDuiString m_sName;
     bool m_bUpdateNeeded;
     bool m_bMenuUsed;
@@ -231,8 +247,10 @@ protected:
 	DWORD m_dwFocusBorderColor;
     bool m_bColorHSL;
     int m_nBorderSize;
+	int m_nBorderStyle;
     SIZE m_cxyBorderRound;
     RECT m_rcPaint;
+	RECT m_rcBorderSize;
 public:
 
 	// 取控件图片非透明色区域

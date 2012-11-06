@@ -10,31 +10,6 @@ namespace UiLib
 	class UILIB_API CEditUI : public CLabelUI
 	{
 		friend class CEditWnd;
-	private:
-		class UILIB_API CTimer
-		{
-		public:
-			CTimer();
-			~CTimer();
-		public:
-			void Start();
-			void Stop();
-			void SetDelay(UINT _Delay = 1000);
-			UINT GetDelay();
-			void SetCurTickCount();
-			bool CheckTickDaYuDelay();
-			bool IsRun();
-		public:
-			static void CALLBACK TimerProc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2);
-		private:
-			bool	mIsRun;
-			UINT	m_Delay;
-			UINT	m_TimerID;
-			UINT	m_TimerAccuracy;
-		public:
-			CEditUI* pEditUI;
-			DWORD m_CurTickCount;
-		};
 	public:
 		CEditUI();
 
@@ -98,14 +73,16 @@ namespace UiLib
 		void SetEnableTimer(bool bEnableTime);
 		bool GetEnableTimer();
 		void SetTimerDelay(UINT nDelay);
-		CEditUI::CTimer* GetTimerObj();
+		UINT GetTimerDelay();
+
+	public:
+		void OnTimer(UINT iTimerID);
 	protected:
-		HWND m_Hwnd;
+		UINT m_uDelay;
 		CEditWnd*	m_pWindow;
-		CEditUI::CTimer		m_Timer;
 		bool		m_bEnableTime;
 		CDuiString	m_sCheckVal;
-
+		
 		UINT m_uMaxChar;
 		bool m_bReadOnly;
 		bool m_bPasswordMode;

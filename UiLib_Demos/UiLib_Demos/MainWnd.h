@@ -3,7 +3,9 @@
 
 #include <map>
 #include <ShellAPI.h>
+#include   <time.h>
 #include "../../Common/Include/UiLib/Utils/IWindowBase.h"
+
 
 #pragma once
 class CMainWnd : public IWindowBase
@@ -21,9 +23,11 @@ public:
 	void OnFinalMessage(HWND hWnd);
 	
 private:
+	int				mChartDataPos;
 	CLabelUI*		pTestLabel;
 	CEditUI*		pTestEdit;
 	CButtonUI*		pEffectsDemo;
+	CChartViewUI*	pChartView;
 	CHorizontalLayoutUI* pAnimWnd;
 	HMENU			hMenu;
 	NOTIFYICONDATA	nid;
