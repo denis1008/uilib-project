@@ -12,6 +12,7 @@ namespace UiLib
 		: public CActiveXUI
 		, public IDocHostUIHandler
 		, public IServiceProvider
+		, public IOleCommandTarget
 		, public IDispatch
 		, public ITranslateAccelerator
 	{
@@ -30,9 +31,12 @@ namespace UiLib
 		void Navigate2(LPCTSTR lpszUrl);
 		void Refresh();
 		void Refresh2(int Level);
+		void GoBack();
+		void GoForward();
 		void NavigateHomePage();
 		void NavigateUrl(LPCTSTR lpszUrl);
 		virtual bool DoCreateControl();
+		IWebBrowser2* GetWebBrowser2(void);
 		IDispatch*		   GetHtmlWindow();
 		static DISPID FindId(IDispatch *pObj, LPOLESTR pName);
 		static HRESULT InvokeMethod(IDispatch *pObj, LPOLESTR pMehtod, VARIANT *pVarResult, VARIANT *ps, int cArgs);
@@ -93,6 +97,10 @@ namespace UiLib
 
 		// IServiceProvider
 		STDMETHOD(QueryService)(REFGUID guidService, REFIID riid, void** ppvObject);
+
+		// IOleCommandTarget
+		virtual HRESULT STDMETHODCALLTYPE QueryStatus( __RPC__in_opt const GUID *pguidCmdGroup, ULONG cCmds, __RPC__inout_ecount_full(cCmds ) OLECMD prgCmds[ ], __RPC__inout_opt OLECMDTEXT *pCmdText);
+		virtual HRESULT STDMETHODCALLTYPE Exec( __RPC__in_opt const GUID *pguidCmdGroup, DWORD nCmdID, DWORD nCmdexecopt, __RPC__in_opt VARIANT *pvaIn, __RPC__inout_opt VARIANT *pvaOut );
 
 		// IDownloadManager
 		STDMETHOD(Download)( 
