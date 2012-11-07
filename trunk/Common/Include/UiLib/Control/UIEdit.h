@@ -67,6 +67,7 @@ namespace UiLib
 		void DoEvent(TEventUI& event);
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
+		void PaintBkColor(HDC hDC);
 		void PaintStatusImage(HDC hDC);
 		void PaintText(HDC hDC);
 

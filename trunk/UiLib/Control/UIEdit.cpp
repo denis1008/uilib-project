@@ -454,13 +454,14 @@ namespace UiLib
 	void CEditUI::SetNativeEditBkColor(DWORD dwBkColor)
 	{
 		m_dwEditbkColor = dwBkColor;
+		Invalidate();
 	}
 
 	DWORD CEditUI::GetNativeEditBkColor() const
 	{
 		return m_dwEditbkColor;
 	}
-
+	
 	void CEditUI::SetSel(long nStartChar, long nEndChar)
 	{
 		if( m_pWindow != NULL ) Edit_SetSel(*m_pWindow, nStartChar,nEndChar);
@@ -834,6 +835,20 @@ MatchFailed:
 		}
 		else CLabelUI::SetAttribute(pstrName, pstrValue);
 	}
+	
+	//************************************
+	// 函数名称: PaintBkColor
+	// 返回类型: void
+	// 参数信息: HDC hDC
+	// 函数说明: 
+	//************************************
+	void CEditUI::PaintBkColor( HDC hDC )
+	{
+		if(!IsEnabled())
+			CRenderEngine::DrawColor(hDC, m_rcItem, GetAdjustColor(m_dwDisabledBkColor));
+		else 
+			CLabelUI::PaintBkColor(hDC);
+	}
 
 	void CEditUI::PaintStatusImage(HDC hDC)
 	{
@@ -995,5 +1010,4 @@ MatchFailed:
 	{
 		return m_uDelay;
 	}
-
 }

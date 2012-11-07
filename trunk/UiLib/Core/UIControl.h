@@ -39,6 +39,8 @@ public:
     void SetBkColor2(DWORD dwBackColor);
     DWORD GetBkColor3() const;
     void SetBkColor3(DWORD dwBackColor);
+	void SetDisabledBkColor(DWORD dwDisabledBkColor);
+	DWORD GetDisibledBkColor() const;
     LPCTSTR GetBkImage();
     void SetBkImage(LPCTSTR pStrImage);
     DWORD GetBorderColor() const;
@@ -240,7 +242,8 @@ protected:
 
     DWORD m_dwBackColor;
     DWORD m_dwBackColor2;
-    DWORD m_dwBackColor3;
+	DWORD m_dwBackColor3;
+	DWORD m_dwDisabledBkColor;
     CDuiString m_sBkImage;
 	CDuiString m_sForeImage;
     DWORD m_dwBorderColor;
