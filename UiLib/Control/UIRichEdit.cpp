@@ -2059,6 +2059,20 @@ void CRichEditUI::DoPaint(HDC hDC, const RECT& rcPaint)
     }
 }
 
+//************************************
+// 函数名称: PaintBkColor
+// 返回类型: void
+// 参数信息: HDC hDC
+// 函数说明: 
+//************************************
+void CRichEditUI::PaintBkColor( HDC hDC )
+{
+	if(!IsEnabled())
+		CRenderEngine::DrawColor(hDC, m_rcItem, GetAdjustColor(m_dwDisabledBkColor));
+	else 
+		CContainerUI::PaintBkColor(hDC);
+}
+
 void CRichEditUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
 {
     if( _tcscmp(pstrName, _T("vscrollbar")) == 0 ) {

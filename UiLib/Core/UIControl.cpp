@@ -21,6 +21,7 @@ namespace UiLib
 		m_dwBackColor(0),
 		m_dwBackColor2(0),
 		m_dwBackColor3(0),
+		m_dwDisabledBkColor(0xFFF0F0F0),
 		m_dwBorderColor(0),
 		m_dwFocusBorderColor(0),
 		m_bColorHSL(false),
@@ -155,6 +156,28 @@ namespace UiLib
 	DWORD CControlUI::GetBkColor3() const
 	{
 		return m_dwBackColor3;
+	}
+	
+	//************************************
+	// 函数名称: SetDisabledBkColor
+	// 返回类型: void
+	// 参数信息: DWORD dwDisabledBkColor
+	// 函数说明: 
+	//************************************
+	void CControlUI::SetDisabledBkColor( DWORD dwDisabledBkColor )
+	{
+		m_dwDisabledBkColor = dwDisabledBkColor;
+		Invalidate();
+	}
+
+	//************************************
+	// 函数名称: GetDisibledBkColor
+	// 返回类型: DWORD
+	// 函数说明: 
+	//************************************
+	DWORD CControlUI::GetDisibledBkColor() const
+	{
+		return m_dwDisabledBkColor;
 	}
 
 	void CControlUI::SetBkColor3(DWORD dwBackColor)
@@ -1042,6 +1065,12 @@ namespace UiLib
 			LPTSTR pstr = NULL;
 			DWORD clrColor = _tcstoul(pstrValue, &pstr, 16);
 			SetBkColor3(clrColor);
+		}
+		else if( _tcscmp(pstrName, _T("disabledbkcolor")) == 0 ) {
+			if( *pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);
+			LPTSTR pstr = NULL;
+			DWORD clrColor = _tcstoul(pstrValue, &pstr, 16);
+			SetDisabledBkColor(clrColor);
 		}
 		else if( _tcscmp(pstrName, _T("bordercolor")) == 0 ) {
 			if( *pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);

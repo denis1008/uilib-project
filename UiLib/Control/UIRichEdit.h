@@ -118,7 +118,8 @@ public:
     SIZE EstimateSize(SIZE szAvailable);
     void SetPos(RECT rc);
     void DoEvent(TEventUI& event);
-    void DoPaint(HDC hDC, const RECT& rcPaint);
+	void DoPaint(HDC hDC, const RECT& rcPaint);
+	void PaintBkColor(HDC hDC);
 
     void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
