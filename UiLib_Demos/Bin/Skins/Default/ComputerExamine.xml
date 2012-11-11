@@ -31,7 +31,7 @@
 			<HorizontalLayout height="1">
 				<Container bkimage="WndFrame/horizontal_border.bmp" />
 			</HorizontalLayout>
-			<TreeView bkcolor="#ffffffff" visiblefolderbtn="true" hscrollbar="true" visiblecheckbtn="true" itemminwidth="250" >
+			<TreeView bkcolor="#ffffffff" visiblefolderbtn="true" hscrollbar="true" visiblecheckbtn="true" itemminwidth="250" selitemtextcolor="#ffff00ff" itemhottextcolor="#ff0000ff" >
 				<TreeNode text="A1" style="treenode" >
 					<TreeNode text="B1" style="treenode" >
 						<TreeNode text="C1" style="treenode" >
