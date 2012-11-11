@@ -762,6 +762,7 @@
 		<Attribute name="nativebkcolor" default="0x00000000" type="DWORD" comment="windows原生edit控件的背景颜色,如(0xFFFFFFFF)"/>
 		
 		<!--UiLib 扩展属性-->
+		<Attribute name="disabledbkcolor" default="0xFFF0F0F0" type="STRING" comment="禁用状态背景色"/>
 		<Attribute name="tipvalue" default="" type="STRING" comment="文本框内提示文字，当文本框text为空时显示并失去焦点时显示"/>
 		<Attribute name="tipvaluecolor" default="0xFFBAC0C5" type="DWORD" comment="文本框内提示文字的颜色"/>
 		<Attribute name="enabletimer" default="false" type="DWORD" comment="当焦点在文本框时是否开启定时器，开启后会定时收到OnEditTimer事件，一般用在自动完成功能上，达到定时取值的效果"/>
@@ -1202,6 +1203,8 @@
 		<Attribute name="align" default="left" type="STRING" comment="文字对齐方式,取值left、right、cente，如(center)"/>
 		<Attribute name="font" default="-1" type="INT" comment="字体id,如(0)"/>
 		<Attribute name="textcolor" default="0xFF000000" type="DWORD" comment="字体颜色，如(0xFFFF0000)"/>
+		<!--UiLib 扩展属性-->
+		<Attribute name="disabledbkcolor" default="0xFFF0F0F0" type="STRING" comment="禁用状态背景色"/>
 	</RichEdit>
 	<!--UiLib 扩展的UI元素对象-->
 	<TreeView parent="List" notifies="selectchanged setfocus killfocus timer menu itemselect windowinit(root)">
@@ -1270,6 +1273,10 @@
 		<Attribute name="visiblefolderbtn" default="true" type="BOOL" comment="是否显示展开与收缩按钮对象"/>
 		<Attribute name="visiblecheckbtn" default="false" type="BOOL" comment="是否显示复选框对象"/>
 		<Attribute name="itemminwidth" default="0" type="UINT" comment="设置Item的最小宽度，当hscrollbar为真且itemminwidth大于TreeView宽度时才会显示横向滚动条"/>
+		<Attribute name="itemtextcolor" default="0x00000000" type="DWORD" comment="item文本颜色"/>
+		<Attribute name="itemhottextcolor" default="0x00000000" type="DWORD" comment="鼠标进入item时文本颜色"/>
+		<Attribute name="selitemtextcolor" default="0x00000000" type="DWORD" comment="item被选中时文本颜色"/>
+		<Attribute name="selitemhottextcolor" default="0x00000000" type="DWORD" comment="item被选中时且鼠标进入时的文本颜色"/>
 	</TreeView>
 	<!--UiLib 扩展的UI元素对象-->
 	<TreeNode parent="ListContainerElement" notifies="setfocus killfocus timer itemactivate itemclick itemexpanded itemcollapsed windowinit(root)">
@@ -1312,5 +1319,9 @@
 		<Attribute name="folderattr" default="" type="STRING" comment="item展开与收缩按钮对象属性设置，格式参考Default元素的属性设置"/>
 		<Attribute name="checkboxattr" default="" type="STRING" comment="item复选框对象属性设置，格式参考Default元素的属性设置"/>
 		<Attribute name="itemattr" default="" type="STRING" comment="item按钮对象属性设置，格式参考Default元素的属性设置"/>
+		<Attribute name="textcolor" default="0x00000000" type="DWORD" comment="item文本颜色"/>
+		<Attribute name="texthotcolor" default="0x00000000" type="DWORD" comment="鼠标进入item时文本颜色"/>
+		<Attribute name="selitemtextcolor" default="0x00000000" type="DWORD" comment="item被选中时文本颜色"/>
+		<Attribute name="selhotitemtextcolor" default="0x00000000" type="DWORD" comment="item被选中时且鼠标进入时的文本颜色"/>
 	</TreeNode>
 </Controls>

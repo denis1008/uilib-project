@@ -2067,7 +2067,7 @@ void CRichEditUI::DoPaint(HDC hDC, const RECT& rcPaint)
 //************************************
 void CRichEditUI::PaintBkColor( HDC hDC )
 {
-	if(!IsEnabled())
+	if(!IsEnabled() || IsReadOnly())
 		CRenderEngine::DrawColor(hDC, m_rcItem, GetAdjustColor(m_dwDisabledBkColor));
 	else 
 		CContainerUI::PaintBkColor(hDC);
