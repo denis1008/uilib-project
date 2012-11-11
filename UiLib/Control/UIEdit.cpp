@@ -136,12 +136,12 @@ namespace UiLib
 		}
 		
 		if( uMsg == OCM__BASE + WM_CTLCOLOREDIT  || uMsg == OCM__BASE + WM_CTLCOLORSTATIC ) {
-			if( m_pOwner->GetNativeEditBkColor() == 0xFFFFFFFF ) return NULL;
+			if( m_pOwner->GetNativeEditBkColor() == 0xFFFFFFFF && !m_pOwner->IsReadOnly() ) return NULL;
 			::SetBkMode((HDC)wParam, TRANSPARENT);
 			DWORD dwTextColor = m_pOwner->GetTextColor();
 			::SetTextColor((HDC)wParam, RGB(GetBValue(dwTextColor),GetGValue(dwTextColor),GetRValue(dwTextColor)));
 			if( m_hBkBrush == NULL ) {
-				DWORD clrColor = m_pOwner->GetNativeEditBkColor();
+				DWORD clrColor = !m_pOwner->IsReadOnly()?m_pOwner->GetNativeEditBkColor():m_pOwner->GetDisibledBkColor();
 				m_hBkBrush = ::CreateSolidBrush(RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor)));
 			}
 			return (LRESULT)m_hBkBrush;
@@ -844,7 +844,7 @@ MatchFailed:
 	//************************************
 	void CEditUI::PaintBkColor( HDC hDC )
 	{
-		if(!IsEnabled())
+		if(!IsEnabled() || IsReadOnly())
 			CRenderEngine::DrawColor(hDC, m_rcItem, GetAdjustColor(m_dwDisabledBkColor));
 		else 
 			CLabelUI::PaintBkColor(hDC);

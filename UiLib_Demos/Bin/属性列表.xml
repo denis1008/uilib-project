@@ -1273,6 +1273,10 @@
 		<Attribute name="visiblefolderbtn" default="true" type="BOOL" comment="是否显示展开与收缩按钮对象"/>
 		<Attribute name="visiblecheckbtn" default="false" type="BOOL" comment="是否显示复选框对象"/>
 		<Attribute name="itemminwidth" default="0" type="UINT" comment="设置Item的最小宽度，当hscrollbar为真且itemminwidth大于TreeView宽度时才会显示横向滚动条"/>
+		<Attribute name="itemtextcolor" default="0x00000000" type="DWORD" comment="item文本颜色"/>
+		<Attribute name="itemhottextcolor" default="0x00000000" type="DWORD" comment="鼠标进入item时文本颜色"/>
+		<Attribute name="selitemtextcolor" default="0x00000000" type="DWORD" comment="item被选中时文本颜色"/>
+		<Attribute name="selitemhottextcolor" default="0x00000000" type="DWORD" comment="item被选中时且鼠标进入时的文本颜色"/>
 	</TreeView>
 	<!--UiLib 扩展的UI元素对象-->
 	<TreeNode parent="ListContainerElement" notifies="setfocus killfocus timer itemactivate itemclick itemexpanded itemcollapsed windowinit(root)">
@@ -1315,5 +1319,9 @@
 		<Attribute name="folderattr" default="" type="STRING" comment="item展开与收缩按钮对象属性设置，格式参考Default元素的属性设置"/>
 		<Attribute name="checkboxattr" default="" type="STRING" comment="item复选框对象属性设置，格式参考Default元素的属性设置"/>
 		<Attribute name="itemattr" default="" type="STRING" comment="item按钮对象属性设置，格式参考Default元素的属性设置"/>
+		<Attribute name="textcolor" default="0x00000000" type="DWORD" comment="item文本颜色"/>
+		<Attribute name="texthotcolor" default="0x00000000" type="DWORD" comment="鼠标进入item时文本颜色"/>
+		<Attribute name="selitemtextcolor" default="0x00000000" type="DWORD" comment="item被选中时文本颜色"/>
+		<Attribute name="selhotitemtextcolor" default="0x00000000" type="DWORD" comment="item被选中时且鼠标进入时的文本颜色"/>
 	</TreeNode>
 </Controls>
