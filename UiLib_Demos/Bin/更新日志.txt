@@ -1,3 +1,22 @@
+2012-11-11
+#同步UiLib 至 Duilib R358
+#修复UITabLayout移除控件时的显示Bug
++TreeView 增加Item文本的状态颜色定义，分别为itemtextcolor、itemhottextcolor、selitemtextcolor、sel
+itemhottextcolor
+
+2012-11-07
++对RichEdit和Edit分别增加disabledbkcolor属性。为禁用状态时的背景色。
+
+2012-11-06
+#同步UiLib 至 Duilib R355
+#UIWebBrowser更新 By:huhangscu@gmail.com
+#1.解决了Tab、Ctrl+C不能正常使用、不能选中文字的问题
+#2.修复了几个内存泄露
++新增所有控件支持自动匹配样式，应用顺序为，全局Default 、当前Styles 、Control 将逐层覆盖。属性应用优先级则反序。
+*修正Styles 未指定缺省样式时的bug
+*优化Styles代码并修正2处内存泄露
+*更新Demo工程，以及相关功能的完善。
+
 2012-10-05
 +Control 控件基类增加borderstyle属性，以实现所有控件支持边框样式的设置。
 +Control 控件基类增加定向边框属性分别为 leftbordersize/topbordersize/rightbordersize/bottombordersize ，以实现指定方向的边框绘制
