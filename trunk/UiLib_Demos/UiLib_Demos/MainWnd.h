@@ -21,7 +21,23 @@ public:
 	void Init();
 	void Notify(TNotifyUI& msg);
 	void OnFinalMessage(HWND hWnd);
-	
+
+	bool OnMsgBtnMouseEnter(TEventUI* pTEventUI);
+	bool OnMsgBtnMouseLeave(TEventUI* pTEventUI);
+	bool OnMsgBtnClick(TNotifyUI* pTNotifyUI);
+	bool OnEffectsBtnClick(TNotifyUI* pTNotifyUI);
+	bool OnAddNodeBtnClick(TNotifyUI* pTNotifyUI);
+	bool OnAddAtNodeBtnClick(TNotifyUI* pTNotifyUI);
+	bool OnRemoveNodeBtnClick(TNotifyUI* pTNotifyUI);
+	bool OnCreateChartViewBtn(TNotifyUI* pTNotifyUI);
+	bool OnAddChartDataABtn(TNotifyUI* pTNotifyUI);
+	bool OnAddChartDataBBtn(TNotifyUI* pTNotifyUI);
+	bool OnAddChartDataCBtn(TNotifyUI* pTNotifyUI);
+	bool OnLegendTopBtn(TNotifyUI* pTNotifyUI);
+	bool OnLegendRightBtn(TNotifyUI* pTNotifyUI);
+	bool OnLegendBottomBtn(TNotifyUI* pTNotifyUI);
+	bool OnDelChartDataBtn(TNotifyUI* pTNotifyUI);
+
 private:
 	int				mChartDataPos;
 	CLabelUI*		pTestLabel;

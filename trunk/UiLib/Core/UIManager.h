@@ -26,7 +26,8 @@ static UINT MapKeyState()
 
 typedef enum EVENTTYPE_UI
 {
-    UIEVENT__FIRST = 1,
+	UIEVENT__ALL,
+    UIEVENT__FIRST,
     UIEVENT__KEYBEGIN,
     UIEVENT_KEYDOWN,
     UIEVENT_KEYUP,
