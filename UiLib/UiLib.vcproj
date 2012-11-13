@@ -332,6 +332,14 @@
 			<File
 				RelativePath=".\UIlib.cpp"
 				>
+				<FileConfiguration
+					Name="Static_Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="2"
+					/>
+				</FileConfiguration>
 			</File>
 			<Filter
 				Name="Control"

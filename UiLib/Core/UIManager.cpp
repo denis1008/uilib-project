@@ -546,7 +546,12 @@ namespace UiLib {
 		while( pMsg = static_cast<TNotifyUI*>(m_aAsyncNotify.GetAt(0)) ) {
 			m_aAsyncNotify.Remove(0);
 			if( pMsg->pSender != NULL ) {
-				if( pMsg->pSender->OnNotify ) pMsg->pSender->OnNotify(pMsg);
+				if( pMsg->pSender->OnNotify ){
+					if(pMsg->pSender->OnNotify(pMsg)){
+						delete pMsg;
+						return true;
+					}
+				}
 			}
 			for( int j = 0; j < m_aNotifiers.GetSize(); j++ ) {
 				static_cast<INotifyUI*>(m_aNotifiers[j])->Notify(*pMsg);
@@ -1149,7 +1154,12 @@ namespace UiLib {
 		while( pMsg = static_cast<TNotifyUI*>(m_aAsyncNotify.GetAt(0)) ) {
 			m_aAsyncNotify.Remove(0);
 			if( pMsg->pSender != NULL ) {
-				if( pMsg->pSender->OnNotify ) pMsg->pSender->OnNotify(pMsg);
+				if( pMsg->pSender->OnNotify ){
+					if(pMsg->pSender->OnNotify(pMsg)){
+						delete pMsg;
+						return true;
+					}
+				}
 			}
 			for( int j = 0; j < m_aNotifiers.GetSize(); j++ ) {
 				static_cast<INotifyUI*>(m_aNotifiers[j])->Notify(*pMsg);
@@ -2279,7 +2289,11 @@ namespace UiLib {
 		if( !bAsync ) {
 			// Send to all listeners
 			if( Msg.pSender != NULL ) {
-				if( Msg.pSender->OnNotify ) Msg.pSender->OnNotify(&Msg);
+				if( Msg.pSender->OnNotify ){
+					if(Msg.pSender->OnNotify(&Msg))
+						return;
+				}
+				//if( Msg.pSender->OnNotify ) Msg.pSender->OnNotify(&Msg);
 			}
 			for( int i = 0; i < m_aNotifiers.GetSize(); i++ ) {
 				static_cast<INotifyUI*>(m_aNotifiers[i])->Notify(Msg);
