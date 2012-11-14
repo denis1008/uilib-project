@@ -171,7 +171,7 @@ namespace UiLib
 								{
 									LPCTSTR pstrClass = nStyleNode.GetName();
 
-									if( _tcscmp(pstrClass, _T("Style")) != 0 && !nStyleNode.HasAttribute(_T("stylename")))
+									if( _tcscmp(pstrClass, _T("Style")) != 0 || !nStyleNode.HasAttribute(_T("stylename")))
 										continue;
 
 									CDuiString nControlStyleName = nStyleNode.GetAttributeValue(_T("stylename"));
@@ -195,7 +195,7 @@ namespace UiLib
 					{
 						LPCTSTR pstrClass = nStyleNode.GetName();
 
-						if( _tcscmp(pstrClass, _T("Style")) != 0 && !nStyleNode.HasAttribute(_T("stylename")))
+						if( _tcscmp(pstrClass, _T("Style")) != 0 || !nStyleNode.HasAttribute(_T("stylename")))
 							continue;
 
 						CDuiString nControlStyleName = nStyleNode.GetAttributeValue(_T("stylename"));
