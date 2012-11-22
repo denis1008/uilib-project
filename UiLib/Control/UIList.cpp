@@ -5,6 +5,13 @@ namespace UiLib {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
+	REGIST_DUICLASS(CListUI);
+	REGIST_DUICLASS(CListHeaderUI);
+	REGIST_DUICLASS(CListHeaderItemUI);
+	REGIST_DUICLASS(CListLabelElementUI);
+	REGIST_DUICLASS(CListTextElementUI);
+	REGIST_DUICLASS(CListImageTextElementUI);
+	REGIST_DUICLASS(CListContainerElementUI);
 
 	CListUI::CListUI() : m_pCallback(NULL), m_bScrollSelect(false)/*, m_iCurSel(-1)*/, m_iExpandedItem(-1),m_bSingleSel(false)
 	{

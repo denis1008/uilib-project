@@ -128,6 +128,85 @@ namespace UiLib
 						pManager->AddDefaultAttributeList(pControlName, pControlValue);
 					}
 				}
+				else if( _tcscmp(pstrClass, _T("ActionScript")) == 0) {
+
+					for(CMarkupNode AGroupNode = node.GetChild();AGroupNode.IsValid();AGroupNode = AGroupNode.GetSibling()){
+						LPCTSTR pstrClass = AGroupNode.GetName();
+						if( _tcscmp(pstrClass, _T("AGroup")) != 0 || !AGroupNode.HasAttribute(_T("name")) || !AGroupNode.HasAttribute(_T("msgtype")) || !AGroupNode.HasAttribute(_T("msgvalue")))
+							continue;
+
+						if(_tcscmp(_T("notify"),AGroupNode.GetAttributeValue(_T("msgtype"))) != 0 && 
+							_tcscmp(_T("event"),AGroupNode.GetAttributeValue(_T("msgtype"))) != 0)
+							continue;
+
+						int  iDefaultInterval	= _ttoi(AGroupNode.GetAttributeValue(_T("defaultinterval")));
+						int  iDefaultTimer		= _ttoi(AGroupNode.GetAttributeValue(_T("defaulttimer")));
+						bool bDefaultAutoStart	= _tcscmp(_T("true"),AGroupNode.GetAttributeValue(_T("defaultautostart"))) == 0?true:false;
+						bool bDefaultLoop		= _tcscmp(_T("true"),AGroupNode.GetAttributeValue(_T("defaultloop"))) == 0?true:false;
+						bool bDefaultReverse	= _tcscmp(_T("true"),AGroupNode.GetAttributeValue(_T("defaultreverse"))) == 0?true:false;
+
+						if(_tcscmp(_T("notify"),AGroupNode.GetAttributeValue(_T("msgtype"))) == 0){
+							if(!pManager->AddActionScriptGroup(
+								AGroupNode.GetAttributeValue(_T("name")),
+								AGroupNode.GetAttributeValue(_T("msgvalue")),
+								iDefaultInterval,iDefaultTimer,
+								bDefaultReverse,bDefaultLoop,bDefaultAutoStart
+								))
+								continue;
+						}
+						else if(_tcscmp(_T("event"),AGroupNode.GetAttributeValue(_T("msgtype"))) == 0){
+							if(!pManager->AddActionScriptGroup(
+								AGroupNode.GetAttributeValue(_T("name")),
+								(EVENTTYPE_UI)_ttoi(AGroupNode.GetAttributeValue(_T("msgvalue"))),
+								iDefaultInterval,iDefaultTimer,
+								bDefaultReverse,bDefaultLoop,bDefaultAutoStart
+								))
+								continue;
+						}
+
+						TAGroup* pTAGroup = pManager->GetActionScriptGroup(AGroupNode.GetAttributeValue(_T("name")));
+						if(!pTAGroup)
+							continue;
+
+						for(CMarkupNode ActionNode = AGroupNode.GetChild();ActionNode.IsValid();ActionNode = ActionNode.GetSibling()){
+							if( _tcscmp(ActionNode.GetName(), _T("Property")) != 0 
+								|| !ActionNode.HasAttribute(_T("name")) 
+								|| !ActionNode.HasAttribute(_T("type")) 
+								|| (!ActionNode.HasAttribute(_T("startvalue")) || !ActionNode.HasAttribute(_T("endvalue")))
+								|| _tcscmp(ActionNode.GetAttributeValue(_T("startvalue")),ActionNode.GetAttributeValue(_T("endvalue"))) == 0)
+								continue;
+
+							int  iInterval	= iDefaultInterval;
+							int	 iTimer		= iDefaultTimer;
+							int	 iDelay		= 0;
+							bool bAutoStart	= bDefaultAutoStart;
+							bool bLoop		= bDefaultLoop;
+							bool bReverse	= bDefaultReverse;
+
+							LPCTSTR sName		= ActionNode.GetAttributeValue(_T("name"));
+							LPCTSTR sType		= ActionNode.GetAttributeValue(_T("type"));
+							LPCTSTR sStartVal	= _T("none");
+							LPCTSTR sEndVal		= _T("none");
+
+							if(ActionNode.HasAttribute(_T("startvalue")))
+								sStartVal	= ActionNode.GetAttributeValue(_T("startvalue"));
+							if(ActionNode.HasAttribute(_T("endvalue")))
+								sEndVal		= ActionNode.GetAttributeValue(_T("endvalue"));
+							if(ActionNode.HasAttribute(_T("interval")))
+								iInterval	= _ttoi(ActionNode.GetAttributeValue(_T("interval"))) <= 0 ?0:_ttoi(ActionNode.GetAttributeValue(_T("interval")));
+							if(ActionNode.HasAttribute(_T("timer")))
+								iTimer		= _ttoi(ActionNode.GetAttributeValue(_T("timer"))) <= 0 ?0:_ttoi(ActionNode.GetAttributeValue(_T("timer")));
+							if(ActionNode.HasAttribute(_T("autostart")))
+								bAutoStart	= _tcscmp(_T("true"),ActionNode.GetAttributeValue(_T("autostart"))) == 0?true:false;
+							if(ActionNode.HasAttribute(_T("loop")))
+								bLoop		= _tcscmp(_T("true"),ActionNode.GetAttributeValue(_T("loop"))) == 0?true:false;
+							if(ActionNode.HasAttribute(_T("reverse")))
+								bReverse	= _tcscmp(_T("true"),ActionNode.GetAttributeValue(_T("reverse"))) == 0?true:false;
+
+							pManager->AddPropertyAction(*pTAGroup,sName,sType,sStartVal,sEndVal,iInterval,iTimer,iDelay,bReverse,bLoop,bAutoStart);
+						}
+					}
+				}
 				else if( _tcscmp(pstrClass, _T("Styles")) == 0) {
 
 					nAttributes = node.GetAttributeCount();
@@ -403,7 +482,7 @@ namespace UiLib
 			LPCTSTR pstrClass = node.GetName();
 			if( _tcscmp(pstrClass, _T("Image")) == 0 || _tcscmp(pstrClass, _T("Font")) == 0 \
 				|| _tcscmp(pstrClass, _T("Default")) == 0 || _tcscmp(pstrClass, _T("EffectsStyles")) == 0
-				|| _tcscmp(pstrClass, _T("Styles")) == 0) continue;
+				|| _tcscmp(pstrClass, _T("Styles")) == 0 || _tcscmp(pstrClass, _T("ActionScript")) == 0) continue;
 
 			CControlUI* pControl = NULL;
 			if( _tcscmp(pstrClass, _T("Include")) == 0 ) {
@@ -514,7 +593,11 @@ namespace UiLib
 // 				continue;
 // 			}
 			else {
-				SIZE_T cchLen = _tcslen(pstrClass);
+				CDuiString szNodeName;
+				szNodeName.Format(_T("C%sUI"),pstrClass);
+				pControl = CreateDuiInstance<CControlUI*>(szNodeName.GetData());
+				/*
+				SIZE_T cchLen = _tclen(pstrClass);
 				switch( cchLen ) {
 				case 4:
 					if( _tcscmp(pstrClass, _T("Edit")) == 0 )						pControl = new CEditUI;
@@ -577,6 +660,7 @@ namespace UiLib
 					else if( _tcscmp(pstrClass, _T("ListImageTextElement")) == 0 )   pControl = new CListImageTextElementUI;
 					break;
 				}
+				*/
 				// User-supplied control factory
 				if( pControl == NULL ) {
 					CStdPtrArray* pPlugins = CPaintManagerUI::GetPlugins();

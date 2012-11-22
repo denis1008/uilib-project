@@ -165,6 +165,12 @@
     <ClCompile Include="Control\UIChartView.cpp">
       <Filter>源文件\Control</Filter>
     </ClCompile>
+    <ClCompile Include="Core\UITimer.cpp">
+      <Filter>源文件\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\DuiReflection.cpp">
+      <Filter>源文件\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h">
@@ -307,6 +313,12 @@
     </ClInclude>
     <ClInclude Include="Control\UIChartView.h">
       <Filter>头文件\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\UITimer.h">
+      <Filter>头文件\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\DuiReflection.h">
+      <Filter>头文件\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

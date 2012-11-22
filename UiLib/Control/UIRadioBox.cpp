@@ -4,6 +4,8 @@
 namespace UiLib
 {
 
+	REGIST_DUICLASS(CRadioBoxUI);
+
 	CRadioBoxUI::CRadioBoxUI(void)
 	{
 	}

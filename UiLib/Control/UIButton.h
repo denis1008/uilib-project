@@ -50,6 +50,8 @@ namespace UiLib
 		DWORD GetFocusedTextColor() const;
 		SIZE EstimateSize(SIZE szAvailable);
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+		unUserData GetAttribute( LPCTSTR pstrName );
+		void OnPropertyActionTimer( IDuiTimer* pTimer,TProperty* pTProperty );
 
 		void PaintText(HDC hDC);
 		void PaintStatusImage(HDC hDC);

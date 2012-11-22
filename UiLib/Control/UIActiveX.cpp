@@ -9,7 +9,8 @@ namespace UiLib {
 
 class CActiveXCtrl;
 
-
+REGIST_DUICLASS(CActiveXCtrl);
+REGIST_DUICLASS(CWebBrowserUI);
 /////////////////////////////////////////////////////////////////////////////////////
 //
 //

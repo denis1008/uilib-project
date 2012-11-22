@@ -2,6 +2,8 @@
 
 namespace UiLib
 {
+	REGIST_DUICLASS(CControlUI);
+
 	CControlUI::CControlUI() : m_pManager(NULL), 
 		m_pParent(NULL), 
 		m_bUpdateNeeded(true),
@@ -26,7 +28,8 @@ namespace UiLib
 		m_dwFocusBorderColor(0),
 		m_bColorHSL(false),
 		m_nBorderSize(0),
-		m_nBorderStyle(PS_SOLID)
+		m_nBorderStyle(PS_SOLID),
+		pCurTActionProperty(NULL)
 	{
 		m_tCurEffects.m_bEnableEffect	= false;
 		m_tCurEffects.m_iZoom			= -1;
@@ -175,7 +178,7 @@ namespace UiLib
 	// 返回类型: DWORD
 	// 函数说明: 
 	//************************************
-	DWORD CControlUI::GetDisibledBkColor() const
+	DWORD CControlUI::GetDisabledBkColor() const
 	{
 		return m_dwDisabledBkColor;
 	}
@@ -1128,7 +1131,357 @@ namespace UiLib
 		else if( _tcscmp(pstrName, _T("mouseoutstyle")) == 0 ) SetEffectsStyle(pstrValue,&m_tMouseOutEffects);
 		else if( _tcscmp(pstrName, _T("mouseclickstyle")) == 0 ) SetEffectsStyle(pstrValue,&m_tMouseClickEffects);
 		else if( _tcscmp(pstrName, _T("style")) == 0 ) SetStyleName(pstrValue);
+		else if( _tcscmp(pstrName, _T("action")) == 0 ) SetAction(pstrValue);
 		else if( _tcscmp(pstrName, _T("virtualwnd")) == 0 ) SetVirtualWnd(pstrValue);
+	}
+	
+	//************************************
+	// 函数名称: GetAttribute
+	// 返回类型: UiLib::unUserData
+	// 参数信息: LPCTSTR pstrName
+	// 函数说明: 
+	//************************************
+	UiLib::unUserData CControlUI::GetAttribute( LPCTSTR pstrName )
+	{
+		unUserData nRetData = {{0,0,0,0}};
+
+		if(!pstrName)
+			return nRetData;
+
+		if( _tcscmp(pstrName, _T("pos")) == 0 )
+			nRetData.rcRect = GetPos();
+		else if( _tcscmp(pstrName, _T("padding")) == 0 )
+			nRetData.rcRect = GetPadding();
+		else if( _tcscmp(pstrName, _T("bkcolor")) == 0 || _tcscmp(pstrName, _T("bkcolor1")) == 0 )
+			nRetData.dwDword = GetBkColor();
+		else if( _tcscmp(pstrName, _T("bkcolor2")) == 0 )
+			nRetData.dwDword = GetBkColor2();
+		else if( _tcscmp(pstrName, _T("bkcolor3")) == 0 )
+			nRetData.dwDword = GetBkColor3();
+		else if( _tcscmp(pstrName, _T("disabledbkcolor")) == 0 )
+			nRetData.dwDword = GetDisabledBkColor();
+		else if( _tcscmp(pstrName, _T("bordercolor")) == 0 )
+			nRetData.dwDword = GetDisabledBkColor();
+		else if( _tcscmp(pstrName, _T("focusbordercolor")) == 0 )
+			nRetData.dwDword = GetFocusBorderColor();
+		else if( _tcscmp(pstrName, _T("colorhsl")) == 0 ) 
+			nRetData.bBool = IsColorHSL();
+		else if( _tcscmp(pstrName, _T("bordersize")) == 0 )
+			nRetData.iInt = GetBorderSize();
+		else if( _tcscmp(pstrName, _T("leftbordersize")) == 0 )
+			nRetData.iInt = GetLeftBorderSize();
+		else if( _tcscmp(pstrName, _T("topbordersize")) == 0 )
+			nRetData.iInt = GetTopBorderSize();
+		else if( _tcscmp(pstrName, _T("rightbordersize")) == 0 )
+			nRetData.iInt = GetRightBorderSize();
+		else if( _tcscmp(pstrName, _T("bottombordersize")) == 0 )
+			nRetData.iInt = GetBottomBorderSize();
+		else if( _tcscmp(pstrName, _T("borderstyle")) == 0 )
+			nRetData.iInt = GetBorderStyle();
+		else if( _tcscmp(pstrName, _T("borderround")) == 0 )
+			nRetData.szSize = GetBorderRound();
+		else if( _tcscmp(pstrName, _T("bkimage")) == 0 )
+			nRetData.pcwchar = GetBkImage();
+		else if( _tcscmp(pstrName, _T("width")) == 0 )
+			nRetData.iInt = GetFixedWidth();
+		else if( _tcscmp(pstrName, _T("height")) == 0 )
+			nRetData.iInt = GetFixedHeight();
+		else if( _tcscmp(pstrName, _T("minwidth")) == 0 )
+			nRetData.iInt = GetMinWidth();
+		else if( _tcscmp(pstrName, _T("minheight")) == 0 )
+			nRetData.iInt = GetMinHeight();
+		else if( _tcscmp(pstrName, _T("maxwidth")) == 0 )
+			nRetData.iInt = GetMaxWidth();
+		else if( _tcscmp(pstrName, _T("maxheight")) == 0 )
+			nRetData.iInt = GetMaxHeight();
+		else if( _tcscmp(pstrName, _T("name")) == 0 )
+			nRetData.pcwchar = GetName().GetData();
+		else if( _tcscmp(pstrName, _T("text")) == 0 )
+			nRetData.pcwchar = GetText().GetData();
+		else if( _tcscmp(pstrName, _T("tooltip")) == 0 )
+			nRetData.pcwchar = GetToolTip().GetData();
+		else if( _tcscmp(pstrName, _T("userdata")) == 0 )
+			nRetData.pcwchar = GetUserData().GetData();
+		else if( _tcscmp(pstrName, _T("enabled")) == 0 )
+			nRetData.bBool = IsEnabled();
+		else if( _tcscmp(pstrName, _T("mouse")) == 0 )
+			nRetData.bBool = IsMouseEnabled();
+		else if( _tcscmp(pstrName, _T("keyboard")) == 0 )
+			nRetData.bBool = IsKeyboardEnabled();
+		else if( _tcscmp(pstrName, _T("visible")) == 0 )
+			nRetData.bBool = IsVisible();
+		else if( _tcscmp(pstrName, _T("random")) == 0 )
+			nRetData.bBool = IsRandom();
+		else if( _tcscmp(pstrName, _T("float")) == 0 )
+			nRetData.bBool = IsFloat();
+		else if( _tcscmp(pstrName, _T("menu")) == 0 )
+			nRetData.bBool = IsContextMenuUsed();
+		else if( _tcscmp(pstrName, _T("style")) == 0 )
+			nRetData.pcwchar = GetStyleName();
+
+		return nRetData;
+	}
+	
+	//************************************
+	// 函数名称: SetAction
+	// 返回类型: void
+	// 参数信息: LPCTSTR pActonName
+	// 参数信息: CPaintManagerUI * pm
+	// 函数说明：解析事件组，并将事件组中的所有属性动作绑定到定时器，定时器根据相关属性进行触发
+	//************************************
+	void CControlUI::SetAction( LPCTSTR pActonName,CPaintManagerUI* pm /*= NULL*/ )
+	{
+		if(!GetManager() && !pm)
+			return;
+
+		CPaintManagerUI* pManage = GetManager();
+		if(!pManage)
+			pManage = pm;
+
+		CDuiString nActionName;
+
+		while( *pActonName != _T('\0') ) {
+			while(*pActonName == _T('|'))
+				pActonName = ::CharNext(pActonName);
+
+			nActionName.Empty();
+
+			while( *pActonName != _T('\0') && *pActonName != _T('|') ) {
+				LPTSTR pstrTemp = ::CharNext(pActonName);
+				while(pActonName < pstrTemp)
+					nActionName += *pActonName++;
+			}
+
+			TAGroup* pTAGroup = pManage->GetActionScriptGroup(nActionName.GetData());
+			if(!pTAGroup || 0 == pTAGroup->mPropertys.GetSize())
+				continue;
+			
+			TActionProperty* pTAProperty = new TActionProperty();
+			pTAProperty->nAGroupName = nActionName;
+			pTAProperty->pTAGroup	= pTAGroup;
+
+//			pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnGroupActionTimer,pTAGroup,pTAGroup->uDefaultInterval,pTAGroup->uDefaultTimer,pTAGroup->bDefaultAutoStart,pTAGroup->bDefaultLoop,pTAGroup->bDefaultReverse);
+
+// 			for(int iIndex = 0;iIndex < pTAGroup->mPropertys.GetSize();iIndex++){
+// 				TProperty* pTProperty = pTAGroup->mPropertys.GetAt(iIndex);
+// 				if(!pTProperty)
+// 					continue;
+// 
+// 				if(pTProperty->uInterval == pTAGroup->uDefaultInterval && pTProperty->uTimer == pTAGroup->uDefaultTimer && pTProperty->bLoop == pTAGroup->bDefaultLoop && pTProperty->bAutoStart == pTAGroup->bDefaultAutoStart && pTProperty->bReverse == pTAGroup->bDefaultReverse)
+// 					continue;
+// 
+// 				pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnPropertyActionTimer,pTProperty,pTProperty->uInterval,pTProperty->uTimer,pTProperty->bAutoStart,pTProperty->bLoop,pTProperty->bReverse);
+// 			}
+
+			if(pTAGroup->mPropertys.GetSize()){
+				mActionNotifys.Set(nActionName,pTAProperty);
+
+				if(pTAGroup->sMsgType == _T("notify") && pTAGroup->sMsgValue.GetLength() > 0)
+					OnNotify += MakeDelegate(this,&CControlUI::OnAGroupNotify,pTAGroup->sMsgValue.GetData(),pTAGroup);
+				else if(pTAGroup->sMsgType == _T("event") && pTAGroup->iEventValue > 0)
+					OnEvent	+= MakeDelegate(this,&CControlUI::OnAGroupEvent,(EVENTTYPE_UI)pTAGroup->iEventValue,pTAGroup);
+			}
+			else{
+				delete pTAProperty;
+				pTAProperty = NULL;
+			}
+		}
+	}
+
+	//************************************
+	// 函数名称: OnPropertyActionTimer
+	// 返回类型: void
+	// 参数信息: IDuiTimer * pTimer
+	// 参数信息: TProperty * lParam
+	// 函数说明：
+	//************************************
+	void CControlUI::OnPropertyActionTimer( IDuiTimer* pTimer,TProperty* pTProperty )
+	{
+		if(!pTProperty)
+			return;
+
+		int nDiffTime	= pTimer->GetTotalTimer() - pTimer->GetCurTimer();
+		int nTotalFrame	= (int)(pTimer->GetTotalTimer()/pTimer->GetInterval());
+		int nCurFrame	= (int)((pTimer->GetTotalTimer() - nDiffTime) / pTimer->GetInterval());
+		bool bStartNone	= pTProperty->IsStartNull();
+		bool bEndNone	= pTProperty->IsEndNull();
+		CDuiString nPropertyName = pTProperty->sName;
+
+		DUITRACE(_T("===========%s============"),nPropertyName.GetData());
+		DUITRACE(_T("nDiffTime:%d ,%d - %d"),nDiffTime,pTimer->GetTotalTimer(),pTimer->GetCurTimer());
+		DUITRACE(_T("nTotalFrame:%d ,%d / %d"),nTotalFrame,pTimer->GetTotalTimer(),pTimer->GetInterval());
+		DUITRACE(_T("nCurFrame:%d ,%d / %d"),nCurFrame,(pTimer->GetTotalTimer() - nDiffTime),pTimer->GetInterval());
+
+
+		if(_tcscmp(pTProperty->sType.GetData(),_T("int")) == 0){
+			if(nPropertyName == _T("width"))
+				SetFixedWidth(pTProperty->CalDiffLong(GetFixedWidth(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if(nPropertyName == _T("height"))
+				SetFixedHeight(pTProperty->CalDiffLong(GetFixedHeight(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+		}
+		else if(_tcscmp(pTProperty->sType.GetData(),_T("color")) == 0){
+			if( nPropertyName == _T("bkcolor") || nPropertyName == _T("bkcolor1"))
+				SetBkColor(pTProperty->CalCurColor(GetBkColor(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("bkcolor2"))
+				SetBkColor2(pTProperty->CalCurColor(GetBkColor2(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("bkcolor3"))
+				SetBkColor3(pTProperty->CalCurColor(GetBkColor3(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("disabledbkcolor"))
+				SetDisabledBkColor(pTProperty->CalCurColor(GetDisabledBkColor(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("bordercolor"))
+				SetBorderColor(pTProperty->CalCurColor(GetDisabledBkColor(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("focusbordercolor"))
+				SetFocusBorderColor(pTProperty->CalCurColor(GetFocusBorderColor(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+		}
+		else if(_tcscmp(pTProperty->sType.GetData(),_T("rect")) == 0){
+			if( nPropertyName == _T("pos") )
+				SetPos(pTProperty->CalDiffRect(GetPos(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("padding") )
+				SetPadding(pTProperty->CalDiffRect(GetPadding(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+		}
+		else if(_tcscmp(pTProperty->sType.GetData(),_T("point")) == 0 || _tcscmp(pTProperty->sType.GetData(),_T("size")) == 0){
+			if( nPropertyName == _T("borderround") )
+				SetBorderRound(pTProperty->CalCurSize(GetBorderRound(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+		}
+		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.source")) == 0){
+			if( nPropertyName == _T("bkimage") )
+				SetBkImage(pTProperty->CalCurImageSource(GetBkImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+		}
+		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.mask")) == 0){
+			if( nPropertyName == _T("bkimage") )
+				SetBkImage(pTProperty->CalCurImageMask(GetBkImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+		}
+		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.corner")) == 0){
+			if( nPropertyName == _T("bkimage") )
+				SetBkImage(pTProperty->CalCurImageCorner(GetBkImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+		}
+		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.fade")) == 0){
+			if( nPropertyName == _T("bkimage") )
+				SetBkImage(pTProperty->CalCurImageFade(GetBkImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+		}
+		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.dest")) == 0){
+			if( nPropertyName == _T("bkimage") )
+				SetBkImage(pTProperty->CalCurImageDest(GetBkImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+		}
+	}
+
+	//************************************
+	// 函数名称: OnActionTimer
+	// 返回类型: void
+	// 参数信息: IDuiTimer * pTimer
+	// 参数信息: TAGroup * pTAGroup
+	// 函数说明: 
+	//************************************
+	void CControlUI::OnGroupActionTimer( IDuiTimer* pTimer,TAGroup* pTAGroup )
+	{
+		if(!pTimer || !pTAGroup)
+			return;
+
+		for(int iIndex = 0;iIndex < pTAGroup->mPropertys.GetSize();iIndex++){
+			TProperty* pTProperty = pTAGroup->mPropertys.GetAt(iIndex);
+
+			if(!pTProperty)
+				continue;
+
+			if(pTProperty->uInterval == pTAGroup->uDefaultInterval && pTProperty->uTimer == pTAGroup->uDefaultTimer && pTProperty->bLoop == pTAGroup->bDefaultLoop && pTProperty->bAutoStart == pTAGroup->bDefaultAutoStart && pTProperty->bReverse == pTAGroup->bDefaultReverse)
+				OnPropertyActionTimer(pTimer,pTProperty);
+		}
+	}
+	
+	//************************************
+	// 函数名称: OnAGroupNotify
+	// 返回类型: bool
+	// 参数信息: TNotifyUI * pTNotifyUI
+	// 参数信息: TAGroup * pTAGroup
+	// 参数信息: WPARAM wParam
+	// 函数说明: 
+	//************************************
+	bool CControlUI::OnAGroupNotify( TNotifyUI* pTNotifyUI,TAGroup* pTAGroup,WPARAM wParam )
+	{
+		if(!pTNotifyUI || !pTAGroup || pTNotifyUI->sType != pTAGroup->sMsgValue.GetData())
+			return true;
+
+		TActionProperty* pTAProperty = mActionNotifys.Find(pTAGroup->sName.GetData());
+		if(!pTAProperty)
+			return true;
+
+		if(!pTAProperty || pTAProperty->nAGroupName != pTAGroup->sName.GetData())
+			return true;
+
+		if(pCurTActionProperty == pTAProperty && pTAProperty->nActionTimers.RunTimers())
+			return true;
+
+		if(pCurTActionProperty)
+			pCurTActionProperty->nActionTimers.KillTimers();
+
+		if(!pTAProperty->nActionTimers){
+			pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnGroupActionTimer,pTAGroup,pTAGroup->uDefaultInterval,pTAGroup->uDefaultTimer,pTAGroup->bDefaultAutoStart,pTAGroup->bDefaultLoop,pTAGroup->bDefaultReverse);
+
+			for(int iIndex = 0;iIndex < pTAGroup->mPropertys.GetSize();iIndex++){
+				TProperty* pTProperty = pTAGroup->mPropertys.GetAt(iIndex);
+				if(!pTProperty)
+					continue;
+
+				if(pTProperty->uInterval == pTAGroup->uDefaultInterval && pTProperty->uTimer == pTAGroup->uDefaultTimer && pTProperty->bLoop == pTAGroup->bDefaultLoop && pTProperty->bAutoStart == pTAGroup->bDefaultAutoStart && pTProperty->bReverse == pTAGroup->bDefaultReverse)
+					continue;
+
+				pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnPropertyActionTimer,pTProperty,pTProperty->uInterval,pTProperty->uTimer,pTProperty->bAutoStart,pTProperty->bLoop,pTProperty->bReverse);
+			}
+		}
+
+		pTAProperty->nActionTimers.SetTimers();
+
+		pCurTActionProperty = pTAProperty;
+
+		return true;
+	}
+	
+	//************************************
+	// 函数名称: OnAGroupEvent
+	// 返回类型: bool
+	// 参数信息: TEventUI * pTEventUI
+	// 参数信息: TAGroup * pTAGroup
+	// 参数信息: WPARAM wParam
+	// 函数说明: 
+	//************************************
+	bool CControlUI::OnAGroupEvent( TEventUI* pTEventUI,TAGroup* pTAGroup,WPARAM wParam )
+	{
+		if(!pTEventUI || !pTAGroup || pTEventUI->Type != pTAGroup->iEventValue && pTAGroup->iEventValue <= 0)
+			return true;
+
+		TActionProperty* pTAProperty = mActionNotifys.Find(pTAGroup->sName.GetData());
+		if(!pTAProperty)
+			return true;
+
+		if(!pTAProperty || pTAProperty->nAGroupName != pTAGroup->sName.GetData())
+			return true;
+
+		if(pCurTActionProperty == pTAProperty && pTAProperty->nActionTimers.RunTimers())
+			return true;
+
+		if(pCurTActionProperty)
+			pCurTActionProperty->nActionTimers.KillTimers();
+
+		if(!pTAProperty->nActionTimers){
+			pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnGroupActionTimer,pTAGroup,pTAGroup->uDefaultInterval,pTAGroup->uDefaultTimer,pTAGroup->bDefaultAutoStart,pTAGroup->bDefaultLoop,pTAGroup->bDefaultReverse);
+
+			for(int iIndex = 0;iIndex < pTAGroup->mPropertys.GetSize();iIndex++){
+				TProperty* pTProperty = pTAGroup->mPropertys.GetAt(iIndex);
+				if(!pTProperty)
+					continue;
+
+				if(pTProperty->uInterval == pTAGroup->uDefaultInterval && pTProperty->uTimer == pTAGroup->uDefaultTimer && pTProperty->bLoop == pTAGroup->bDefaultLoop && pTProperty->bAutoStart == pTAGroup->bDefaultAutoStart && pTProperty->bReverse == pTAGroup->bDefaultReverse)
+					continue;
+
+				pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnPropertyActionTimer,pTProperty,pTProperty->uInterval,pTProperty->uTimer,pTProperty->bAutoStart,pTProperty->bLoop,pTProperty->bReverse);
+			}
+		}
+
+		pTAProperty->nActionTimers.SetTimers();
+
+		pCurTActionProperty = pTAProperty;
+
+		return true;
 	}
 
 	CControlUI* CControlUI::ApplyAttributeList(LPCTSTR pstrList)
@@ -1811,7 +2164,6 @@ namespace UiLib
 		}
 	}
 
-
 	//************************************
 	// Method:    AnyEasyEffectsPorfiles
 	// FullName:  UiLib::CControlUI::AnyEasyEffectsPorfiles
@@ -1975,6 +2327,4 @@ namespace UiLib
 			throw "CControlUI::TriggerEffects";
 		}
 	}
-
-
 } // namespace UiLib

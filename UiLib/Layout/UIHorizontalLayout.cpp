@@ -3,6 +3,8 @@
 
 namespace UiLib
 {
+	REGIST_DUICLASS(CHorizontalLayoutUI);
+
 	CHorizontalLayoutUI::CHorizontalLayoutUI() : m_iSepWidth(0), m_uButtonState(0), m_bImmMode(false)
 	{
 		ptLastMouse.x = ptLastMouse.y = 0;

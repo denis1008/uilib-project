@@ -4,6 +4,9 @@
 #define IDM_SHOW_LOG		WM_USER+2200
 #define IDM_EXIT_APP		WM_USER+2300
 
+
+
+
 CMainWnd::CMainWnd(void)
 {
 	mChartDataPos = 0;
@@ -158,6 +161,48 @@ void CMainWnd::Init()
 		pLegendBottomBtn->OnNotify		+= MakeDelegate(this,&CMainWnd::OnLegendBottomBtn,_T("click"));
 		pDelChartDataBtn->OnNotify		+= MakeDelegate(this,&CMainWnd::OnDelChartDataBtn,_T("click"));
 
+		//pEffectsDemo 为Duilib控件指针
+
+		//IDuiTimer* pControlTimer = NULL;
+		//定义OnTimer的绑定函数为：void OnDuiTimerA(IDuiTimer* pTimer);
+		//无参数调用定时器,并将OnTimer函数绑定为CMainWnd::OnDuiTimerA函数，触发间隔为1000毫秒，100000毫秒后自动停止
+		//pEffectsDemo->OnTimers			+=	pControlTimer = MakeDuiTimer(this,&CMainWnd::OnDuiTimerA,1000,100000);
+		//pControlTimer->KillDuiTimer();
+
+		//定义OnTimer的绑定函数为：void OnDuiTimerB(IDuiTimer* pTimer,CButtonUI* pControl);
+		//有参数调用定时器,并将OnTimer函数绑定为CMainWnd::OnDuiTimerA函数，且传入一个Button类型的指针，间隔为1000毫秒，100000毫秒后自动停止
+		//pEffectsDemo->OnTimers			+=	pControlTimer = MakeDuiTimer(this,&CMainWnd::OnDuiTimerB,pEffectsDemo,1000,100000);
+		//pControlTimer->KillDuiTimer();
+
+		//定义OnTimer的绑定函数为：void OnDuiTimerC(IDuiTimer* pTimer,HWND hWnd,CMainWnd* lParam,WPARAM wParam);
+		//有句柄调用定时器，并将OnTimer函数绑定为CMainWnd::OnDuiTimerC函数，lParam 值为this，wParam值为1234，触发间隔为1000毫秒,并一直持续
+		//并可对LPARAM WPARAM 的赋值，若第2个参数为空时，会触发WM_TIMER消息，否则调用第二个参数传入需要绑定的OnTimer方法
+		//pEffectsDemo->OnTimers			+=	pControlTimer = MakeDuiTimer(this,&CMainWnd::OnDuiTimerC,m_hWnd,this,1234,1000,NULL);
+		//pControlTimer->KillDuiTimer();
+
+		//停止pEffectsDemo控件的所有定时器
+		//pEffectsDemo->OnTimers.KillTimers();
+		//开启pEffectsDemo控件的所有定时器
+		//pEffectsDemo->OnTimers.SetTimers();
+		//停止并删除pEffectsDemo控件的所有定时器
+		//pEffectsDemo->OnTimers.RemoveTimerAll();
+
+		//无控件下使用定时器
+		//IDuiTimer* pTimer = MakeDuiTimer(this,&CMainWnd::OnDuiTimerC,m_hWnd,this,1234,1000,NULL);
+		//pTimer->KillDuiTimer();
+		//delete pTimer;
+
+		//构造函数方式调用 
+ 		//CDuiTimer* mTimer = new CDuiTimer();
+ 		//mTimer->SetDuiTimer(m_hWnd,(LPARAM)this,1234,1000,10000);
+
+		//通过MakeDelegate方式绑定WM_TIMER消息到指定方法
+ 		//pEffectsDemo->OnNotify			+= MakeDelegate(this,&CMainWnd::OnDuiTimerD,(EVENTTYPE_UI)WM_TIMER);
+
+		//CControlUI* pControl = CreateDuiInstance<CControlUI*>("CControlUI");
+		//pControl->SetText(_T("tset"));
+		//CDuiString texx = pControl->GetText();
+
 	}
 	catch (...)
 	{
@@ -205,7 +250,7 @@ void CMainWnd::OnFinalMessage( HWND hWnd )
 // 参数信息: TNotifyUI * pTNotifyUI
 // 函数说明: 
 //************************************
-bool CMainWnd::OnMsgBtnClick( TNotifyUI* pTNotifyUI )
+bool CMainWnd::OnMsgBtnClick( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 {
 	MessageBox(m_hWnd,_T("我是绑定的按钮点击消息 OK!"),_T("消息路由"),MB_OK);
 	return true;
@@ -217,10 +262,13 @@ bool CMainWnd::OnMsgBtnClick( TNotifyUI* pTNotifyUI )
 // 参数信息: TEventUI * pTEventUI
 // 函数说明: 
 //************************************
-bool CMainWnd::OnMsgBtnMouseEnter( TEventUI* pTEventUI )
+bool CMainWnd::OnMsgBtnMouseEnter( TEventUI* pTEventUI,LPARAM lParam,WPARAM wParam )
 {
 	DUI__Trace(_T("我是鼠标进入按钮时的消息 OK!"));
-	pTEventUI->pSender->SetText(_T("鼠标进来了^_^"));
+	pTEventUI->pSender->SetText(_T("鼠标进来了"));
+	pTEventUI->pSender->SetUserData(_T("鼠标进来了"));
+
+	//pEffectsDemo->OnTimers			+= MakeDuiTimer(this,&CMainWnd::OnDuiTimerB,(CButtonUI*)pTEventUI->pSender,1000,NULL,true,true);
 	return true;
 }
 
@@ -230,10 +278,13 @@ bool CMainWnd::OnMsgBtnMouseEnter( TEventUI* pTEventUI )
 // 参数信息: TEventUI * pTEventUI
 // 函数说明: 
 //************************************
-bool CMainWnd::OnMsgBtnMouseLeave( TEventUI* pTEventUI )
+bool CMainWnd::OnMsgBtnMouseLeave( TEventUI* pTEventUI,LPARAM lParam,WPARAM wParam )
 {
 	DUI__Trace(_T("我是鼠标离开按钮时的消息 OK!"));
-	pTEventUI->pSender->SetText(_T("鼠标跑了 T_T"));
+	pTEventUI->pSender->SetText(_T("鼠标跑了"));
+	pTEventUI->pSender->SetUserData(_T("鼠标跑了"));
+
+	//pEffectsDemo->OnTimers			+= MakeDuiTimer(this,&CMainWnd::OnDuiTimerB,(CButtonUI*)pTEventUI->pSender,1000,NULL,true,true);
 	return true;
 }
 
@@ -243,12 +294,18 @@ bool CMainWnd::OnMsgBtnMouseLeave( TEventUI* pTEventUI )
 // 参数信息: TNotifyUI * pTNotifyUI
 // 函数说明: 
 //************************************
-bool CMainWnd::OnEffectsBtnClick( TNotifyUI* pTNotifyUI )
+bool CMainWnd::OnEffectsBtnClick( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 {
 	pAnimWnd->SetAnimEffects(true);
 	pEffectsDemo->SetTag(pEffectsDemo->GetTag()+1);
 
 	pm.SetCurStyles(pEffectsDemo->GetTag()%2?_T("LangChinese"):_T("LangEnglish"));
+
+	if(pEffectsDemo->GetTag()%2)
+		pm.SetCurStyles(_T("LangChinese"));
+	else 
+		pm.SetCurStyles(_T("LangEnglish"));
+		
 
 	if(pEffectsDemo->GetTag() == 1)
 		pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='left2right' offset='180'"));
@@ -286,7 +343,7 @@ bool CMainWnd::OnEffectsBtnClick( TNotifyUI* pTNotifyUI )
 // 参数信息: TNotifyUI * pTNotifyUI
 // 函数说明: 
 //************************************
-bool CMainWnd::OnAddNodeBtnClick( TNotifyUI* pTNotifyUI )
+bool CMainWnd::OnAddNodeBtnClick( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 {
 	CEditUI* pEdit = static_cast<CEditUI*>(pm.FindControl(_T("AddNodeText")));
 	if(!pEdit && pEdit->GetText().GetLength() > 0)
@@ -320,7 +377,7 @@ bool CMainWnd::OnAddNodeBtnClick( TNotifyUI* pTNotifyUI )
 // 参数信息: TNotifyUI * pTNotifyUI
 // 函数说明: 
 //************************************
-bool CMainWnd::OnAddAtNodeBtnClick( TNotifyUI* pTNotifyUI )
+bool CMainWnd::OnAddAtNodeBtnClick( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 {
 	CTreeNodeUI* pParentNode = static_cast<CTreeNodeUI*>(pTNotifyUI->pSender->GetParent()->GetParent());
 	if(!pParentNode || !pParentNode->GetInterface(_T("TreeNode")))
@@ -369,7 +426,7 @@ bool CMainWnd::OnAddAtNodeBtnClick( TNotifyUI* pTNotifyUI )
 // 参数信息: TNotifyUI * pTNotifyUI
 // 函数说明: 
 //************************************
-bool CMainWnd::OnRemoveNodeBtnClick( TNotifyUI* pTNotifyUI )
+bool CMainWnd::OnRemoveNodeBtnClick( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 {
 	CTreeNodeUI* pParentNode = static_cast<CTreeNodeUI*>(pTNotifyUI->pSender->GetParent()->GetParent());
 	if(!pParentNode || !pParentNode->GetInterface(_T("TreeNode")))
@@ -387,7 +444,7 @@ bool CMainWnd::OnRemoveNodeBtnClick( TNotifyUI* pTNotifyUI )
 // 参数信息: TNotifyUI * pTNotifyUI
 // 函数说明: 
 //************************************
-bool CMainWnd::OnCreateChartViewBtn( TNotifyUI* pTNotifyUI )
+bool CMainWnd::OnCreateChartViewBtn( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 {
 	//pChartView->GetXYAxis().SetTickLimis(-50,100,20);
 	pChartView->AddLabel(_T("一月"));
@@ -404,7 +461,7 @@ bool CMainWnd::OnCreateChartViewBtn( TNotifyUI* pTNotifyUI )
 // 参数信息: TNotifyUI * pTNotifyUI
 // 函数说明: 
 //************************************
-bool CMainWnd::OnAddChartDataABtn( TNotifyUI* pTNotifyUI )
+bool CMainWnd::OnAddChartDataABtn( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 {
 	if(!pChartView->GetGroupCount())
 		return true;
@@ -427,7 +484,7 @@ bool CMainWnd::OnAddChartDataABtn( TNotifyUI* pTNotifyUI )
 // 参数信息: TNotifyUI * pTNotifyUI
 // 函数说明: 
 //************************************
-bool CMainWnd::OnAddChartDataBBtn( TNotifyUI* pTNotifyUI )
+bool CMainWnd::OnAddChartDataBBtn( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 {
 	if(!pChartView->GetGroupCount())
 		return true;
@@ -450,7 +507,7 @@ bool CMainWnd::OnAddChartDataBBtn( TNotifyUI* pTNotifyUI )
 // 参数信息: TNotifyUI * pTNotifyUI
 // 函数说明: 
 //************************************
-bool CMainWnd::OnAddChartDataCBtn( TNotifyUI* pTNotifyUI )
+bool CMainWnd::OnAddChartDataCBtn( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 {
 	if(!pChartView->GetGroupCount())
 		return true;
@@ -473,7 +530,7 @@ bool CMainWnd::OnAddChartDataCBtn( TNotifyUI* pTNotifyUI )
 // 参数信息: TNotifyUI * pTNotifyUI
 // 函数说明: 
 //************************************
-bool CMainWnd::OnLegendTopBtn( TNotifyUI* pTNotifyUI )
+bool CMainWnd::OnLegendTopBtn( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 {
 	pChartView->GetXYAxis().SetLegendLocation(LOCATION_TOP);
 	return true;
@@ -485,7 +542,7 @@ bool CMainWnd::OnLegendTopBtn( TNotifyUI* pTNotifyUI )
 // 参数信息: TNotifyUI * pTNotifyUI
 // 函数说明: 
 //************************************
-bool CMainWnd::OnLegendRightBtn( TNotifyUI* pTNotifyUI )
+bool CMainWnd::OnLegendRightBtn( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 {
 	pChartView->GetXYAxis().SetLegendLocation(LOCATION_RIGHT);
 	return true;
@@ -497,7 +554,7 @@ bool CMainWnd::OnLegendRightBtn( TNotifyUI* pTNotifyUI )
 // 参数信息: TNotifyUI * pTNotifyUI
 // 函数说明: 
 //************************************
-bool CMainWnd::OnLegendBottomBtn( TNotifyUI* pTNotifyUI )
+bool CMainWnd::OnLegendBottomBtn( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 {
 	pChartView->GetXYAxis().SetLegendLocation(LOCATION_BOTTOM);
 	return true;
@@ -509,8 +566,61 @@ bool CMainWnd::OnLegendBottomBtn( TNotifyUI* pTNotifyUI )
 // 参数信息: TNotifyUI * pTNotifyUI
 // 函数说明: 
 //************************************
-bool CMainWnd::OnDelChartDataBtn( TNotifyUI* pTNotifyUI )
+bool CMainWnd::OnDelChartDataBtn( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 {
 	pChartView->RemoveSeries(0);
+	return true;
+}
+
+//************************************
+// 函数名称: OnDuiTimerA
+// 返回类型: void
+// 参数信息: IDuiTimer * pTimer
+// 函数说明: 
+//************************************
+void CMainWnd::OnDuiTimerA( IDuiTimer* pTimer )
+{
+	DUITRACE(_T("无参数定时器来了:Interval=%d CurTimer=%d TotalTimer=%d"),pTimer->GetInterval(),pTimer->GetCurTimer(),pTimer->GetTotalTimer());
+}
+
+//************************************
+// 函数名称: OnDuiTimerB
+// 返回类型: void
+// 参数信息: IDuiTimer * pTimer
+// 参数信息: CButtonUI * pControl
+// 函数说明: 
+//************************************
+void CMainWnd::OnDuiTimerB( IDuiTimer* pTimer,CButtonUI* pControl )
+{
+	CDuiString mText;
+	mText.SmallFormat(_T("%s %d 秒"),pControl->GetUserData().GetData(),(int)(pTimer->GetCurTimer()/1000)+1);
+	DUITRACE(_T(""));
+	pControl->SetText(mText);
+	DUITRACE(_T("有参数定时器来了:Interval=%d CurTimer=%d TotalTimer=%d"),pTimer->GetInterval(),pTimer->GetCurTimer(),pTimer->GetTotalTimer());
+}
+
+//************************************
+// 函数名称: OnDuiTimerC
+// 返回类型: void
+// 参数信息: IDuiTimer * pTimer
+// 参数信息: HWND hWnd
+// 参数信息: LPARAM lParam
+// 参数信息: WPARAM wParam
+// 函数说明: 
+//************************************
+void CMainWnd::OnDuiTimerC( IDuiTimer* pTimer,HWND hWnd,CMainWnd* lParam,WPARAM wParam )
+{
+	DUITRACE(_T("有句柄定时器来了:hwnd=%d lparam=%d wparam=%d Interval=%d CurTimer=%d TotalTimer=%d"),pTimer->GetHwnd(),pTimer->GetLParam(),pTimer->GetWParam(),pTimer->GetInterval(),pTimer->GetCurTimer(),pTimer->GetTotalTimer());
+}
+
+//************************************
+// 函数名称: OnDuiTimerD
+// 返回类型: bool
+// 参数信息: TEventUI * pTEventUI
+// 函数说明：#end$
+//************************************
+bool CMainWnd::OnDuiTimerD( TEventUI* pTEventUI )
+{
+	DUITRACE(_T("定时器事件方式来了:lparam=%d wparam=%d"),pTEventUI->lParam,pTEventUI->wParam);
 	return true;
 }

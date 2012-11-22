@@ -5,6 +5,8 @@
 
 namespace UiLib {
 
+	REGIST_DUICLASS(CRichEditUI);
+
 const LONG cInitTextMax = (32 * 1024) - 1;
 
 EXTERN_C const IID IID_ITextServices = { // 8d33f740-cf58-11ce-a89d-00aa006cadc5

@@ -30,8 +30,6 @@
 #endif
 #endif
 
-#define _CRT_SECURE_NO_DEPRECATE
-
 // Remove pointless warning messages
 #ifdef _MSC_VER
 #pragma warning (disable : 4511) // copy operator could not be generated
@@ -52,10 +50,10 @@
 #define _WIN32_WINNT 0x0500
 #endif
 
-#include "UIlib.h"
-
 #include <olectl.h>
 #include <gdiplus.h>
+
+#include "UIlib.h"
 
 #define lengthof(x) (sizeof(x)/sizeof(*x))
 #define MAX max

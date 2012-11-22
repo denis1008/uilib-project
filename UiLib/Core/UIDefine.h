@@ -4,7 +4,6 @@
 
 namespace UiLib
 {
-
 	enum DuiSig
 	{
 		DuiSig_end = 0, // [marks end of message map]

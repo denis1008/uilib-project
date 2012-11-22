@@ -3,6 +3,8 @@
 
 namespace UiLib
 {
+	REGIST_DUICLASS(CButtonUI);
+
 	CButtonUI::CButtonUI() : m_uButtonState(0), m_dwHotTextColor(0), m_dwPushedTextColor(0), m_dwFocusedTextColor(0),m_dwHotBkColor(0)
 
 	{
@@ -741,6 +743,138 @@ Label_ForeImage:
 		{
 			throw "CButtonUI::GetBindTabLayoutName";
 		}
+	}
+
+	//************************************
+	// 函数名称: OnPropertyActionTimer
+	// 返回类型: void
+	// 参数信息: IDuiTimer * pTimer
+	// 参数信息: TProperty * pTProperty
+	// 函数说明: 
+	//************************************
+	void CButtonUI::OnPropertyActionTimer( IDuiTimer* pTimer,TProperty* pTProperty )
+	{
+		if(!pTProperty)
+			return;
+
+		int nDiffTime	= pTimer->GetTotalTimer() - pTimer->GetCurTimer();
+		int nTotalFrame	= (int)(pTimer->GetTotalTimer()/pTimer->GetInterval());
+		int nCurFrame	= (int)((pTimer->GetTotalTimer() - nDiffTime) / pTimer->GetInterval());
+		bool bStartNone	= pTProperty->IsStartNull();
+		bool bEndNone	= pTProperty->IsEndNull();
+		CDuiString nPropertyName = pTProperty->sName;
+
+		DUITRACE(_T("===========%s============"),nPropertyName.GetData());
+		DUITRACE(_T("nDiffTime:%d ,%d - %d"),nDiffTime,pTimer->GetTotalTimer(),pTimer->GetCurTimer());
+		DUITRACE(_T("nTotalFrame:%d ,%d / %d"),nTotalFrame,pTimer->GetTotalTimer(),pTimer->GetInterval());
+		DUITRACE(_T("nCurFrame:%d ,%d / %d"),nCurFrame,(pTimer->GetTotalTimer() - nDiffTime),pTimer->GetInterval());
+
+		if(_tcscmp(pTProperty->sType.GetData(),_T("image.source")) == 0){
+			if( nPropertyName == _T("normalimage") )
+				return SetNormalImage(pTProperty->CalCurImageSource(GetNormalImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("hotimage") )
+				return SetHotImage(pTProperty->CalCurImageSource(GetHotImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("pushedimage") )
+				return SetPushedImage(pTProperty->CalCurImageSource(GetPushedImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("focusedimage") )
+				return SetForeImage(pTProperty->CalCurImageSource(GetForeImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("disabledimage") )
+				return SetDisabledImage(pTProperty->CalCurImageSource(GetDisabledImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else {
+				goto GoPropertyActionTimer;
+			}
+		}
+		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.mask")) == 0){
+			if( nPropertyName == _T("normalimage") )
+				return SetNormalImage(pTProperty->CalCurImageMask(GetNormalImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("hotimage") )
+				return SetHotImage(pTProperty->CalCurImageMask(GetHotImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("pushedimage") )
+				return SetPushedImage(pTProperty->CalCurImageMask(GetPushedImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("focusedimage") )
+				return SetForeImage(pTProperty->CalCurImageMask(GetForeImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("disabledimage") )
+				return SetDisabledImage(pTProperty->CalCurImageMask(GetDisabledImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else
+				goto GoPropertyActionTimer;
+		}
+		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.corner")) == 0){
+			if( nPropertyName == _T("normalimage") )
+				return SetNormalImage(pTProperty->CalCurImageCorner(GetNormalImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("hotimage") )
+				return SetHotImage(pTProperty->CalCurImageCorner(GetHotImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("pushedimage") )
+				return SetPushedImage(pTProperty->CalCurImageCorner(GetPushedImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("focusedimage") )
+				return SetForeImage(pTProperty->CalCurImageCorner(GetForeImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("disabledimage") )
+				return SetDisabledImage(pTProperty->CalCurImageCorner(GetDisabledImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else
+				goto GoPropertyActionTimer;
+		}
+		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.fade")) == 0){
+			if( nPropertyName == _T("normalimage") )
+				return SetNormalImage(pTProperty->CalCurImageFade(GetNormalImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("hotimage") )
+				return SetHotImage(pTProperty->CalCurImageFade(GetHotImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("pushedimage") )
+				return SetPushedImage(pTProperty->CalCurImageFade(GetPushedImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("focusedimage") )
+				return SetForeImage(pTProperty->CalCurImageFade(GetForeImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("disabledimage") )
+				return SetDisabledImage(pTProperty->CalCurImageFade(GetDisabledImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else
+				goto GoPropertyActionTimer;
+		}
+		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.dest")) == 0){
+			if( nPropertyName == _T("normalimage") )
+				return SetNormalImage(pTProperty->CalCurImageDest(GetNormalImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("hotimage") )
+				return SetHotImage(pTProperty->CalCurImageDest(GetHotImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("pushedimage") )
+				return SetPushedImage(pTProperty->CalCurImageDest(GetPushedImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("focusedimage") )
+				return SetForeImage(pTProperty->CalCurImageDest(GetForeImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else if( nPropertyName == _T("disabledimage") )
+				return SetDisabledImage(pTProperty->CalCurImageDest(GetDisabledImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else
+				goto GoPropertyActionTimer;
+		}
+		else goto GoPropertyActionTimer;
+
+GoPropertyActionTimer:
+		{
+			CControlUI::OnPropertyActionTimer(pTimer,pTProperty);
+		}
+	}
+
+	//************************************
+	// 函数名称: GetAttribute
+	// 返回类型: UiLib::unUserData
+	// 参数信息: LPCTSTR pstrName
+	// 函数说明: 
+	//************************************
+	UiLib::unUserData CButtonUI::GetAttribute( LPCTSTR pstrName )
+	{
+		unUserData nRetData = {{0,0,0,0}};
+
+		if(!pstrName)
+			return nRetData;
+
+		if( _tcscmp(pstrName, _T("normalimage")) == 0 )
+			nRetData.pcwchar = GetNormalImage();
+		else if( _tcscmp(pstrName, _T("hotimage")) == 0 )
+			nRetData.pcwchar = GetHotImage();
+		else if( _tcscmp(pstrName, _T("pushedimage")) == 0 )
+			nRetData.pcwchar = GetPushedImage();
+		else if( _tcscmp(pstrName, _T("focusedimage")) == 0 )
+			nRetData.pcwchar = GetPushedImage();
+		else if( _tcscmp(pstrName, _T("disabledimage")) == 0 )
+			nRetData.pcwchar = GetDisabledImage();
+		else
+			return CControlUI::GetAttribute(pstrName);
+
+		return nRetData;
 	}
 
 }

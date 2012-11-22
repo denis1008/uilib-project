@@ -6,6 +6,7 @@ using namespace std;
 
 namespace UiLib
 {
+	REGIST_DUICLASS(CCalendarUI);
 	/************************************************************************/
 	/* 日历窗口                                                             */
 	/************************************************************************/
@@ -447,9 +448,9 @@ namespace UiLib
 		pNextYearBtn->SetFixedWidth(60);
 		pMainTitleHoriz->SetFixedHeight(22);
 		pMoothSelectBtn->SetFixedWidth(80);
-		pLastYearBtn->OnNotify	+= UiLib::MakeDelegate(this,&CCalendarUI::OnLastYear);
-		pMoothSelectBtn->OnNotify	+= UiLib::MakeDelegate(this,&CCalendarUI::OnMoothSelect);
-		pNextYearBtn->OnNotify	+= UiLib::MakeDelegate(this,&CCalendarUI::OnNextYear);
+		pLastYearBtn->OnNotify	+= UiLib::MakeDelegate(this,&CCalendarUI::OnLastYear,_T(""));
+		pMoothSelectBtn->OnNotify	+= UiLib::MakeDelegate(this,&CCalendarUI::OnMoothSelect,_T(""));
+		pNextYearBtn->OnNotify	+= UiLib::MakeDelegate(this,&CCalendarUI::OnNextYear,_T(""));
 
  		pMainTitleHoriz->Add(pLastYearBtn);
 		pMainTitleHoriz->Add(new CControlUI());
@@ -490,7 +491,7 @@ namespace UiLib
 			wsprintf(TmpDef,_T("%d"),nMoothItem);
 			pMooth->SetText(TmpDef);
 			pMooth->SetTag(nMoothItem);
-			pMooth->OnNotify+= ::UiLib::MakeDelegate(this,&CCalendarUI::OnSelectMooth);
+			pMooth->OnNotify+= ::UiLib::MakeDelegate(this,&CCalendarUI::OnSelectMooth,_T(""));
 
 			nMoothItem % 2 ?pMoothSubPanelA->Add(pMooth):pMoothSubPanelB->Add(pMooth);
 		}
@@ -661,7 +662,7 @@ namespace UiLib
 			pDay->SetGroup(_GroupName);
 			pDay->SetName(_GroupName);
 			pDay->SetAttribute(_T("algin"),_T("right"));
-			pDay->OnNotify+= ::UiLib::MakeDelegate(this,&CCalendarUI::OnSelcetDay);
+			pDay->OnNotify+= ::UiLib::MakeDelegate(this,&CCalendarUI::OnSelcetDay,_T(""));
 
 			return pDay;
 		}
@@ -1157,165 +1158,125 @@ namespace UiLib
 			throw "CCalendarUI::InitCalendarDis";
 		}
 	}
-
-	//************************************
-	// Method:    OnLastYear
-	// FullName:  CCalendarUI::OnLastYear
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: void * _Param
-	// Note:	  
-	//************************************
-	bool CCalendarUI::OnLastYear( void* _Param )
-	{
-		try
-		{
-			TNotifyUI* pMsg = (TNotifyUI*)_Param;
-			if( pMsg->sType == _T("click") && pMsg->pSender == pLastYearBtn)
-			{
-				pCurDateTime->tm_year--;
-
-				if(GetEnabledYearSel())
-					InitCalendarDis(pCurDateTime->tm_year,pCurDateTime->tm_mon);
-
-				this->GetManager()->SendNotify(pLastYearBtn,_T("OnCalendarLastYear"),pCurDateTime->tm_year,pCurDateTime->tm_mon);
-				pMoothPanelHorz->SetVisible(false);
-
-				return true;
-			}
-			return false;
-		}
-		catch (...)
-		{
-			throw "CCalendarUI::OnLastYear";
-		}
-	}
-
-	//************************************
-	// Method:    OnMoothSelect
-	// FullName:  CCalendarUI::OnMoothSelect
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: void * _Param
-	// Note:	  
-	//************************************
-	bool CCalendarUI::OnMoothSelect( void* _Param )
-	{
-		try
-		{
-			TNotifyUI* pMsg = (TNotifyUI*)_Param;
-			if( pMsg->sType == _T("click") && pMsg->pSender == pMoothSelectBtn && GetEnabledMoothSel())
-			{
-				pMoothPanelHorz->SetVisible(true);
-				RECT rc = pMoothSelectBtn->GetPos();
-				rc.top		= rc.bottom;
-				rc.bottom	= rc.top + 132;
-				pMoothPanelHorz->SetPos(rc);
-				pMoothPanelHorz->SetFloat(true);
-			}
-			return false;
-		}
-		catch (...)
-		{
-			throw "CCalendarUI::OnMoothSelect";
-		}
-	}
-
-	//************************************
-	// Method:    OnNextYear
-	// FullName:  CCalendarUI::OnNextYear
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: void * _Param
-	// Note:	  
-	//************************************
-	bool CCalendarUI::OnNextYear( void* _Param )
-	{
-		try
-		{
-			TNotifyUI* pMsg = (TNotifyUI*)_Param;
-			if( pMsg->sType == _T("click") && pMsg->pSender == pNextYearBtn)
-			{
-				if(GetEnabledYearSel())
-					InitCalendarDis(++pCurDateTime->tm_year,pCurDateTime->tm_mon);
-
-				this->GetManager()->SendNotify(this,_T("OnCalendarNextYear"),pCurDateTime->tm_year,pCurDateTime->tm_mon);
-				pMoothPanelHorz->SetVisible(false);
-			}
-			return true;
-		}
-		catch (...)
-		{
-			throw "CCalendarUI::OnNextYear";
-		}
-	}
-
-	//************************************
-	// Method:    OnSelectMooth
-	// FullName:  CCalendarUI::OnSelectMooth
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: void * _Param
-	// Note:	  
-	//************************************
-	bool CCalendarUI::OnSelectMooth( void* _Param )
-	{
-		try
-		{
-			TNotifyUI* pMsg = (TNotifyUI*)_Param;
-			if( pMsg->sType == _T("click") && pMsg->pSender->GetTag() > 0)
-			{
-				if(GetEnabledMoothSel())
-					InitCalendarDis(pCurDateTime->tm_year,pMsg->pSender->GetTag());
-
-				this->GetManager()->SendNotify(this,_T("OnSelectMooth"),pCurDateTime->tm_year,pCurDateTime->tm_mon);
-				pMoothPanelHorz->SetVisible(false);
-			}
-			return true;
-		}
-		catch (...)
-		{
-			throw "CCalendarUI::OnSelectMooth";
-		}
-	}
 	
 	//************************************
-	// Method:    OnSelcetDay
-	// FullName:  CCalendarUI::OnSelcetDay
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: void * _Param
-	// Note:	  
+	// 函数名称: OnLastYear
+	// 返回类型: bool
+	// 参数信息: TNotifyUI * pTNotifyUI
+	// 参数信息: LPARAM lParam
+	// 参数信息: WPARAM wParam
+	// 函数说明: 
 	//************************************
-	bool CCalendarUI::OnSelcetDay( void* _Param )
+	bool CCalendarUI::OnLastYear( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 	{
-		try
+		if( pTNotifyUI->sType == _T("click") && pTNotifyUI->pSender == pLastYearBtn)
 		{
-			TNotifyUI* pMsg = (TNotifyUI*)_Param;
-			if( pMsg->sType == _T("click"))
-			{	
-				TCalendarInfo* pTCalendarInfo = (TCalendarInfo*)pMsg->pSender->GetParent()->GetTag();
+			pCurDateTime->tm_year--;
 
-				if(GetEnabledMoothSel() && pTCalendarInfo && pTCalendarInfo->nMooth != pTCalendarInfo->nAsMooth){
-					InitCalendarDis(pTCalendarInfo->nYear,pTCalendarInfo->nAsMooth);
-				}
-				OnCalendarChange(pTCalendarInfo->nYear,pTCalendarInfo->nMooth,pTCalendarInfo->nDay);
+			if(GetEnabledYearSel())
+				InitCalendarDis(pCurDateTime->tm_year,pCurDateTime->tm_mon);
 
-				CalDateTime(pTCalendarInfo->nYear,pTCalendarInfo->nMooth,pTCalendarInfo->nDay);
-				this->GetManager()->SendNotify(this,_T("OnSelcetDay"),pMsg->pSender->GetTag(),(LPARAM)pMsg->pSender,true);
-				pMoothPanelHorz->SetVisible(false);
-			}
+			this->GetManager()->SendNotify(pLastYearBtn,_T("OnCalendarLastYear"),pCurDateTime->tm_year,pCurDateTime->tm_mon);
+			pMoothPanelHorz->SetVisible(false);
+
 			return true;
 		}
-		catch (...)
+		return false;
+	}
+
+	//************************************
+	// 函数名称: OnMoothSelect
+	// 返回类型: bool
+	// 参数信息: TNotifyUI * pTNotifyUI
+	// 参数信息: LPARAM lParam
+	// 参数信息: WPARAM wParam
+	// 函数说明: 
+	//************************************
+	bool CCalendarUI::OnMoothSelect( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
+	{
+		if( pTNotifyUI->sType == _T("click") && pTNotifyUI->pSender == pMoothSelectBtn && GetEnabledMoothSel())
 		{
-			throw "CCalendarUI::OnSelcetDay";
+			pMoothPanelHorz->SetVisible(true);
+			RECT rc = pMoothSelectBtn->GetPos();
+			rc.top		= rc.bottom;
+			rc.bottom	= rc.top + 132;
+			pMoothPanelHorz->SetPos(rc);
+			pMoothPanelHorz->SetFloat(true);
+			return true;
 		}
+		return false;
+	}
+
+	//************************************
+	// 函数名称: OnNextYear
+	// 返回类型: bool
+	// 参数信息: TNotifyUI * pTNotifyUI
+	// 参数信息: LPARAM lParam
+	// 参数信息: WPARAM wParam
+	// 函数说明: 
+	//************************************
+	bool CCalendarUI::OnNextYear( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
+	{
+		if( pTNotifyUI->sType == _T("click") && pTNotifyUI->pSender == pNextYearBtn)
+		{
+			if(GetEnabledYearSel())
+				InitCalendarDis(++pCurDateTime->tm_year,pCurDateTime->tm_mon);
+
+			this->GetManager()->SendNotify(this,_T("OnCalendarNextYear"),pCurDateTime->tm_year,pCurDateTime->tm_mon);
+			pMoothPanelHorz->SetVisible(false);
+			return true;
+		}
+		return false;
+	}
+
+	//************************************
+	// 函数名称: OnSelectMooth
+	// 返回类型: bool
+	// 参数信息: TNotifyUI * pTNotifyUI
+	// 参数信息: LPARAM lParam
+	// 参数信息: WPARAM wParam
+	// 函数说明: 
+	//************************************
+	bool CCalendarUI::OnSelectMooth( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
+	{
+		if( pTNotifyUI->sType == _T("click") && pTNotifyUI->pSender->GetTag() > 0)
+		{
+			if(GetEnabledMoothSel())
+				InitCalendarDis(pCurDateTime->tm_year,pTNotifyUI->pSender->GetTag());
+
+			this->GetManager()->SendNotify(this,_T("OnSelectMooth"),pCurDateTime->tm_year,pCurDateTime->tm_mon);
+			pMoothPanelHorz->SetVisible(false);
+
+			return true;
+		}
+		return false;
+	}
+
+	//************************************
+	// 函数名称: OnSelcetDay
+	// 返回类型: bool
+	// 参数信息: TNotifyUI * pTNotifyUI
+	// 参数信息: LPARAM lParam
+	// 参数信息: WPARAM wParam
+	// 函数说明: 
+	//************************************
+	bool CCalendarUI::OnSelcetDay( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
+	{
+		if( pTNotifyUI->sType == _T("click"))
+		{	
+			TCalendarInfo* pTCalendarInfo = (TCalendarInfo*)pTNotifyUI->pSender->GetParent()->GetTag();
+
+			if(GetEnabledMoothSel() && pTCalendarInfo && pTCalendarInfo->nMooth != pTCalendarInfo->nAsMooth){
+				InitCalendarDis(pTCalendarInfo->nYear,pTCalendarInfo->nAsMooth);
+			}
+			OnCalendarChange(pTCalendarInfo->nYear,pTCalendarInfo->nMooth,pTCalendarInfo->nDay);
+
+			CalDateTime(pTCalendarInfo->nYear,pTCalendarInfo->nMooth,pTCalendarInfo->nDay);
+			this->GetManager()->SendNotify(this,_T("OnSelcetDay"),pTNotifyUI->pSender->GetTag(),(LPARAM)pTNotifyUI->pSender,true);
+			pMoothPanelHorz->SetVisible(false);
+			return false;
+		}
+		return false;
 	}
 
 	//************************************
@@ -1595,7 +1556,7 @@ namespace UiLib
 			pControl->Add(new CControlUI());
 			pControl->Add(pToDayBtn);
 			
-			pToDayBtn->OnNotify			   += MakeDelegate(this,&CCalendarUI::OnToday);
+			pToDayBtn->OnNotify			   += MakeDelegate(this,&CCalendarUI::OnToday,_T(""));
 			pToDayBtn->SetText(mSubTitleString.nToDayString);
 			pToDayBtn->SetFixedWidth(60);
 			pToDayBtn->SetAttribute(_T("hotbkcolor"),m_DefaultStyle.nDayHotColor);
@@ -1609,41 +1570,31 @@ namespace UiLib
 	}
 
 	//************************************
-	// Method:    OnToday
-	// FullName:  CCalendarUI::OnToday
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: void * _Param
-	// Note:	  
+	// 函数名称: OnToday
+	// 返回类型: bool
+	// 参数信息: TNotifyUI * pTNotifyUI
+	// 参数信息: LPARAM lParam
+	// 参数信息: WPARAM wParam
+	// 函数说明: 
 	//************************************
-	bool CCalendarUI::OnToday( void* _Param )
+	bool CCalendarUI::OnToday( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 	{
-		try
+		if( pTNotifyUI->sType == _T("click"))
 		{
-			TNotifyUI* pMsg = (TNotifyUI*)_Param;
-			if( pMsg->sType == _T("click"))
-			{
-				//初始化当前日期
-				time_t now;	
-				time(&now);
-				pCurDateTime = localtime(&now);
-				pCurDateTime->tm_year	= pCurDateTime->tm_year-100+2000;
-				pCurDateTime->tm_mon	= pCurDateTime->tm_mon+1;
-				mToday					= pCurDateTime->tm_mday;
+			//初始化当前日期
+			time_t now;	
+			time(&now);
+			pCurDateTime = localtime(&now);
+			pCurDateTime->tm_year	= pCurDateTime->tm_year-100+2000;
+			pCurDateTime->tm_mon	= pCurDateTime->tm_mon+1;
+			mToday					= pCurDateTime->tm_mday;
 
-				InitCalendarDis(pCurDateTime->tm_year,pCurDateTime->tm_mon);
+			InitCalendarDis(pCurDateTime->tm_year,pCurDateTime->tm_mon);
 
-
-				this->GetManager()->SendNotify(this,_T("OnToday"),pMsg->pSender->GetTag(),(LPARAM)pMsg->pSender,true);
-				pMoothPanelHorz->SetVisible(false);
-			}
-			return true;
+			this->GetManager()->SendNotify(this,_T("OnToday"),pTNotifyUI->pSender->GetTag(),(LPARAM)pTNotifyUI->pSender,true);
+			pMoothPanelHorz->SetVisible(false);
 		}
-		catch (...)
-		{
-			throw "CCalendarUI::OnToday";
-		}
+		return true;
 	}
 
 	//************************************

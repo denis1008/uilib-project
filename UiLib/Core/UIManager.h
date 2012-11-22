@@ -2,6 +2,7 @@
 #define __UIMANAGER_H__
 
 #pragma once
+#include <gdiplus.h>
 
 namespace UiLib {
 /////////////////////////////////////////////////////////////////////////////////////
@@ -213,6 +214,358 @@ typedef struct tagEffectAge
 	int			m_iNeedTimer;
 }TEffectAge;
 
+typedef struct tagTProperty
+{
+	union unValue
+	{
+		RECT		rcValue;
+		INT			iValue;
+		UINT		uValue;
+		LONG		lValue;
+		DWORD		dwValue;
+		SIZE		siValue;
+	};
+	
+	UINT			uInterval;
+	UINT			uTimer;
+	UINT			uDelay;
+	bool			bLoop;
+	bool			bReverse;
+	bool			bAutoStart;
+	CDuiString		sImageLeft;
+	CDuiString		sImageRight;
+	CDuiString		sName;
+	CDuiString		sType;
+	CDuiString		sStartValue;
+	CDuiString		sEndValue;
+	unValue			nStartValue;
+	unValue			nEndValue;
+	unValue			nDiffValue;
+
+	INT GetDiffINT(INT _StartValue,INT _EndValue,int _CurFrame){
+		if(_CurFrame == 1 && nDiffValue.iValue != _StartValue)
+			nDiffValue.iValue = max(_StartValue,_EndValue) - min(_StartValue,_EndValue);
+		
+		return nDiffValue.iValue;
+	}
+
+	INT CalDiffInt(INT _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
+		if(_CurFrame == 1 && _IsStartNone)
+			nStartValue.iValue = _SrcValue;
+		if(_CurFrame == 1 && _IsEndNone)
+			nEndValue.iValue = _SrcValue;
+
+		int iPartValue	= GetDiffINT(nStartValue.iValue,nEndValue.iValue,_CurFrame) / _TotalFrame;
+		int iCurValue;
+		if(_CurFrame == _TotalFrame)
+			iCurValue = nEndValue.iValue;
+		else
+			iCurValue = nStartValue.iValue < nEndValue.iValue?(_CurFrame * iPartValue + nStartValue.iValue):(nStartValue.iValue - _CurFrame * iPartValue);
+		
+		return iCurValue;
+	}
+
+	UINT GetDiffUINT(UINT _StartValue,UINT _EndValue,int _CurFrame){
+		if(_CurFrame == 1 && nDiffValue.iValue != _StartValue)
+			nDiffValue.uValue = max(_StartValue,_EndValue) - min(_StartValue,_EndValue);
+
+		return nDiffValue.uValue;
+	}
+
+	UINT CalDiffUint(UINT _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
+		if(_CurFrame == 1 && _IsStartNone)
+			nStartValue.uValue = _SrcValue;
+		if(_CurFrame == 1 && _IsEndNone)
+			nEndValue.uValue = _SrcValue;
+
+		int iPartValue	= GetDiffUINT(nStartValue.uValue,nEndValue.uValue,_CurFrame) / _TotalFrame;
+		int iCurValue;
+		if(_CurFrame == _TotalFrame)
+			iCurValue = nEndValue.iValue;
+		else
+			iCurValue = nStartValue.iValue < nEndValue.iValue?(_CurFrame * iPartValue + nStartValue.iValue):(nStartValue.iValue - _CurFrame * iPartValue);
+
+		return iCurValue;
+	}
+
+	LONG GetDiffLONG(LONG _StartValue,LONG _EndValue,int _CurFrame){
+		if(_CurFrame == 1 && nDiffValue.iValue != _StartValue)
+			nDiffValue.lValue = max(_StartValue,_EndValue) - min(_StartValue,_EndValue);
+
+		return nDiffValue.lValue;
+	}
+
+	LONG CalDiffLong(LONG _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
+		if(_CurFrame == 1 && _IsStartNone)
+		nStartValue.lValue = _SrcValue;
+		if(_CurFrame == 1 && _IsEndNone)
+			nEndValue.lValue = _SrcValue;
+
+		int iPartValue	= GetDiffLONG(nStartValue.lValue,nEndValue.lValue,_CurFrame) / _TotalFrame;
+		int iCurValue;
+		if(_CurFrame == _TotalFrame)
+			iCurValue = nEndValue.iValue;
+		else
+			iCurValue = nStartValue.iValue < nEndValue.iValue?(_CurFrame * iPartValue + nStartValue.iValue):(nStartValue.iValue - _CurFrame * iPartValue);
+
+		return iCurValue;
+	}
+
+	RECT GetDiffRect(RECT _StartValue,RECT _EndValue,int _CurFrame){
+		if(_CurFrame == 1 && (nDiffValue.rcValue.left != _StartValue.left || nDiffValue.rcValue.right != _StartValue.right || nDiffValue.rcValue.top != _StartValue.top || nDiffValue.rcValue.bottom != _StartValue.bottom)){
+			nDiffValue.rcValue.left		= max(_StartValue.left,_EndValue.left) - min(_StartValue.left,_EndValue.left);
+			nDiffValue.rcValue.right	= max(_StartValue.right,_EndValue.right) - min(_StartValue.right,_EndValue.right);
+			nDiffValue.rcValue.top		= max(_StartValue.top,_EndValue.top) - min(_StartValue.top,_EndValue.top);
+			nDiffValue.rcValue.bottom	= max(_StartValue.bottom,_EndValue.bottom) - min(_StartValue.bottom,_EndValue.bottom);
+		}
+
+		return nDiffValue.rcValue;
+	}
+
+	RECT CalDiffRect(RECT _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
+		if(_CurFrame == 1 && _IsStartNone)
+			nStartValue.rcValue = _SrcValue;
+		if(_CurFrame == 1 && _IsEndNone)
+			nEndValue.rcValue = _SrcValue;
+
+		RECT nDiffRect	= GetDiffRect(nStartValue.rcValue,nEndValue.rcValue,_CurFrame);
+		RECT nCurRect;
+		if(_CurFrame == _TotalFrame){
+			nCurRect	= nEndValue.rcValue;
+		}
+		else{
+			nCurRect.left	= nStartValue.iValue < nEndValue.iValue?(nDiffRect.left / _TotalFrame * _CurFrame + nStartValue.rcValue.left):(nStartValue.rcValue.left - nDiffRect.left / _TotalFrame * _CurFrame);
+			nCurRect.right	= nStartValue.iValue < nEndValue.iValue?(nDiffRect.right / _TotalFrame * _CurFrame + nStartValue.rcValue.right):(nStartValue.rcValue.right - nDiffRect.right / _TotalFrame * _CurFrame);
+			nCurRect.top	= nStartValue.iValue < nEndValue.iValue?(nDiffRect.top / _TotalFrame * _CurFrame + nStartValue.rcValue.top):(nStartValue.rcValue.top - nDiffRect.top / _TotalFrame * _CurFrame);
+			nCurRect.bottom	= nStartValue.iValue < nEndValue.iValue?(nDiffRect.bottom / _TotalFrame * _CurFrame + nStartValue.rcValue.bottom):(nStartValue.rcValue.bottom - nDiffRect.bottom / _TotalFrame * _CurFrame);
+		}
+		return nCurRect;
+	}
+
+	DWORD GetDiffColor(DWORD _StartValue,DWORD _EndValue,int _CurFrame){
+		if(_CurFrame == 1 && nDiffValue.dwValue != _StartValue){
+			Gdiplus::Color nStartColor(_StartValue);
+			Gdiplus::Color nEndColor(_EndValue);
+
+			int iDiffValueA = max(nEndColor.GetA(),nStartColor.GetA()) - min(nEndColor.GetA(),nStartColor.GetA());
+			int iDiffValueR = max(nEndColor.GetR(),nStartColor.GetR()) - min(nEndColor.GetR(),nStartColor.GetR());
+			int iDiffValueG = max(nEndColor.GetG(),nStartColor.GetG()) - min(nEndColor.GetG(),nStartColor.GetG());
+			int iDiffValueB = max(nEndColor.GetB(),nStartColor.GetB()) - min(nEndColor.GetB(),nStartColor.GetB());
+
+			Gdiplus::Color nRetColor(iDiffValueA,iDiffValueR,iDiffValueG,iDiffValueB);
+
+			nDiffValue.dwValue = nRetColor.GetValue();
+		}
+		return nDiffValue.dwValue;
+	}
+
+	DWORD CalCurColor(DWORD _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
+		if(_CurFrame == 1 && _IsStartNone)
+		nStartValue.dwValue = _SrcValue;
+		if(_CurFrame == 1 && _IsEndNone)
+			nEndValue.dwValue = _SrcValue;
+
+		Gdiplus::Color nStartColor(nStartValue.dwValue);
+		Gdiplus::Color nDiffColor(GetDiffColor(nStartValue.dwValue,nEndValue.dwValue,_CurFrame));
+		DWORD nCurColor;
+		if(_CurFrame == _TotalFrame){
+			nCurColor = Gdiplus::Color(nEndValue.dwValue).GetValue();
+		}
+		else{
+			int iPartValueA = nStartValue.iValue < nEndValue.iValue?(nDiffColor.GetA() / _TotalFrame * _CurFrame + nStartColor.GetA()):(nStartColor.GetA() - nDiffColor.GetA() / _TotalFrame * _CurFrame);
+			int iPartValueR = nStartValue.iValue < nEndValue.iValue?(nDiffColor.GetR() / _TotalFrame * _CurFrame + nStartColor.GetR()):(nStartColor.GetR() - nDiffColor.GetR() / _TotalFrame * _CurFrame);
+			int iPartValueG = nStartValue.iValue < nEndValue.iValue?(nDiffColor.GetG() / _TotalFrame * _CurFrame + nStartColor.GetG()):(nStartColor.GetG() - nDiffColor.GetG() / _TotalFrame * _CurFrame);
+			int iPartValueB = nStartValue.iValue < nEndValue.iValue?(nDiffColor.GetB() / _TotalFrame * _CurFrame + nStartColor.GetB()):(nStartColor.GetB() - nDiffColor.GetB() / _TotalFrame * _CurFrame);
+			nCurColor = Gdiplus::Color(iPartValueA,iPartValueR,iPartValueG,iPartValueB).GetValue();
+		}
+		return nCurColor;
+	}
+
+	SIZE GetDiffSize(SIZE _StartValue,SIZE _EndValue,int _CurFrame){
+		if(_CurFrame == 1 && (nDiffValue.siValue.cx != _StartValue.cx || nDiffValue.siValue.cy != _StartValue.cy)){
+			nDiffValue.siValue.cx	= max(_StartValue.cx,_EndValue.cx) - min(_StartValue.cx,_EndValue.cx);
+			nDiffValue.siValue.cy	= max(_StartValue.cy,_EndValue.cy) - min(_StartValue.cy,_EndValue.cy);
+		}
+
+		return nDiffValue.siValue;
+	}
+
+	SIZE CalCurSize(SIZE _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
+		if(_CurFrame == 1 && _IsStartNone)
+			nStartValue.siValue = _SrcValue;
+		if(_CurFrame == 1 && _IsEndNone)
+			nEndValue.siValue = _SrcValue;
+
+		SIZE nDiffSize = GetDiffSize(nStartValue.siValue,nEndValue.siValue,_CurFrame);
+		SIZE nCurSize;
+		if(_CurFrame == _TotalFrame){
+			nCurSize = nEndValue.siValue;
+		}
+		else{
+			nCurSize.cx	= nStartValue.iValue < nEndValue.iValue?(nDiffSize.cx / _TotalFrame * _CurFrame + nDiffSize.cx):(nDiffSize.cx - nDiffSize.cx / _TotalFrame * _CurFrame);
+			nCurSize.cy	= nStartValue.iValue < nEndValue.iValue?(nDiffSize.cy / _TotalFrame * _CurFrame + nDiffSize.cy):(nDiffSize.cy - nDiffSize.cy / _TotalFrame * _CurFrame);
+		}
+
+		return nCurSize;
+	}
+	
+	CDuiString CalCurImageSource(LPCTSTR _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
+		CDuiString nSrcValue = _SrcValue;
+
+		int nLeft = nSrcValue.Find(_T("source='"));
+		if(sImageLeft.IsEmpty())
+			sImageLeft = nSrcValue.Left(nLeft + 8);
+		int nRight = nSrcValue.Find(_T("'"),nLeft + 8);
+		CDuiString nValueStr = nSrcValue.Mid(nLeft+8,nRight-nLeft-8);
+		if(sImageRight.IsEmpty())
+			sImageRight = nSrcValue.Mid(nRight);
+
+		LPTSTR pStartStr = NULL;
+		RECT rcSrcValue;
+		rcSrcValue.left		= _tcstol(nValueStr.GetData(), &pStartStr, 10);		ASSERT(pStartStr);
+		rcSrcValue.top		= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
+		rcSrcValue.right	= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
+		rcSrcValue.bottom	= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
+
+		RECT nCurRect = CalDiffRect(rcSrcValue,_TotalFrame,_CurFrame,_IsStartNone,_IsEndNone);
+
+		CDuiString nNewImageValue;
+		nNewImageValue.Format(_T("%s%d,%d,%d,%d%s"),sImageLeft.GetData(),nCurRect.left,nCurRect.top,nCurRect.right,nCurRect.bottom,sImageRight.GetData());
+		DUITRACE(_T("%s"),nNewImageValue.GetData());
+		return nNewImageValue.GetData();
+	}
+	CDuiString CalCurImageMask(LPCTSTR _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
+		CDuiString nSrcValue = _SrcValue;
+
+		int nLeft = nSrcValue.Find(_T("make='"));
+		if(sImageLeft.IsEmpty())
+			sImageLeft = nSrcValue.Left(nLeft + 6);
+		int nRight = nSrcValue.Find(_T("'"),nLeft + 6);
+		int nValue = _ttoi(nSrcValue.Mid(nLeft+6,nRight-nLeft-6));
+		if(sImageRight.IsEmpty())
+			sImageRight = nSrcValue.Mid(nRight);
+
+		CDuiString nNewImageValue;
+		nNewImageValue.Format(_T("%s%d%s"),sImageLeft.GetData(),CalDiffInt(nValue,_TotalFrame,_CurFrame,_IsStartNone,_IsEndNone),sImageRight.GetData());
+		DUITRACE(_T("%s"),nNewImageValue.GetData());
+		return nNewImageValue.GetData();
+	}
+	CDuiString CalCurImageCorner(LPCTSTR _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
+		CDuiString nSrcValue = _SrcValue;
+
+		int nLeft = nSrcValue.Find(_T("corner='"));
+		if(sImageLeft.IsEmpty())
+			sImageLeft = nSrcValue.Left(nLeft + 8);
+		int nRight = nSrcValue.Find(_T("'"),nLeft + 8);
+		CDuiString nValueStr = nSrcValue.Mid(nLeft+8,nRight-nLeft-8);
+		if(sImageRight.IsEmpty())
+			sImageRight = nSrcValue.Mid(nRight);
+
+		LPTSTR pStartStr = NULL;
+		RECT rcSrcValue;
+		rcSrcValue.left		= _tcstol(nValueStr.GetData(), &pStartStr, 10);		ASSERT(pStartStr);
+		rcSrcValue.top		= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
+		rcSrcValue.right	= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
+		rcSrcValue.bottom	= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr); 
+
+		RECT nCurRect = CalDiffRect(rcSrcValue,_TotalFrame,_CurFrame,_IsStartNone,_IsEndNone);
+
+		CDuiString nNewImageValue;
+		nNewImageValue.Format(_T("%s%d,%d,%d,%d%s"),sImageLeft.GetData(),nCurRect.left,nCurRect.top,nCurRect.right,nCurRect.bottom,sImageRight.GetData());
+		DUITRACE(_T("%s"),nNewImageValue.GetData());
+		return nNewImageValue.GetData();
+	}
+	CDuiString CalCurImageFade(LPCTSTR _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
+		CDuiString nSrcValue = _SrcValue;
+
+		int nLeft = nSrcValue.Find(_T("fade='"));
+		if(sImageLeft.IsEmpty())
+			sImageLeft = nSrcValue.Left(nLeft + 6);
+		int nRight = nSrcValue.Find(_T("'"),nLeft + 6);
+		int nValue = _ttoi(nSrcValue.Mid(nLeft+6,nRight-nLeft-6));
+		if(sImageRight.IsEmpty())
+			sImageRight = nSrcValue.Mid(nRight);
+
+		CDuiString nNewImageValue;
+		nNewImageValue.Format(_T("%s%d%s"),sImageLeft.GetData(),CalDiffInt(nValue,_TotalFrame,_CurFrame,_IsStartNone,_IsEndNone),sImageRight.GetData());
+		DUITRACE(_T("%s"),nNewImageValue.GetData());
+		return nNewImageValue.GetData();
+	}
+	CDuiString CalCurImageDest(LPCTSTR _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
+		CDuiString nSrcValue = _SrcValue;
+
+		int nLeft = nSrcValue.Find(_T("dest='"));
+		if(sImageLeft.IsEmpty())
+			sImageLeft = nSrcValue.Left(nLeft + 6);
+		int nRight = nSrcValue.Find(_T("'"),nLeft + 6);
+		CDuiString nValueStr = nSrcValue.Mid(nLeft+6,nRight-nLeft-6);
+		if(sImageRight.IsEmpty())
+			sImageRight = nSrcValue.Mid(nRight);
+
+		LPTSTR pStartStr = NULL;
+		RECT rcSrcValue;
+		rcSrcValue.left		= _tcstol(nValueStr.GetData(), &pStartStr, 10);		ASSERT(pStartStr);
+		rcSrcValue.top		= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
+		rcSrcValue.right	= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
+		rcSrcValue.bottom	= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr); 
+
+		RECT nCurRect = CalDiffRect(rcSrcValue,_TotalFrame,_CurFrame,_IsStartNone,_IsEndNone);
+
+		CDuiString nNewImageValue;
+		nNewImageValue.Format(_T("%s%d,%d,%d,%d%s"),sImageLeft.GetData(),nCurRect.left,nCurRect.top,nCurRect.right,nCurRect.bottom,sImageRight.GetData());
+		DUITRACE(_T("%s"),nNewImageValue.GetData());
+		return nNewImageValue.GetData();
+	}
+
+	bool IsStartNull(){
+		return _tcscmp(_T("none"),sStartValue.GetData()) == 0;
+	}
+
+	bool IsEndNull(){
+		return _tcscmp(_T("none"),sEndValue.GetData()) == 0;
+	}
+
+	tagTProperty():uInterval(0),uDelay(0),uTimer(0),bLoop(false),bReverse(false){
+		::ZeroMemory((void*)&nStartValue, sizeof(unValue));
+		::ZeroMemory((void*)&nEndValue, sizeof(unValue));
+	}
+
+}TProperty;
+
+typedef struct tagTActionGroup
+{
+	UINT		uDefaultInterval;
+	UINT		uDefaultTimer;
+	bool		bDefaultLoop;
+	bool		bDefaultAutoStart;
+	bool		bDefaultReverse;
+	INT			iEventValue;
+	CDuiString	sMsgValue;
+	CDuiString	sMsgType;
+	CDuiString	sName;
+	TStdPtrArray<TProperty*> mPropertys;
+
+	tagTActionGroup(void){
+		uDefaultInterval	= 0;
+		bDefaultLoop		= false;
+		bDefaultReverse		= false;
+		iEventValue			= 0;
+	}
+
+	~tagTActionGroup(void){
+		for(int i = 0;i < mPropertys.GetSize();i++){
+			TProperty* pTp = mPropertys.GetAt(i);
+			if(!pTp)
+				continue;
+
+			delete pTp;
+			pTp = NULL;
+			mPropertys.Remove(i);
+		}
+		mPropertys.Empty();
+	}
+}TAGroup;
+
 typedef struct tagTFontInfo
 {
     HFONT hFont;
@@ -415,6 +768,34 @@ public:
 	bool RemoveStyles(LPCTSTR pStylesName);
 	void RemoveAllStyles();
 
+	bool AddPropertyAction(LPCTSTR pAGroupName,LPCTSTR pPropertyName,LPCTSTR pType,LPCTSTR pStartValue,LPCTSTR pEndValue,int iInterval,int iTimer,int iDelay,bool bRevers,bool bLoop = false,bool bAutoStart = true);
+	bool AddPropertyAction(TAGroup& tAGroup,LPCTSTR pPropertyName,LPCTSTR pType,LPCTSTR pStartValue,LPCTSTR pEndValue,int iInterval,int iTimer,int iDelay,bool bRevers,bool bLoop = false,bool bAutoStart = true);
+	bool SetPropertyAction(TAGroup& tAGroup,TProperty* tProperty,bool bAutoCreate = false);
+	bool SetPropertyAction(LPCTSTR pAGroupName,TProperty* tProperty,bool bAutoCreate = false);
+	bool SetPropertyAction(LPCTSTR pAGroupName,LPCTSTR pPropertyName,LPCTSTR pType,LPCTSTR pStartValue,LPCTSTR pEndValue,int iInterval,int iTimer,int iDelay,bool bRevers,bool bLoop = false,bool bAutoStart = true,bool bAutoCreate = false);
+	bool SetPropertyAction(TAGroup& tAGroup,LPCTSTR pPropertyName,LPCTSTR pType,LPCTSTR pStartValue,LPCTSTR pEndValue,int iInterval,int iTimer,int iDelay,bool bRevers,bool bLoop = false,bool bAutoStart = true,bool bAutoCreate = false);
+	TProperty* GetPropertyAction(LPCTSTR pAGroupName,LPCTSTR pPropertyName,LPCTSTR pType) const;
+	TProperty* GetPropertyAction(TAGroup& tAGroup,LPCTSTR pPropertyName,LPCTSTR pType) const;
+	TProperty* GetPropertyAction(LPCTSTR pAGroupName,LPCTSTR pPropertyName,LPCTSTR pType,int& iIndex) const;
+	TProperty* GetPropertyAction(TAGroup& tAGroup,LPCTSTR pPropertyName,LPCTSTR pType,int& iIndex) const;
+	bool RemovePropertyAction(LPCTSTR pAGroupName,LPCTSTR pPropertyName,LPCTSTR pType);
+	bool SetPropertyActionParse(TProperty& nTProperty,LPCTSTR pPropertyName,LPCTSTR pType,LPCTSTR pStartValue,LPCTSTR pEndValue,int iInterval,int iTimer,int iDelay,bool bRevers,bool bLoop = false,bool bAutoStart = true);
+	int HasPropertyMsgType(TAGroup& tAGroup,LPCTSTR pType);
+	int HasPropertyMsgType(LPCTSTR pAGroupName,LPCTSTR pType);
+
+	bool AddActionScriptGroup(LPCTSTR pAGroupName,LPCTSTR pNotifyName,int iDefaultInterval = 0,int iDefaultTimer = 500,bool bDefaultReverse = false,bool bDefaultLoop = false,bool bDefaultAutoStart = true);
+	bool AddActionScriptGroup(LPCTSTR pAGroupName,EVENTTYPE_UI pEventType,int iDefaultInterval = 0,int iDefaultTimer = 500,bool bDefaultReverse = false,bool bDefaultLoop = false,bool bDefaultAutoStart = true);
+	bool SetActionScriptGroup(TAGroup** tAGroup,bool bMergerProperty = true);
+	bool SetActionScriptGroup(LPCTSTR pAGroupName,LPCTSTR pNotifyName,int iDefaultInterval = 0,int iDefaultTimer = 500,bool bDefaultReverse = false,bool bDefaultLoop = false,bool bDefaultAutoStart = true,bool bMergerProperty = false);
+	bool SetActionScriptGroup(LPCTSTR pAGroupName,EVENTTYPE_UI pEventType,int iDefaultInterval = 0,int iDefaultTimer = 500,bool bDefaultReverse = false,bool bDefaultLoop = false,bool bDefaultAutoStart = true,bool bMergerProperty = true);
+	TAGroup* GetActionScriptGroup(LPCTSTR pAGroupName) const;
+	bool RemoveActionScriptGroup(LPCTSTR pAGroupName);
+	void RemoveActionScriptGroupAll();
+	int HasActionScriptGroup(TAGroup& tAGroup,LPCTSTR pMsgType = NULL);
+	int HasActionScriptGroup(TAGroup& tAGroup,int pEventValue = 0);
+	int HasActionScriptGroup(LPCTSTR pAGroupName,LPCTSTR pMsgType = NULL);
+	int HasActionScriptGroup(LPCTSTR pAGroupName,int pEventValue = 0);
+
     CControlUI* GetFocus() const;
     void SetFocus(CControlUI* pControl);
     void SetFocusNeeded(CControlUI* pControl);
@@ -540,6 +921,7 @@ private:
 	CStdStringPtrMap* m_pControlsStyle;
 	CStdStringPtrMap m_mStyles;
 	CStdStringPtrMap m_mEffectsStyle;
+	TStdStringPtrMap<TAGroup*>	m_mActionScript;
     //
     CPaintManagerUI* m_pParentResourcePM;
     DWORD m_dwDefaultDisabledColor;

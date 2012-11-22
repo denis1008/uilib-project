@@ -4,6 +4,8 @@
 #include <GdiPlus.h>
 namespace UiLib
 {
+	REGIST_DUICLASS(CLabelUI);
+
 	Color _MakeRGB(int a, Color cl)
 	{
 		return Color(a, cl.GetR(), cl.GetG(), cl.GetB());
@@ -488,7 +490,7 @@ namespace UiLib
 	// Qualifier:
 	// Note:	  
 	//************************************
-	Gdiplus::RectF CLabelUI::GetShadowOffset()
+	RectF CLabelUI::GetShadowOffset()
 	{
 		try
 		{

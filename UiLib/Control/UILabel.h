@@ -1,9 +1,7 @@
 #ifndef __UILABEL_H__
 #define __UILABEL_H__
 
-#include <GdiPlus.h>
 #pragma once
-using namespace Gdiplus;
 
 namespace UiLib
 {

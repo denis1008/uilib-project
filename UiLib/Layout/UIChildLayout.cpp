@@ -3,6 +3,8 @@
 
 namespace UiLib
 {
+	REGIST_DUICLASS(CChildLayoutUI);
+
 	CChildLayoutUI::CChildLayoutUI()
 	{
 

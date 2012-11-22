@@ -3,14 +3,15 @@
 
 namespace UiLib {
 
-	CFadeButtonUI::CFadeButtonUI() : CUIAnimation( this ), m_bMouseHove( FALSE ), m_bMouseLeave( FALSE )
+	REGIST_DUICLASS(CFadeButtonUI);
+
+	CFadeButtonUI::CFadeButtonUI() : CUIAnimation( &(*this) ), m_bMouseHove( FALSE ), m_bMouseLeave( FALSE )
 	{
 	}
 
 	CFadeButtonUI::~CFadeButtonUI()
 	{
 		StopAnimation();
-		CControlUI::~CControlUI();
 	}
 
 	LPCTSTR CFadeButtonUI::GetClass() const
@@ -20,7 +21,7 @@ namespace UiLib {
 
 	LPVOID CFadeButtonUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcscmp(pstrName, _T("FadeButtonUI")) == 0 ) 
+		if( _tcscmp(pstrName, _T("FadeButton")) == 0 ) 
 			return static_cast<CFadeButtonUI*>(this);
 		return CButtonUI::GetInterface(pstrName);
 	}

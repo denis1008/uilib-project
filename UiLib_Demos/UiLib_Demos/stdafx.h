@@ -24,20 +24,35 @@
 #include <atlstr.h>
 #include <limits>
 
-#define _CRT_SECURE_NO_DEPRECATE
+
 // TODO: 在此处引用程序需要的其他头文件
+
 
 #include "../../Common/Include/UiLib/UIlib.h"
 
-#ifdef _VC2008
+//程序入口处调用该函数进行内存泄露检测
+//程序退出前调用_CrtDumpMemoryLeaks();函数可查看内存泄露的ID号，该ID号可作为Breakpoint的参数，运行时将会在相应位置自动断点
+inline  void  EnableMemLeakCheck(int Breakpoint = 0){
+	_CrtSetDbgFlag(_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG)  |  _CRTDBG_LEAK_CHECK_DF);
+	if(Breakpoint)
+		_CrtSetBreakAlloc ( 1912 );
+}
+
 #ifdef _DEBUG
-#ifdef _LIB
+#define  new   new(_NORMAL_BLOCK, __FILE__, __LINE__) 
+#endif 
+#define _CRT_SECURE_NO_DEPRECATE
+
+
+#if _MSC_VER == 1500
+#ifdef _DEBUG
+#ifndef UILIB_EXPORTS
 #pragma comment(lib, "../../Common/Static_Debug_2008/UiLib_d.lib")
 #else
 #pragma comment(lib, "../../Common/DLL_Debug_2008/UiLib_d.lib")
 #endif
 #else
-#ifdef _LIB
+#ifndef UILIB_EXPORTS
 #pragma comment(lib, "../../Common/Static_Release_2008/UiLib.lib")
 #else
 #pragma comment(lib, "../../Common/DLL_Release_2008/UiLib.lib")
@@ -45,18 +60,34 @@
 #endif
 #endif
 
-#ifdef _VC201X
+#if _MSC_VER == 1600
 #ifdef _DEBUG
-#ifdef _LIB
-#pragma comment(lib, "../../Common/Static_Debug_201X/UiLib_d.lib")
+#ifndef UILIB_EXPORTS
+#pragma comment(lib, "../../Common/Static_Debug_2010/UiLib_d.lib")
 #else
-#pragma comment(lib, "../../Common/DLL_Debug_201X/UiLib_d.lib")
+#pragma comment(lib, "../../Common/DLL_Debug_2010/UiLib_d.lib")
 #endif
 #else
-#ifdef _LIB
-#pragma comment(lib, "../../Common/Static_Release_201X/UiLib.lib")
+#ifndef UILIB_EXPORTS
+#pragma comment(lib, "../../Common/Static_Release_2010/UiLib.lib")
 #else
-#pragma comment(lib, "../../Common/DLL_Release_201X/UiLib.lib")
+#pragma comment(lib, "../../Common/DLL_Release_2010/UiLib.lib")
+#endif
+#endif
+#endif
+
+#if _MSC_VER == 1700
+#ifdef _DEBUG
+#ifndef UILIB_EXPORTS
+#pragma comment(lib, "../../Common/Static_Debug_2012/UiLib_d.lib")
+#else
+#pragma comment(lib, "../../Common/DLL_Debug_2012/UiLib_d.lib")
+#endif
+#else
+#ifndef UILIB_EXPORTS
+#pragma comment(lib, "../../Common/Static_Release_2012/UiLib.lib")
+#else
+#pragma comment(lib, "../../Common/DLL_Release_2012/UiLib.lib")
 #endif
 #endif
 #endif

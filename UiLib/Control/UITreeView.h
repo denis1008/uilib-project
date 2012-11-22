@@ -112,9 +112,9 @@ namespace UiLib
 		virtual bool Remove(CTreeNodeUI* pControl);
 		virtual bool RemoveAt(int iIndex);
 		virtual void RemoveAll();
-		virtual bool OnCheckBoxChanged(void* param);
-		virtual bool OnFolderChanged(void* param);
-		virtual bool OnDBClickItem(void* param);
+		virtual bool OnCheckBoxChanged(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+		virtual bool OnFolderChanged(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+		virtual bool OnDBClickItem(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
 		virtual bool SetItemCheckBox(bool _Selected,CTreeNodeUI* _TreeNode = NULL);
 		virtual void SetItemExpand(bool _Expanded,CTreeNodeUI* _TreeNode = NULL);
 		virtual void Notify(TNotifyUI& msg);

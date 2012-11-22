@@ -2,6 +2,8 @@
 #define __UTILS_H__
 
 #pragma once
+#include <GdiPlus.h>
+using namespace Gdiplus;
 
 namespace UiLib
 {
@@ -281,6 +283,12 @@ namespace UiLib
 	{
 	public:
 		TStdStringPtrMap(int nSize = 83):CStdStringPtrMap(nSize){};
+		T GetAtObj(int iIndex) const {
+			LPCTSTR nkey = GetAt(iIndex);
+			if(!nkey)
+				return NULL;
+			return Find(nkey);
+		}
 		T Find(LPCTSTR key, bool optimize = true) const{return static_cast<T>(CStdStringPtrMap::Find(key,optimize));};
 		bool Insert(LPCTSTR key,T pData){return CStdStringPtrMap::Insert(key);};
 		T Set(LPCTSTR key,T pData){return static_cast<T>(CStdStringPtrMap::Set(key,pData));};
