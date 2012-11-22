@@ -950,6 +950,7 @@ private:
 public:
 	static CDuiString m_pStrDefaultFontName;
 	CStdPtrArray m_aTranslateAccelerator;
+	CEventSource m_aCustomEvents;
 };
 
 } // namespace UiLib
