@@ -1,14 +1,14 @@
-#ifndef _DYNAMIC
+#ifndef UILIB_EXPORTS
 #define UILIB_API
 #else
-#if defined(UILIB_EXPORTS)
-#if defined(_MSC_VER)
+#ifdef UILIB_EXPORTS
+#if _MSC_VER >= 1500
 #define UILIB_API __declspec(dllexport)
 #else
 #define UILIB_API 
 #endif
 #else
-#if defined(_MSC_VER)
+#if _MSC_VER >= 1500
 #define UILIB_API __declspec(dllimport)
 #else
 #define UILIB_API 
@@ -37,6 +37,7 @@
 #include "Utils/Internal.h"
 #include "Utils/UIDelegate.h"
 
+#include "Core/UITimer.h"
 #include "Core/UIDefine.h"
 #include "Core/UIBase.h"
 #include "Core/UIManager.h"

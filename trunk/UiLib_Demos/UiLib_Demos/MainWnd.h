@@ -7,6 +7,7 @@
 #include "../../Common/Include/UiLib/Utils/IWindowBase.h"
 
 
+
 #pragma once
 class CMainWnd : public IWindowBase
 {
@@ -22,22 +23,26 @@ public:
 	void Notify(TNotifyUI& msg);
 	void OnFinalMessage(HWND hWnd);
 
-	bool OnMsgBtnMouseEnter(TEventUI* pTEventUI);
-	bool OnMsgBtnMouseLeave(TEventUI* pTEventUI);
-	bool OnMsgBtnClick(TNotifyUI* pTNotifyUI);
-	bool OnEffectsBtnClick(TNotifyUI* pTNotifyUI);
-	bool OnAddNodeBtnClick(TNotifyUI* pTNotifyUI);
-	bool OnAddAtNodeBtnClick(TNotifyUI* pTNotifyUI);
-	bool OnRemoveNodeBtnClick(TNotifyUI* pTNotifyUI);
-	bool OnCreateChartViewBtn(TNotifyUI* pTNotifyUI);
-	bool OnAddChartDataABtn(TNotifyUI* pTNotifyUI);
-	bool OnAddChartDataBBtn(TNotifyUI* pTNotifyUI);
-	bool OnAddChartDataCBtn(TNotifyUI* pTNotifyUI);
-	bool OnLegendTopBtn(TNotifyUI* pTNotifyUI);
-	bool OnLegendRightBtn(TNotifyUI* pTNotifyUI);
-	bool OnLegendBottomBtn(TNotifyUI* pTNotifyUI);
-	bool OnDelChartDataBtn(TNotifyUI* pTNotifyUI);
+	bool OnMsgBtnMouseEnter(TEventUI* pTEventUI,LPARAM lParam,WPARAM wParam);
+	bool OnMsgBtnMouseLeave(TEventUI* pTEventUI,LPARAM lParam,WPARAM wParam);
+	bool OnMsgBtnClick(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+	bool OnEffectsBtnClick(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+	bool OnAddNodeBtnClick(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+	bool OnAddAtNodeBtnClick(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+	bool OnRemoveNodeBtnClick(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+	bool OnCreateChartViewBtn(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+	bool OnAddChartDataABtn(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+	bool OnAddChartDataBBtn(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+	bool OnAddChartDataCBtn(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+	bool OnLegendTopBtn(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+	bool OnLegendRightBtn(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+	bool OnLegendBottomBtn(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+	bool OnDelChartDataBtn(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
 
+	void OnDuiTimerA(IDuiTimer* pTimer);
+	void OnDuiTimerB(IDuiTimer* pTimer,CButtonUI* pControl);
+	void OnDuiTimerC(IDuiTimer* pTimer,HWND hWnd,CMainWnd* lParam,WPARAM wParam);
+	bool OnDuiTimerD(TEventUI* pTEventUI);
 private:
 	int				mChartDataPos;
 	CLabelUI*		pTestLabel;

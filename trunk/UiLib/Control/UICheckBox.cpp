@@ -3,6 +3,8 @@
 
 namespace UiLib
 {
+	REGIST_DUICLASS(CCheckBoxUI);
+
 	LPCTSTR CCheckBoxUI::GetClass() const
 	{
 		return _T("CheckBoxUI");

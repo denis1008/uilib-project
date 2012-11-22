@@ -3,6 +3,8 @@
 
 namespace UiLib
 {
+	REGIST_DUICLASS(CScrollBarUI);
+
 	CScrollBarUI::CScrollBarUI() : m_bHorizontal(false), m_nRange(100), m_nScrollPos(0), m_nLineSize(8), 
 		m_pOwner(NULL), m_nLastScrollPos(0), m_nLastScrollOffset(0), m_nScrollRepeatDelay(0), m_uButton1State(0), \
 		m_uButton2State(0), m_uThumbState(0), m_bShowButton1(true), m_bShowButton2(true)

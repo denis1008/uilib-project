@@ -6,6 +6,7 @@ namespace UiLib
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
+	REGIST_DUICLASS(CContainerUI);
 
 	CContainerUI::CContainerUI()
 		: m_iChildPadding(0),

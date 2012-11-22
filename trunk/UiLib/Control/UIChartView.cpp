@@ -1,10 +1,9 @@
 #include "StdAfx.h"
 #include "UIChartView.h"
 
-
-
 namespace UiLib
 {
+	REGIST_DUICLASS(CChartViewUI);
 	//************************************
 	// 函数名称: CChartSeries
 	// 返回类型: 

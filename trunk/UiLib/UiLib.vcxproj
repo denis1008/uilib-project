@@ -1,20 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="DLL_Debug|Win32">
-      <Configuration>DLL_Debug</Configuration>
+    <ProjectConfiguration Include="DLL_Debug_2008|Win32">
+      <Configuration>DLL_Debug_2008</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="DLL_Release|Win32">
-      <Configuration>DLL_Release</Configuration>
+    <ProjectConfiguration Include="DLL_Debug_2010|Win32">
+      <Configuration>DLL_Debug_2010</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Static_Debug|Win32">
-      <Configuration>Static_Debug</Configuration>
+    <ProjectConfiguration Include="DLL_Debug_2012|Win32">
+      <Configuration>DLL_Debug_2012</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Static_Release|Win32">
-      <Configuration>Static_Release</Configuration>
+    <ProjectConfiguration Include="DLL_Release_2008|Win32">
+      <Configuration>DLL_Release_2008</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DLL_Release_2010|Win32">
+      <Configuration>DLL_Release_2010</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DLL_Release_2012|Win32">
+      <Configuration>DLL_Release_2012</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Static_Debug_2008|Win32">
+      <Configuration>Static_Debug_2008</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Static_Debug_2010|Win32">
+      <Configuration>Static_Debug_2010</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Static_Debug_2012|Win32">
+      <Configuration>Static_Debug_2012</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Static_Release_2008|Win32">
+      <Configuration>Static_Release_2008</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Static_Release_2010|Win32">
+      <Configuration>Static_Release_2010</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Static_Release_2012|Win32">
+      <Configuration>Static_Release_2012</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -24,73 +56,196 @@
     <RootNamespace>UiLib</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2012|Win32'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2010|Win32'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2008|Win32'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2010|Win32'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2008|Win32'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2012|Win32'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2010|Win32'" Label="Configuration">
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2008|Win32'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release_2012|Win32'" Label="Configuration">
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release_2010|Win32'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release_2008|Win32'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v90</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2012|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2010|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2008|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2010|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2008|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2012|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2010|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2008|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release_2012|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release_2010|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release_2008|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2012|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)\Common\$(Configuration)_201X\</OutDir>
-    <IntDir>$(SolutionDir)\Temp\$(Configuration)_201X\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)\Common\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Temp\$(Configuration)\$(ProjectName)\</IntDir>
     <TargetName>$(ProjectName)_d</TargetName>
     <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2010|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)\Common\$(Configuration)_201X\</OutDir>
-    <IntDir>$(SolutionDir)\Temp\$(Configuration)_201X\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)\Common\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Temp\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>$(ProjectName)_d</TargetName>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2008|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\Common\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Temp\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>$(ProjectName)_d</TargetName>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\Common\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Temp\$(Configuration)\$(ProjectName)\</IntDir>
     <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)\Common\$(Configuration)_201X\</OutDir>
-    <IntDir>$(SolutionDir)\Temp\$(Configuration)_201X\$(ProjectName)\</IntDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2010|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\Common\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Temp\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)\Common\$(Configuration)_201X\</OutDir>
-    <IntDir>$(SolutionDir)\Temp\$(Configuration)_201X\$(ProjectName)\</IntDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2008|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\Common\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Temp\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2012|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\Common\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Temp\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2010|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\Common\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Temp\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2008|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\Common\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Temp\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release_2012|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\Common\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Temp\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release_2010|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\Common\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Temp\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release_2008|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\Common\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Temp\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2012|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DYNAMIC;WIN32;_DEBUG;_WINDOWS;_USRDLL;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
@@ -111,15 +266,69 @@
       </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2010|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <BaseAddress>0x11000000</BaseAddress>
+      <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
+      <AdditionalLibraryDirectories>$(SolutionDir)\CommonFile\$(Configuration)\</AdditionalLibraryDirectories>
+      <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2008|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <BaseAddress>0x11000000</BaseAddress>
+      <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
+      <AdditionalLibraryDirectories>$(SolutionDir)\CommonFile\$(Configuration)\</AdditionalLibraryDirectories>
+      <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">
+    <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <CompileAs>CompileAsCpp</CompileAs>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ProcessorNumber>8</ProcessorNumber>
+      <MinimalRebuild>
+      </MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,13 +352,83 @@
       </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2010|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ProcessorNumber>8</ProcessorNumber>
+      <MinimalRebuild>
+      </MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Riched20.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <BaseAddress>0x11000000</BaseAddress>
+      <ImportLibrary>$(OutDir)$(TargetName)$(TargetExt)</ImportLibrary>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)\CommonFile\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+    </Lib>
+    <PostBuildEvent>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2008|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ProcessorNumber>8</ProcessorNumber>
+      <MinimalRebuild>
+      </MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Riched20.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <BaseAddress>0x11000000</BaseAddress>
+      <ImportLibrary>$(OutDir)$(TargetName)$(TargetExt)</ImportLibrary>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)\CommonFile\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+    </Lib>
+    <PostBuildEvent>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2012|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PreprocessorDefinitions>_DYNAMIC;WIN32;NDEBUG;_WINDOWS;_USRDLL;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\</AdditionalIncludeDirectories>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -175,7 +454,137 @@
       </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2010|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\</AdditionalIncludeDirectories>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <BaseAddress>0x11000000</BaseAddress>
+      <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
+      <AdditionalLibraryDirectories>$(SolutionDir)\CommonFile\$(Configuration)\</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2008|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\</AdditionalIncludeDirectories>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <BaseAddress>0x11000000</BaseAddress>
+      <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
+      <AdditionalLibraryDirectories>$(SolutionDir)\CommonFile\$(Configuration)\</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release_2012|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\</AdditionalIncludeDirectories>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>Riched20.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <BaseAddress>0x11000000</BaseAddress>
+      <ImportLibrary>$(OutDir)$(TargetName)$(TargetExt)</ImportLibrary>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)\CommonFile\$(Configuration)\</AdditionalLibraryDirectories>
+    </Lib>
+    <PostBuildEvent>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release_2010|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\</AdditionalIncludeDirectories>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>Riched20.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <BaseAddress>0x11000000</BaseAddress>
+      <ImportLibrary>$(OutDir)$(TargetName)$(TargetExt)</ImportLibrary>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)\CommonFile\$(Configuration)\</AdditionalLibraryDirectories>
+    </Lib>
+    <PostBuildEvent>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Static_Release_2008|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
@@ -239,39 +648,73 @@
     <ClCompile Include="Core\UIManager.cpp" />
     <ClCompile Include="Core\UIMarkup.cpp" />
     <ClCompile Include="Core\UIRender.cpp" />
+    <ClCompile Include="Core\UITimer.cpp" />
     <ClCompile Include="Layout\UIChildLayout.cpp" />
     <ClCompile Include="Layout\UIHorizontalLayout.cpp" />
     <ClCompile Include="Layout\UITabLayout.cpp" />
     <ClCompile Include="Layout\UITileLayout.cpp" />
     <ClCompile Include="Layout\UIVerticalLayout.cpp" />
     <None Include="StdAfx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release|Win32'">Create</PrecompiledHeader>
-      <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'">false</MinimalRebuild>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2012|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2010|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2008|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2010|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2008|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2012|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2010|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2008|Win32'">Create</PrecompiledHeader>
+      <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">false</MinimalRebuild>
+      <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2010|Win32'">false</MinimalRebuild>
+      <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2008|Win32'">false</MinimalRebuild>
     </None>
     <ClCompile Include="UIlib.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2012|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2010|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2008|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Utils\DuiReflection.cpp" />
     <ClCompile Include="Utils\IWindowBase.cpp" />
     <ClCompile Include="Utils\stb_image.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'">NotUsing</PrecompiledHeader>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'">CompileAsC</CompileAs>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Release_2012|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Release_2010|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Release_2008|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2012|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2010|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2008|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2010|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2008|Win32'">NotUsing</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2010|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2008|Win32'">CompileAsC</CompileAs>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2012|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2010|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2008|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Utils\UIDelegate.cpp" />
     <ClCompile Include="Utils\Utils.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug|Win32'">Create</PrecompiledHeader>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'">WIN32;_DEBUG;_WINDOWS;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2012|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2010|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2008|Win32'">Create</PrecompiledHeader>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">WIN32;_DEBUG;_WINDOWS;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2010|Win32'">WIN32;_DEBUG;_WINDOWS;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2008|Win32'">WIN32;_DEBUG;_WINDOWS;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2010|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2008|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Utils\WinImplBase.cpp" />
     <ClCompile Include="Utils\XUnzip.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2010|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2008|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2012|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2010|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2008|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2012|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2010|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2008|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -306,6 +749,7 @@
     <ClInclude Include="Core\UIManager.h" />
     <ClInclude Include="Core\UIMarkup.h" />
     <ClInclude Include="Core\UIRender.h" />
+    <ClInclude Include="Core\UITimer.h" />
     <ClInclude Include="Layout\UIChildLayout.h" />
     <ClInclude Include="Layout\UIFrameLayout.h" />
     <ClInclude Include="Layout\UIHorizontalLayout.h" />
@@ -316,6 +760,7 @@
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="UIlib.h" />
     <ClInclude Include="Utils\downloadmgr.h" />
+    <ClInclude Include="Utils\DuiReflection.h" />
     <ClInclude Include="Utils\Internal.h" />
     <ClInclude Include="Utils\IWindowBase.h" />
     <ClInclude Include="Utils\UIDelegate.h" />

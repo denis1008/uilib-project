@@ -10,11 +10,13 @@ namespace UiLib {
 	// 参数信息: void * pFn
 	// 函数说明: 
 	//************************************
-	CDelegateBase::CDelegateBase( void* pObject, void* pFn )
+	CDelegateBase::CDelegateBase( void* pObject, void* pFn,LPARAM lParam /*= NULL*/,WPARAM wParam /*= NULL*/ )
 	{
 		m_pObject = pObject;
 		m_pFn = pFn;
 		m_iEventType = UIEVENT__ALL;
+		m_lParam = lParam;
+		m_wParam = wParam;
 		m_sNotifyTypeName.Empty();
 	}
 
@@ -26,11 +28,13 @@ namespace UiLib {
 	// 参数信息: EVENTTYPE_UI _iEventType
 	// 函数说明: 
 	//************************************
-	CDelegateBase::CDelegateBase( void* pObject, void* pFn,EVENTTYPE_UI _iEventType /*= UIEVENT__ALL*/ )
+	CDelegateBase::CDelegateBase( void* pObject, void* pFn,EVENTTYPE_UI _iEventType /*= UIEVENT__ALL*/,LPARAM lParam /*= NULL*/,WPARAM wParam /*= NULL*/ )
 	{
 		m_pObject = pObject;
 		m_pFn = pFn;
 		m_iEventType = _iEventType;
+		m_lParam = lParam;
+		m_wParam = wParam;
 		m_sNotifyTypeName.Empty();
 	}
 
@@ -42,20 +46,30 @@ namespace UiLib {
 	// 参数信息: LPCTSTR _sNotifyTypeName
 	// 函数说明: 
 	//************************************
-	CDelegateBase::CDelegateBase( void* pObject, void* pFn,LPCTSTR _sNotifyTypeName /*= NULL*/ )
+	CDelegateBase::CDelegateBase( void* pObject, void* pFn,LPCTSTR _sNotifyTypeName /*= NULL*/,LPARAM lParam /*= NULL*/,WPARAM wParam /*= NULL*/ )
 	{
 		m_pObject = pObject;
 		m_pFn = pFn;
 		m_iEventType = UIEVENT__ALL;
+		m_lParam = lParam;
+		m_wParam = wParam;
 		if(NULL != _sNotifyTypeName)
 			m_sNotifyTypeName = _sNotifyTypeName;
 	}
 
-	CDelegateBase::CDelegateBase(const CDelegateBase& rhs) 
+	//************************************
+	// 函数名称: CDelegateBase
+	// 返回类型: 
+	// 参数信息: const CDelegateBase & rhs
+	// 函数说明：
+	//************************************
+	CDelegateBase::CDelegateBase( const CDelegateBase& rhs )
 	{
 		m_pObject = rhs.m_pObject;
 		m_pFn = rhs.m_pFn; 
 		m_iEventType = rhs.m_iEventType;
+		m_lParam = rhs.m_lParam;
+		m_wParam = rhs.m_wParam;
 		m_sNotifyTypeName = rhs.m_sNotifyTypeName.GetData();
 	}
 
@@ -70,21 +84,12 @@ namespace UiLib {
 		return m_pObject == rhs.m_pObject && m_pFn == rhs.m_pFn && m_iEventType == rhs.m_iEventType && m_sNotifyTypeName == rhs.m_sNotifyTypeName.GetData(); 
 	}
 
-	void* CDelegateBase::GetFn() 
-	{
-		return m_pFn; 
-	}
-
-	void* CDelegateBase::GetObject() 
-	{
-		return m_pObject; 
-	}
-
 	CEventSource::~CEventSource()
 	{
 		for( int i = 0; i < m_aDelegates.GetSize(); i++ ) {
 			CDelegateBase* pObject = static_cast<CDelegateBase*>(m_aDelegates[i]);
 			if( pObject) delete pObject;
+			pObject = NULL;
 		}
 	}
 
@@ -102,17 +107,7 @@ namespace UiLib {
 
 		m_aDelegates.Add(d.Copy());
 	}
-
-	void CEventSource::operator+= (const CDelegateBase* d)
-	{
-		for( int i = 0; i < m_aDelegates.GetSize(); i++ ) {
-			CDelegateBase* pObject = static_cast<CDelegateBase*>(m_aDelegates[i]);
-			if( pObject && pObject->Equals(*d) ) return;
-		}
-
-		m_aDelegates.Add(d->Copy());
-	}
-
+	
 	void CEventSource::operator-= (const CDelegateBase& d) 
 	{
 		for( int i = 0; i < m_aDelegates.GetSize(); i++ ) {
@@ -129,25 +124,25 @@ namespace UiLib {
 	{
 		for( int i = 0; i < m_aDelegates.GetSize(); i++ ) {
 			CDelegateBase* pObject = static_cast<CDelegateBase*>(m_aDelegates[i]);
-			if( pObject && !(*pObject)(param) ) return false;
+			if( pObject && !(*pObject)(param,pObject->GetLParam(),pObject->GetWParam()) ) return false;
 		}
 		return true;
 	}
 
-	bool CEventSource::operator() (TEventUI* pTEventUI,EVENTTYPE_UI _iEventType) 
+	bool CEventSource::operator() (TEventUI* pTEventUI) 
 	{
 		for( int i = 0; i < m_aDelegates.GetSize(); i++ ) {
 			CDelegateBase* pObject = static_cast<CDelegateBase*>(m_aDelegates[i]);
-			if( pObject && !(*pObject)(pTEventUI,_iEventType) ) return false;
+			if( pObject && !(*pObject)(pTEventUI,pObject->GetLParam(),pObject->GetWParam()) ) return false;
 		}
 		return true;
 	}
 
-	bool CEventSource::operator() (TNotifyUI* pTNotifyUI,CDuiString& _sNotifyTypeName) 
+	bool CEventSource::operator() (TNotifyUI* pTNotifyUI) 
 	{
 		for( int i = 0; i < m_aDelegates.GetSize(); i++ ) {
 			CDelegateBase* pObject = static_cast<CDelegateBase*>(m_aDelegates[i]);
-			if( pObject && !(*pObject)(pTNotifyUI,_sNotifyTypeName.GetData()) ) return false;
+			if( pObject && !(*pObject)(pTNotifyUI,pObject->GetLParam(),pObject->GetWParam()) ) return false;
 		}
 		return true;
 	}

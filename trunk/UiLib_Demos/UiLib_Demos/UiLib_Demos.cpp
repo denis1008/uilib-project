@@ -10,6 +10,7 @@ using namespace Gdiplus;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmdLine*/, int nCmdShow)
 {
+	EnableMemLeakCheck();
 	CPaintManagerUI::SetInstance(hInstance);
 
 	GdiplusStartupInput   gdiplusStartupInput;
@@ -35,5 +36,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
 
 	::CoUninitialize();
 	GdiplusShutdown(gdiplusToken);
+
+	_CrtDumpMemoryLeaks();
 	return 0;
 }

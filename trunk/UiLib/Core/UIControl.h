@@ -2,11 +2,19 @@
 #define __UICONTROL_H__
 
 #pragma once
+#include "Utils/DuiReflection.h"
 
 namespace UiLib {
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
+
+	typedef struct tagActionPropertys
+	{
+		CDuiString nAGroupName;
+		CTimerSource nActionTimers;
+		TAGroup* pTAGroup;
+	}TActionProperty;
 
 typedef CControlUI* (CALLBACK* FINDCONTROLPROC)(CControlUI*, LPVOID);
 
@@ -40,7 +48,7 @@ public:
     DWORD GetBkColor3() const;
     void SetBkColor3(DWORD dwBackColor);
 	void SetDisabledBkColor(DWORD dwDisabledBkColor);
-	DWORD GetDisibledBkColor() const;
+	DWORD GetDisabledBkColor() const;
     LPCTSTR GetBkImage();
     void SetBkImage(LPCTSTR pStrImage);
     DWORD GetBorderColor() const;
@@ -130,6 +138,11 @@ public:
     virtual void SetFloat(bool bFloat = true);
 	virtual const CDuiString& GetStyleName();
 	virtual void SetStyleName(LPCTSTR pStrStyleName,CPaintManagerUI* pm = NULL);
+	virtual void SetAction(LPCTSTR pActonName,CPaintManagerUI* pm = NULL);
+	virtual void OnPropertyActionTimer(IDuiTimer* pTimer,TProperty* pTProperty);
+	virtual void OnGroupActionTimer(IDuiTimer* pTimer,TAGroup* pTAGroup);
+	virtual bool OnAGroupNotify(TNotifyUI* pTNotifyUI,TAGroup* pTAGroup,WPARAM wParam);
+	virtual bool OnAGroupEvent(TEventUI* pTEventUI,TAGroup* pTAGroup,WPARAM wParam);
 
     virtual CControlUI* FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags);
 
@@ -145,7 +158,8 @@ public:
     virtual void Event(TEventUI& event);
     virtual void DoEvent(TEventUI& event);
 
-    virtual void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+	virtual void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+	virtual unUserData GetAttribute(LPCTSTR pstrName);
     CControlUI* ApplyAttributeList(LPCTSTR pstrList);
 
     virtual SIZE EstimateSize(SIZE szAvailable);
@@ -206,6 +220,11 @@ public:
     CEventSource OnSize;
     CEventSource OnEvent;
     CEventSource OnNotify;
+	CTimerSource OnTimers;
+
+public:
+	TActionProperty* pCurTActionProperty;
+	TStdStringPtrMap<TActionProperty*> mActionNotifys;
 
 protected:
     CPaintManagerUI* m_pManager;
@@ -232,6 +251,7 @@ protected:
     bool m_bFloat;
     bool m_bSetPos; // 防止SetPos循环调用
     TRelativePosUI m_tRelativePos;
+	
 
 	CDuiString m_sStyleName;
     CDuiString m_sText;
@@ -259,7 +279,6 @@ public:
 	// 取控件图片非透明色区域
 	void GetRegion(HDC hDC, LPCTSTR pStrImage, COLORREF dwColorKey);
 };
-
 } // namespace UiLib
 
 #endif // __UICONTROL_H__

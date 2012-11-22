@@ -42,9 +42,10 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\"
-				PreprocessorDefinitions="UILIB_STATIC;WIN32;_DEBUG;_WINDOWS;_LIB"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				ProgramDataBaseFileName="$(OutDir)\$(ProjectName)_d.pdb"
 				WarningLevel="3"
@@ -109,7 +110,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories=".\"
-				PreprocessorDefinitions="UILIB_STATIC;WIN32;NDEBUG;_LIB"
+				PreprocessorDefinitions="WIN32;NDEBUG"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
@@ -171,9 +172,11 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\"
-				PreprocessorDefinitions="_DYNAMIC;WIN32;_DEBUG;_WINDOWS;_USRDLL;UILIB_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;UILIB_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="true"
+				EnableEnhancedInstructionSet="0"
 				UsePrecompiledHeader="2"
 				ProgramDataBaseFileName="$(OutDir)\$(ProjectName)_d.pdb"
 				WarningLevel="3"
@@ -243,7 +246,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories=".\"
-				PreprocessorDefinitions="_DYNAMIC;WIN32;NDEBUG;_WINDOWS;_USRDLL;UILIB_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;UILIB_EXPORTS"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
@@ -468,6 +471,10 @@
 					RelativePath=".\Core\UIRender.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\Core\UITimer.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Layout"
@@ -496,6 +503,10 @@
 			<Filter
 				Name="Utils"
 				>
+				<File
+					RelativePath=".\Utils\DuiReflection.cpp"
+					>
+				</File>
 				<File
 					RelativePath=".\Utils\IWindowBase.cpp"
 					>
@@ -734,6 +745,10 @@
 					RelativePath=".\Core\UIRender.h"
 					>
 				</File>
+				<File
+					RelativePath=".\Core\UITimer.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Layout"
@@ -772,6 +787,10 @@
 				>
 				<File
 					RelativePath=".\Utils\downloadmgr.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Utils\DuiReflection.h"
 					>
 				</File>
 				<File

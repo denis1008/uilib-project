@@ -6,6 +6,8 @@
 
 namespace UiLib
 {
+	REGIST_DUICLASS(CEditUI);
+
 	class CEditWnd : public CWindowWnd
 	{
 	public:
@@ -141,7 +143,7 @@ namespace UiLib
 			DWORD dwTextColor = m_pOwner->GetTextColor();
 			::SetTextColor((HDC)wParam, RGB(GetBValue(dwTextColor),GetGValue(dwTextColor),GetRValue(dwTextColor)));
 			if( m_hBkBrush == NULL ) {
-				DWORD clrColor = !m_pOwner->IsReadOnly()?m_pOwner->GetNativeEditBkColor():m_pOwner->GetDisibledBkColor();
+				DWORD clrColor = !m_pOwner->IsReadOnly()?m_pOwner->GetNativeEditBkColor():m_pOwner->GetDisabledBkColor();
 				m_hBkBrush = ::CreateSolidBrush(RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor)));
 			}
 			return (LRESULT)m_hBkBrush;

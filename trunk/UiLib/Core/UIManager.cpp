@@ -2032,14 +2032,14 @@ namespace UiLib {
 			if( pTimer->pSender == pControl
 				&& pTimer->hWnd == m_hWndPaint
 				&& pTimer->nLocalID == nTimerID ) {
-					if( pTimer->bKilled == true ) {
-						if( ::SetTimer(m_hWndPaint, pTimer->uWinTimer, uElapse, NULL) ) {
-							pTimer->bKilled = false;
-							return true;
-						}
-						return false;
+				if( pTimer->bKilled == true ) {
+					if( ::SetTimer(m_hWndPaint, pTimer->uWinTimer, uElapse, NULL) ) {
+						pTimer->bKilled = false;
+						return true;
 					}
 					return false;
+				}
+				return false;
 			}
 		}
 
@@ -3220,6 +3220,696 @@ namespace UiLib {
 	void CPaintManagerUI::UsedVirtualWnd(bool bUsed)
 	{
 		m_bUsedVirtualWnd = bUsed;
+	}
+	
+	//************************************
+	// 函数名称: AddPropertyAction
+	// 返回类型: bool
+	// 参数信息: LPCTSTR pAGroupName
+	// 参数信息: LPCTSTR pPropertyName
+	// 参数信息: LPCTSTR pType
+	// 参数信息: LPCTSTR pStartValue
+	// 参数信息: LPCTSTR pEndValue
+	// 参数信息: int iInterval
+	// 参数信息: int iTimer
+	// 参数信息: int iDelay
+	// 参数信息: bool bRevers
+	// 参数信息: bool bLoop
+	// 参数信息: bool bAutoStart
+	// 函数说明: 
+	//************************************
+	bool CPaintManagerUI::AddPropertyAction( LPCTSTR pAGroupName,LPCTSTR pPropertyName,LPCTSTR pType,LPCTSTR pStartValue,LPCTSTR pEndValue,int iInterval,int iTimer,int iDelay,bool bRevers,bool bLoop /*= false*/,bool bAutoStart /*= true*/ )
+	{
+		return SetPropertyAction(pAGroupName,pPropertyName,pType,pStartValue,pEndValue,iInterval,iTimer,iDelay,bRevers,bLoop,bAutoStart,true);
+	}
+	
+	//************************************
+	// 函数名称: AddPropertyAction
+	// 返回类型: bool
+	// 参数信息: TAGroup & tAGroup
+	// 参数信息: LPCTSTR pPropertyName
+	// 参数信息: LPCTSTR pType
+	// 参数信息: LPCTSTR pStartValue
+	// 参数信息: LPCTSTR pEndValue
+	// 参数信息: int iInterval
+	// 参数信息: int iTimer
+	// 参数信息: int iDelay
+	// 参数信息: bool bRevers
+	// 参数信息: bool bLoop
+	// 参数信息: bool bAutoStart
+	// 函数说明: 
+	//************************************
+	bool CPaintManagerUI::AddPropertyAction( TAGroup& tAGroup,LPCTSTR pPropertyName,LPCTSTR pType,LPCTSTR pStartValue,LPCTSTR pEndValue,int iInterval,int iTimer,int iDelay,bool bRevers,bool bLoop /*= false*/,bool bAutoStart /*= true*/ )
+	{
+		return SetPropertyAction(tAGroup,pPropertyName,pType,pStartValue,pEndValue,iInterval,iTimer,iDelay,bRevers,bLoop,bAutoStart,true);
+	}
+
+	//************************************
+	// 函数名称: SetPropertyAction
+	// 返回类型: bool
+	// 参数信息: TAGroup & tAGroup
+	// 参数信息: TProperty * tProperty
+	// 参数信息: bool bAutoCreate
+	// 函数说明: 
+	//************************************
+	bool CPaintManagerUI::SetPropertyAction( TAGroup& tAGroup,TProperty* tProperty,bool bAutoCreate /*= false*/ )
+	{
+		if(!tProperty)
+			return false;
+
+		int nIndex = -1;
+		TProperty* pTProperty = GetPropertyAction(tAGroup,tProperty->sName.GetData(),tProperty->sType.GetData(),nIndex);
+		if(!pTProperty && !bAutoCreate)
+			return false;
+
+		if(pTProperty){
+			delete pTProperty;
+			pTProperty = NULL;
+		}
+
+		tAGroup.mPropertys.Remove(nIndex);
+		return tAGroup.mPropertys.Add(tProperty);
+	}
+
+	//************************************
+	// 函数名称: SetPropertyAction
+	// 返回类型: bool
+	// 参数信息: LPCTSTR pAGroupName
+	// 参数信息: TProperty * tProperty
+	// 参数信息: bool bAutoCreate
+	// 函数说明: 
+	//************************************
+	bool CPaintManagerUI::SetPropertyAction( LPCTSTR pAGroupName,TProperty* tProperty,bool bAutoCreate /*= false*/ )
+	{
+		if(!tProperty)
+			return false;
+
+		TAGroup* pTAGroup = GetActionScriptGroup(pAGroupName);
+		if(!pTAGroup)
+			return false;
+		
+		return SetPropertyAction(*pTAGroup,tProperty,bAutoCreate);
+	}
+
+	//************************************
+	// 函数名称: SetPropertyAction
+	// 返回类型: bool
+	// 参数信息: LPCTSTR pAGroupName
+	// 参数信息: LPCTSTR pPropertyName
+	// 参数信息: LPCTSTR pType
+	// 参数信息: LPCTSTR pStartValue
+	// 参数信息: LPCTSTR pEndValue
+	// 参数信息: int iInterval
+	// 参数信息: int iTimer
+	// 参数信息: int iDelay
+	// 参数信息: bool bRevers
+	// 参数信息: bool bLoop
+	// 参数信息: bool bAutoStart
+	// 参数信息: bool bAutoCreate
+	// 函数说明: 
+	//************************************
+	bool CPaintManagerUI::SetPropertyAction( LPCTSTR pAGroupName,LPCTSTR pPropertyName,LPCTSTR pType,LPCTSTR pStartValue,LPCTSTR pEndValue,int iInterval,int iTimer,int iDelay,bool bRevers,bool bLoop /*= false*/,bool bAutoStart /*= true*/,bool bAutoCreate /*= false*/ )
+	{
+		if(!pAGroupName || !pPropertyName || !pType || (!pStartValue && !pEndValue))
+			return false;
+
+		TAGroup* pTAGroup = GetActionScriptGroup(pAGroupName);
+		if(!pTAGroup)
+			return false;
+
+		return SetPropertyAction(*pTAGroup,pPropertyName,pType,pStartValue,pEndValue,iInterval,iTimer,iDelay,bRevers,bLoop,bAutoStart,bAutoCreate);
+	}
+
+	//************************************
+	// 函数名称: SetPropertyAction
+	// 返回类型: bool
+	// 参数信息: TAGroup & tAGroup
+	// 参数信息: LPCTSTR pPropertyName
+	// 参数信息: LPCTSTR pType
+	// 参数信息: LPCTSTR pStartValue
+	// 参数信息: LPCTSTR pEndValue
+	// 参数信息: int iInterval
+	// 参数信息: int iTimer
+	// 参数信息: int iDelay
+	// 参数信息: bool bRevers
+	// 参数信息: bool bLoop
+	// 参数信息: bool bAutoStart
+	// 参数信息: bool bAutoCreate
+	// 函数说明: 
+	//************************************
+	bool CPaintManagerUI::SetPropertyAction( TAGroup& tAGroup,LPCTSTR pPropertyName,LPCTSTR pType,LPCTSTR pStartValue,LPCTSTR pEndValue,int iInterval,int iTimer,int iDelay,bool bRevers,bool bLoop /*= false*/,bool bAutoStart /*= true*/,bool bAutoCreate /*= false*/ )
+	{
+		if(!pPropertyName || !pType || (!pStartValue && !pEndValue))
+			return false;
+
+		TProperty* pTProperty = new TProperty();
+
+		if(pTProperty && SetPropertyActionParse(*pTProperty,pPropertyName,pType,pStartValue,pEndValue,iInterval,iTimer,iDelay,bRevers,bLoop,bAutoStart)){
+			if(SetPropertyAction(tAGroup.sName.GetData(),pTProperty,bAutoCreate))
+				return true;
+			delete pTProperty;
+			pTProperty = NULL;
+		}
+		return false;
+	}
+
+	//************************************
+	// 函数名称: GetPropertyAction
+	// 返回类型: TProperty*
+	// 参数信息: LPCTSTR pAGroupName
+	// 参数信息: LPCTSTR pPropertyName
+	// 参数信息: LPCTSTR pType
+	// 函数说明: 
+	//************************************
+	TProperty* CPaintManagerUI::GetPropertyAction( LPCTSTR pAGroupName,LPCTSTR pPropertyName,LPCTSTR pType ) const
+	{
+		int nIndex = -1;
+		return GetPropertyAction(pAGroupName,pPropertyName,pType,nIndex);
+	}
+
+	//************************************
+	// 函数名称: GetPropertyAction
+	// 返回类型: TProperty*
+	// 参数信息: TAGroup & tAGroup
+	// 参数信息: LPCTSTR pPropertyName
+	// 参数信息: LPCTSTR pType
+	// 函数说明: 
+	//************************************
+	TProperty* CPaintManagerUI::GetPropertyAction( TAGroup& tAGroup,LPCTSTR pPropertyName,LPCTSTR pType ) const
+	{
+		int nIndex = -1;
+		return GetPropertyAction(tAGroup,pPropertyName,pType,nIndex);
+	}
+
+	//************************************
+	// 函数名称: GetPropertyAction
+	// 返回类型: TProperty*
+	// 参数信息: LPCTSTR pAGroupName
+	// 参数信息: LPCTSTR pPropertyName
+	// 参数信息: LPCTSTR pType
+	// 参数信息: int & iIndex
+	// 函数说明: 
+	//************************************
+	TProperty* CPaintManagerUI::GetPropertyAction( LPCTSTR pAGroupName,LPCTSTR pPropertyName,LPCTSTR pType,int& iIndex ) const
+	{
+		if(!pAGroupName || !pPropertyName)
+			return NULL;
+
+		TAGroup* pTAGroup = GetActionScriptGroup(pAGroupName);
+		if(!pTAGroup)
+			return NULL;
+
+		return GetPropertyAction(*pTAGroup,pPropertyName,pType,iIndex);
+	}
+
+	//************************************
+	// 函数名称: GetPropertyAction
+	// 返回类型: TProperty*
+	// 参数信息: TAGroup& tAGroup
+	// 参数信息: LPCTSTR pPropertyName
+	// 参数信息: LPCTSTR pType
+	// 参数信息: int & iIndex
+	// 函数说明: 
+	//************************************
+	TProperty* CPaintManagerUI::GetPropertyAction( TAGroup& tAGroup,LPCTSTR pPropertyName,LPCTSTR pType,int& iIndex ) const
+	{
+		if(!pPropertyName || !pType)
+			return NULL;
+
+		iIndex = -1;
+
+		for(int i = 0;i < tAGroup.mPropertys.GetSize();i++){
+			TProperty* nTProperty = tAGroup.mPropertys.GetAt(i);
+			if(nTProperty && _tcscmp(nTProperty->sName.GetData(),pPropertyName) == 0 && _tcscmp(nTProperty->sType.GetData(),pType) == 0){
+				iIndex = i;
+				return nTProperty;
+			}
+			break;
+		}
+		return NULL;
+	}
+
+	//************************************
+	// 函数名称: RemovePropertyAction
+	// 返回类型: bool
+	// 参数信息: LPCTSTR pAGroupName
+	// 参数信息: LPCTSTR pPropertyName
+	// 参数信息: LPCTSTR pType
+	// 函数说明: 
+	//************************************
+	bool CPaintManagerUI::RemovePropertyAction( LPCTSTR pAGroupName,LPCTSTR pPropertyName,LPCTSTR pType )
+	{
+		if(!pAGroupName || !pPropertyName)
+			return false;
+
+		TAGroup* pTAGroup = GetActionScriptGroup(pAGroupName);
+		if(!pTAGroup)
+			return false;
+
+		int nIndex = -1;
+		TProperty* pTProperty = GetPropertyAction(*pTAGroup,pPropertyName,pType,nIndex);
+		if(!pTProperty)
+			return true;
+
+		delete pTProperty;
+		return pTAGroup->mPropertys.Remove(nIndex);
+	}
+	
+	//************************************
+	// 函数名称: SetPropertyActionParse
+	// 返回类型: bool
+	// 参数信息: TProperty & nTProperty
+	// 参数信息: LPCTSTR pPropertyName
+	// 参数信息: LPCTSTR pType
+	// 参数信息: LPCTSTR pStartValue
+	// 参数信息: LPCTSTR pEndValue
+	// 参数信息: int iInterval
+	// 参数信息: int iTimer
+	// 参数信息: int iDelay
+	// 参数信息: bool bRevers
+	// 参数信息: bool bLoop
+	// 参数信息: bool bAutoStart
+	// 函数说明: 
+	//************************************
+	bool CPaintManagerUI::SetPropertyActionParse( TProperty& nTProperty,LPCTSTR pPropertyName,LPCTSTR pType,LPCTSTR pStartValue,LPCTSTR pEndValue,int iInterval,int iTimer,int iDelay,bool bRevers,bool bLoop /*= false*/,bool bAutoStart /*= true*/ )
+	{
+		if(!pPropertyName || !pType || (!pStartValue && !pEndValue))
+			return false;
+
+		if( _tcscmp(pType, _T("int")) == 0 || _tcscmp(pType, _T("image.fade")) == 0 ) {
+			nTProperty.nStartValue.iValue = _ttoi(pStartValue);
+			nTProperty.nEndValue.iValue = _ttoi(pEndValue);
+		}
+		else if( _tcscmp(pType, _T("color")) == 0 || _tcscmp(pType, _T("image.mask")) == 0 ) {
+			if( *pStartValue == _T('#')) pStartValue = ::CharNext(pStartValue);
+			LPTSTR pStartStr = NULL;
+			nTProperty.nStartValue.dwValue = _tcstoul(pStartValue, &pStartStr, 16);
+
+			if( *pEndValue == _T('#')) pEndValue = ::CharNext(pEndValue);
+			LPTSTR pEndStr = NULL;
+			nTProperty.nEndValue.dwValue = _tcstoul(pEndValue, &pEndStr, 16);
+		}
+		else if( _tcscmp(pType, _T("rect")) == 0 || _tcscmp(pType, _T("image.source")) == 0 || _tcscmp(pType, _T("image.corner")) == 0 || _tcscmp(pType, _T("image.dest")) == 0 ) {
+			LPTSTR pStartStr = NULL;
+			nTProperty.nStartValue.rcValue.left = _tcstol(pStartValue, &pStartStr, 10);		ASSERT(pStartStr);
+			nTProperty.nStartValue.rcValue.top = _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
+			nTProperty.nStartValue.rcValue.right = _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
+			nTProperty.nStartValue.rcValue.bottom = _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr); 
+
+			LPTSTR pEndStr = NULL;
+			nTProperty.nEndValue.rcValue.left = _tcstol(pEndValue, &pEndStr, 10);		ASSERT(pEndStr);
+			nTProperty.nEndValue.rcValue.top = _tcstol(pEndStr + 1, &pEndStr, 10);    ASSERT(pEndStr);
+			nTProperty.nEndValue.rcValue.right = _tcstol(pEndStr + 1, &pEndStr, 10);  ASSERT(pEndStr);
+			nTProperty.nEndValue.rcValue.bottom = _tcstol(pEndStr + 1, &pEndStr, 10); ASSERT(pEndStr); 
+		}
+		else if( _tcscmp(pType, _T("point")) == 0 ) {
+			LPTSTR pStartStr = NULL;
+			nTProperty.nStartValue.siValue.cx = _tcstol(pStartValue, &pStartStr, 10);	ASSERT(pStartStr);
+			nTProperty.nStartValue.siValue.cy  = _tcstol(pStartStr + 1, &pStartStr, 10); ASSERT(pStartStr);
+
+			LPTSTR pEndStr = NULL;
+			nTProperty.nStartValue.siValue.cx = _tcstol(pEndValue, &pEndStr, 10);	ASSERT(pEndStr);
+			nTProperty.nStartValue.siValue.cy  = _tcstol(pEndStr + 1, &pEndStr, 10); ASSERT(pEndStr);
+		}
+		else false;
+
+		if(_tcscmp(_T("none"),pStartValue) == 0){
+			::ZeroMemory((void*)&nTProperty.nStartValue, sizeof(TProperty::unValue));
+			nTProperty.sStartValue = _T("none");
+		}
+		if(_tcscmp(_T("none"),pEndValue) == 0){
+			::ZeroMemory((void*)&nTProperty.nEndValue, sizeof(TProperty::unValue));
+			nTProperty.sEndValue = _T("none");
+		}
+
+		nTProperty.sName		= pPropertyName;
+		nTProperty.sType		= pType;
+		nTProperty.bLoop		= bLoop;
+		nTProperty.bReverse		= bRevers;
+		nTProperty.bAutoStart	= bAutoStart;
+		nTProperty.uInterval	= iInterval < 0?0:iInterval;
+		nTProperty.uTimer		= iTimer < iInterval ?iInterval:iTimer;
+		nTProperty.uDelay		= iDelay < 0?0:iDelay;
+
+		return true;
+	}
+
+
+	//************************************
+	// 函数名称: HasPropertyMsgType
+	// 返回类型: int
+	// 参数信息: TAGroup & tAGroup
+	// 参数信息: LPCTSTR pType
+	// 函数说明: 
+	//************************************
+	int CPaintManagerUI::HasPropertyMsgType( TAGroup& tAGroup,LPCTSTR pType )
+	{
+		if(!pType)
+			return -1;
+
+		for(int i = 0;i < tAGroup.mPropertys.GetSize();i++){
+			TProperty* pTProperty = tAGroup.mPropertys.GetAt(i);
+			if(!pTProperty)
+				continue;
+
+			if(_tcscmp(pType,pTProperty->sType.GetData()) == 0)
+				return 1;
+		}
+		return 0;
+	}
+
+	//************************************
+	// 函数名称: HasPropertyMsgType
+	// 返回类型: int
+	// 参数信息: LPCTSTR pAGroupName
+	// 参数信息: LPCTSTR pType
+	// 函数说明: 
+	//************************************
+	int CPaintManagerUI::HasPropertyMsgType( LPCTSTR pAGroupName,LPCTSTR pType )
+	{
+		if(!pAGroupName || !pType)
+			return -1;
+
+		TAGroup* pTAGroup = GetActionScriptGroup(pAGroupName);
+		if(!pTAGroup)
+			return -1;
+
+		return HasPropertyMsgType(*pTAGroup,pType);
+	}
+
+	//************************************
+	// 函数名称: AddActionScriptGroup
+	// 返回类型: bool
+	// 参数信息: LPCTSTR pAGroupName
+	// 参数信息: LPCTSTR pNotifyName
+	// 参数信息: int iDefaultInterval
+	// 参数信息: int iDefaultTimer
+	// 参数信息: bool bDefaultReverse
+	// 参数信息: bool bDefaultLoop
+	// 参数信息: bool bDefaultAutoStart
+	// 函数说明: 
+	//************************************
+	bool CPaintManagerUI::AddActionScriptGroup( LPCTSTR pAGroupName,LPCTSTR pNotifyName,int iDefaultInterval /*= 0*/,int iDefaultTimer /*= 500*/,bool bDefaultReverse /*= false*/,bool bDefaultLoop /*= false*/,bool bDefaultAutoStart /*= true*/ )
+	{
+		if(!pAGroupName || !pNotifyName || GetActionScriptGroup(pAGroupName))
+			return false;
+
+		TAGroup* pTAGroup			= new TAGroup();
+		pTAGroup->sName				= pAGroupName;
+		pTAGroup->sMsgType			= _T("notify");
+		pTAGroup->sMsgValue			= pNotifyName;
+		pTAGroup->iEventValue		= UIEVENT__ALL;
+		pTAGroup->uDefaultInterval	= iDefaultInterval < 0?0:iDefaultInterval;
+		pTAGroup->uDefaultTimer		= iDefaultTimer < (int)pTAGroup->uDefaultInterval?pTAGroup->uDefaultInterval:iDefaultTimer;
+		pTAGroup->bDefaultLoop		= bDefaultLoop;
+		pTAGroup->bDefaultAutoStart	= bDefaultAutoStart;
+		pTAGroup->bDefaultReverse	= bDefaultReverse;
+
+		m_mActionScript.Set(pAGroupName,pTAGroup);
+		return true;
+	}
+
+	//************************************
+	// 函数名称: AddActionScriptGroup
+	// 返回类型: bool
+	// 参数信息: LPCTSTR pAGroupName
+	// 参数信息: EVENTTYPE_UI pEventType
+	// 参数信息: int iDefaultInterval
+	// 参数信息: int iDefaultTimer
+	// 参数信息: bool bDefaultReverse
+	// 参数信息: bool bDefaultLoop
+	// 参数信息: bool bDefaultAutoStart
+	// 函数说明: 
+	//************************************
+	bool CPaintManagerUI::AddActionScriptGroup( LPCTSTR pAGroupName,EVENTTYPE_UI pEventType,int iDefaultInterval /*= 0*/,int iDefaultTimer /*= 500*/,bool bDefaultReverse /*= false*/,bool bDefaultLoop /*= false*/,bool bDefaultAutoStart /*= true*/ )
+	{
+		if(!pAGroupName || pEventType == UIEVENT__ALL || GetActionScriptGroup(pAGroupName))
+			return false;
+
+		TAGroup* pTAGroup			= new TAGroup();
+		pTAGroup->sName				= pAGroupName;
+		pTAGroup->sMsgType			= _T("event");
+		pTAGroup->sMsgValue.Empty();
+		pTAGroup->iEventValue		= pEventType;
+		pTAGroup->uDefaultInterval	= iDefaultInterval < 0?0:iDefaultInterval;
+		pTAGroup->uDefaultTimer		= iDefaultTimer < (int)pTAGroup->uDefaultInterval?pTAGroup->uDefaultInterval:iDefaultTimer;
+		pTAGroup->bDefaultLoop		= bDefaultLoop;
+		pTAGroup->bDefaultAutoStart	= bDefaultAutoStart;
+		pTAGroup->bDefaultReverse	= bDefaultReverse;
+
+		m_mActionScript.Set(pAGroupName,pTAGroup);
+		return true;
+	}
+
+	//************************************
+	// 函数名称: SetActionScriptGroup
+	// 返回类型: bool
+	// 参数信息: TAGroup ** tAGroup
+	// 参数信息: bool bMergerProperty
+	// 函数说明: 
+	//************************************
+	bool CPaintManagerUI::SetActionScriptGroup( TAGroup** tAGroup,bool bMergerProperty /*= false*/ )
+	{
+		if(!*tAGroup)
+			return false;
+
+		TAGroup* pTAGroup = m_mActionScript.Find((*tAGroup)->sName.GetData());
+
+		if(!pTAGroup)
+			return false;
+
+		if(bMergerProperty){
+			for(int i = 0;i < (*tAGroup)->mPropertys.GetSize();i++){
+				TProperty* pTProperty = (*tAGroup)->mPropertys.GetAt(i);
+				if(!pTProperty)
+					continue;
+
+				SetPropertyAction(*pTAGroup,pTProperty,true);
+			}
+			for(int i = 0;i < pTAGroup->mPropertys.GetSize();i++){
+				TProperty* pTProperty = pTAGroup->mPropertys.GetAt(i);
+				if(!pTProperty)
+					continue;
+
+				SetPropertyAction(**tAGroup,pTProperty,true);
+			}
+		}
+
+		pTAGroup = m_mActionScript.Set((*tAGroup)->sName.GetData(),(*tAGroup));
+		if(!pTAGroup)
+			return true;
+
+		delete pTAGroup;
+		pTAGroup = NULL;
+
+		return true;
+	}
+
+	//************************************
+	// 函数名称: SetActionScriptGroup
+	// 返回类型: bool
+	// 参数信息: LPCTSTR pAGroupName
+	// 参数信息: LPCTSTR pNotifyName
+	// 参数信息: int iDefaultInterval
+	// 参数信息: int iDefaultTimer
+	// 参数信息: bool bDefaultReverse
+	// 参数信息: bool bDefaultLoop
+	// 参数信息: bool bDefaultAutoStart
+	// 参数信息: bool bMergerProperty
+	// 函数说明: 
+	//************************************
+	bool CPaintManagerUI::SetActionScriptGroup( LPCTSTR pAGroupName,LPCTSTR pNotifyName,int iDefaultInterval /*= 0*/,int iDefaultTimer /*= 500*/,bool bDefaultReverse /*= false*/,bool bDefaultLoop /*= false*/,bool bDefaultAutoStart /*= true*/,bool bMergerProperty /*= false*/ )
+	{
+		if(!pAGroupName || !pNotifyName)
+			return false;
+
+		TAGroup* pTAGroup = GetActionScriptGroup(pAGroupName);
+		if(!pTAGroup)
+			return false;
+
+		pTAGroup->sMsgType = _T("notify");
+		pTAGroup->sMsgValue= pNotifyName;
+		pTAGroup->iEventValue		= UIEVENT__ALL;
+		pTAGroup->uDefaultInterval	= iDefaultInterval < 0?0:iDefaultInterval;
+		pTAGroup->uDefaultTimer		= iDefaultTimer < (int)pTAGroup->uDefaultInterval?pTAGroup->uDefaultInterval:iDefaultTimer;
+		pTAGroup->bDefaultLoop		= bDefaultLoop;
+		pTAGroup->bDefaultAutoStart	= bDefaultAutoStart;
+		pTAGroup->bDefaultReverse	= bDefaultReverse;
+
+		return true;
+	}
+
+	//************************************
+	// 函数名称: SetActionScriptGroup
+	// 返回类型: bool
+	// 参数信息: LPCTSTR pAGroupName
+	// 参数信息: EVENTTYPE_UI pEventType
+	// 参数信息: int iDefaultInterval
+	// 参数信息: int iDefaultTimer
+	// 参数信息: bool bDefaultReverse
+	// 参数信息: bool bDefaultLoop
+	// 参数信息: bool bDefaultAutoStart
+	// 参数信息: bool bMergerProperty
+	// 函数说明: 
+	//************************************
+	bool CPaintManagerUI::SetActionScriptGroup( LPCTSTR pAGroupName,EVENTTYPE_UI pEventType,int iDefaultInterval /*= 0*/,int iDefaultTimer /*= 500*/,bool bDefaultReverse /*= false*/,bool bDefaultLoop /*= false*/,bool bDefaultAutoStart /*= true*/,bool bMergerProperty /*= false*/ )
+	{
+		if(!pAGroupName || !pEventType)
+			return false;
+
+		TAGroup* pTAGroup = GetActionScriptGroup(pAGroupName);
+		if(!pTAGroup)
+			return false;
+
+		pTAGroup->sMsgType = _T("notify");
+		pTAGroup->sMsgValue.Empty();
+		pTAGroup->iEventValue		= pEventType;
+		pTAGroup->uDefaultInterval	= iDefaultInterval < 0?0:iDefaultInterval;
+		pTAGroup->uDefaultTimer		= iDefaultTimer < (int)pTAGroup->uDefaultInterval?pTAGroup->uDefaultInterval:iDefaultTimer;
+		pTAGroup->bDefaultLoop		= bDefaultLoop;
+		pTAGroup->bDefaultAutoStart	= bDefaultAutoStart;
+		pTAGroup->bDefaultReverse	= bDefaultReverse;
+
+		return true;
+	}
+
+	//************************************
+	// 函数名称: GetActionScriptGroup
+	// 返回类型: TAGroup*
+	// 参数信息: LPCTSTR pAGroupName
+	// 函数说明: 
+	//************************************
+	TAGroup* CPaintManagerUI::GetActionScriptGroup( LPCTSTR pAGroupName ) const
+	{
+		if(!pAGroupName)
+			return NULL;
+
+		return m_mActionScript.Find(pAGroupName);
+	}
+	
+	//************************************
+	// 函数名称: RemoveActionScriptGroup
+	// 返回类型: bool
+	// 参数信息: LPCTSTR pAGroupName
+	// 函数说明: 
+	//************************************
+	bool CPaintManagerUI::RemoveActionScriptGroup( LPCTSTR pAGroupName )
+	{
+		if(!pAGroupName)
+			return false;
+
+		TAGroup* pTAGroup = m_mActionScript.Find(pAGroupName);
+		if(!pTAGroup)
+			return false;
+
+		if(!m_mActionScript.Remove(pAGroupName))
+			return false;
+
+		delete pTAGroup;
+		pTAGroup = NULL;
+		return true;
+	}
+
+	//************************************
+	// 函数名称: RemoveActionScriptGroupAll
+	// 返回类型: void
+	// 函数说明: 
+	//************************************
+	void CPaintManagerUI::RemoveActionScriptGroupAll()
+	{
+		for(int i = 0;i < m_mActionScript.GetSize();i++){
+			LPCTSTR key = m_mActionScript.GetAt(i);
+			TAGroup* pTAGroup = m_mActionScript.Find(key);
+			if(!pTAGroup)
+				continue;
+
+			delete pTAGroup;
+			pTAGroup = NULL;
+			m_mActionScript.Remove(key);
+		}
+		m_mActionScript.RemoveAll();
+	}
+
+	//************************************
+	// 函数名称: HasActionScriptGroup
+	// 返回类型: int
+	// 参数信息: TAGroup & tAGroup
+	// 参数信息: LPCTSTR pMsgType
+	// 函数说明: 
+	//************************************
+	int CPaintManagerUI::HasActionScriptGroup( TAGroup& tAGroup,LPCTSTR pMsgType )
+	{
+		if(!pMsgType)
+			return -1;
+
+		for(int i = 0;i < m_mActionScript.GetSize();i++){
+			TAGroup* pTAGroup = m_mActionScript.GetAtObj(i);
+			if(!pTAGroup)
+				continue;
+
+			if(_tcscmp(pMsgType,pTAGroup->sMsgType.GetData()) == 0 && _tcscmp(tAGroup.sName.GetData(),pTAGroup->sName.GetData()) != 0)
+				return 1;
+		}
+		return 0;
+	}
+	
+	//************************************
+	// 函数名称: HasActionScriptGroup
+	// 返回类型: int
+	// 参数信息: TAGroup & tAGroup
+	// 参数信息: int pEventValue
+	// 函数说明: 
+	//************************************
+	int CPaintManagerUI::HasActionScriptGroup( TAGroup& tAGroup,int pEventValue /*= 0*/ )
+	{
+		if(!pEventValue)
+			return -1;
+
+		for(int i = 0;i < m_mActionScript.GetSize();i++){
+			TAGroup* pTAGroup = m_mActionScript.GetAtObj(i);
+			if(!pTAGroup)
+				continue;
+
+			if(pTAGroup->iEventValue == pEventValue && _tcscmp(tAGroup.sName.GetData(),pTAGroup->sName.GetData()) != 0)
+				return 1;
+		}
+		return 0;
+	}
+
+	//************************************
+	// 函数名称: HasActionScriptGroup
+	// 返回类型: int
+	// 参数信息: LPCTSTR pAGroupName
+	// 参数信息: LPCTSTR pMsgType
+	// 函数说明: 
+	//************************************
+	int CPaintManagerUI::HasActionScriptGroup( LPCTSTR pAGroupName,LPCTSTR pMsgType )
+	{
+		if(!pMsgType)
+			return -1;
+		TAGroup* pTAGroup = GetActionScriptGroup(pAGroupName);
+		if(!pTAGroup)
+			return -1;
+
+		return HasActionScriptGroup(*pTAGroup,pMsgType);
+	}
+
+	//************************************
+	// 函数名称: HasActionScriptGroup
+	// 返回类型: int
+	// 参数信息: LPCTSTR pAGroupName
+	// 参数信息: int pEventValue
+	// 函数说明: 
+	//************************************
+	int CPaintManagerUI::HasActionScriptGroup( LPCTSTR pAGroupName,int pEventValue /*= 0*/ )
+	{
+		if(!pEventValue)
+			return -1;
+		TAGroup* pTAGroup = GetActionScriptGroup(pAGroupName);
+		if(!pTAGroup)
+			return -1;
+
+		return HasActionScriptGroup(*pTAGroup,pEventValue);
 	}
 
 } // namespace UiLib

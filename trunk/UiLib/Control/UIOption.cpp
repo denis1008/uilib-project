@@ -3,6 +3,9 @@
 
 namespace UiLib
 {
+
+	REGIST_DUICLASS(COptionUI);
+
 	COptionUI::COptionUI() : m_bSelected(false), m_dwSelectedTextColor(0),m_dwSelectedBkColor(0)
 	{
 	}

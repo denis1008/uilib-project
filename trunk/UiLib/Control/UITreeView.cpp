@@ -4,6 +4,9 @@
 #pragma warning( disable: 4251 )
 namespace UiLib
 {
+	REGIST_DUICLASS(CTreeNodeUI);
+	REGIST_DUICLASS(CTreeViewUI);
+
 	//************************************
 	// 函数名称: CTreeNodeUI
 	// 返回类型: 
@@ -788,9 +791,9 @@ namespace UiLib
 		if (_tcsicmp(pControl->GetClass(), _T("TreeNodeUI")) != 0)
 			return false;
 
-		pControl->OnNotify += MakeDelegate(this,&CTreeViewUI::OnDBClickItem);
-		pControl->GetFolderButton()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnFolderChanged);
-		pControl->GetCheckBox()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnCheckBoxChanged);
+		pControl->OnNotify += MakeDelegate(this,&CTreeViewUI::OnDBClickItem,_T(""));
+		pControl->GetFolderButton()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnFolderChanged,_T(""));
+		pControl->GetCheckBox()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnCheckBoxChanged,_T(""));
 
 		pControl->SetVisibleFolderBtn(m_bVisibleFolderBtn);
 		pControl->SetVisibleCheckBtn(m_bVisibleCheckBtn);
@@ -833,9 +836,9 @@ namespace UiLib
 		if(!pParent)
 			return -1;
 
-		pControl->OnNotify += MakeDelegate(this,&CTreeViewUI::OnDBClickItem);
-		pControl->GetFolderButton()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnFolderChanged);
-		pControl->GetCheckBox()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnCheckBoxChanged);
+		pControl->OnNotify += MakeDelegate(this,&CTreeViewUI::OnDBClickItem,_T(""));
+		pControl->GetFolderButton()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnFolderChanged,_T(""));
+		pControl->GetCheckBox()->OnNotify += MakeDelegate(this,&CTreeViewUI::OnCheckBoxChanged,_T(""));
 
 		pControl->SetVisibleFolderBtn(m_bVisibleFolderBtn);
 		pControl->SetVisibleCheckBtn(m_bVisibleCheckBtn);
@@ -944,54 +947,57 @@ namespace UiLib
 	//************************************
 	// 函数名称: OnCheckBoxChanged
 	// 返回类型: bool
-	// 参数信息: void * param
+	// 参数信息: TNotifyUI * pTNotifyUI
+	// 参数信息: LPARAM lParam
+	// 参数信息: WPARAM wParam
 	// 函数说明: 
 	//************************************
-	bool CTreeViewUI::OnCheckBoxChanged( void* param )
+	bool CTreeViewUI::OnCheckBoxChanged( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 	{
-		TNotifyUI* pMsg = (TNotifyUI*)param;
-		if(pMsg->sType == _T("selectchanged"))
+		if(pTNotifyUI->sType == _T("selectchanged"))
 		{
-			CCheckBoxUI* pCheckBox = (CCheckBoxUI*)pMsg->pSender;
+			CCheckBoxUI* pCheckBox = (CCheckBoxUI*)pTNotifyUI->pSender;
 			CTreeNodeUI* pItem = (CTreeNodeUI*)pCheckBox->GetParent()->GetParent();
 			SetItemCheckBox(pCheckBox->GetCheck(),pItem);
 			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	//************************************
 	// 函数名称: OnFolderChanged
 	// 返回类型: bool
-	// 参数信息: void * param
+	// 参数信息: TNotifyUI * pTNotifyUI
+	// 参数信息: LPARAM lParam
+	// 参数信息: WPARAM wParam
 	// 函数说明: 
 	//************************************
-	bool CTreeViewUI::OnFolderChanged( void* param )
+	bool CTreeViewUI::OnFolderChanged( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 	{
-		TNotifyUI* pMsg = (TNotifyUI*)param;
-		if(pMsg->sType == _T("selectchanged"))
+		if(pTNotifyUI->sType == _T("selectchanged"))
 		{
-			CCheckBoxUI* pFolder = (CCheckBoxUI*)pMsg->pSender;
+			CCheckBoxUI* pFolder = (CCheckBoxUI*)pTNotifyUI->pSender;
 			CTreeNodeUI* pItem = (CTreeNodeUI*)pFolder->GetParent()->GetParent();
 			pItem->SetVisibleTag(!pFolder->GetCheck());
 			SetItemExpand(!pFolder->GetCheck(),pItem);
 			return true;
 		}
-		return true;
+		return false;
 	}
-	
+
 	//************************************
 	// 函数名称: OnDBClickItem
 	// 返回类型: bool
-	// 参数信息: void * param
-	// 函数说明:
+	// 参数信息: TNotifyUI * pTNotifyUI
+	// 参数信息: LPARAM lParam
+	// 参数信息: WPARAM wParam
+	// 函数说明: 
 	//************************************
-	bool CTreeViewUI::OnDBClickItem( void* param )
+	bool CTreeViewUI::OnDBClickItem( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 	{
-		TNotifyUI* pMsg = (TNotifyUI*)param;
-		if(pMsg->sType == _T("itemdbclick"))
+		if(pTNotifyUI->sType == _T("itemdbclick"))
 		{
-			CTreeNodeUI* pItem		= static_cast<CTreeNodeUI*>(pMsg->pSender);
+			CTreeNodeUI* pItem		= static_cast<CTreeNodeUI*>(pTNotifyUI->pSender);
 			CCheckBoxUI* pFolder	= pItem->GetFolderButton();
 			pFolder->Selected(!pFolder->IsSelected());
 			pItem->SetVisibleTag(!pFolder->GetCheck());

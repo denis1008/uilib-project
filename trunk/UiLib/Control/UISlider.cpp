@@ -3,6 +3,8 @@
 
 namespace UiLib
 {
+	REGIST_DUICLASS(CSliderUI);
+
 	CSliderUI::CSliderUI() : m_uButtonState(0), m_nStep(1)
 	{
 		m_uTextStyle = DT_SINGLELINE | DT_CENTER;

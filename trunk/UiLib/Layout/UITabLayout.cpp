@@ -3,6 +3,8 @@
 
 namespace UiLib
 {
+	REGIST_DUICLASS(CTabLayoutUI);
+
 	CTabLayoutUI::CTabLayoutUI() : m_iCurSel(-1)
 	{
 	}

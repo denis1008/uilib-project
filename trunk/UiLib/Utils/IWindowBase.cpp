@@ -15,7 +15,7 @@ IWindowBase::IWindowBase(LPCTSTR _ZipSkin /*= NULL*/)
 
 IWindowBase::~IWindowBase()
 {
-
+	
 }
 
 LPCTSTR IWindowBase::GetWindowClassName() const
@@ -116,7 +116,8 @@ LRESULT IWindowBase::OnNcHitTest(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
 			CControlUI* pControl = static_cast<CControlUI*>(pm.FindControl(pt));
 			if( pControl && _tcsicmp(pControl->GetClass(), _T("ButtonUI")) != 0 &&
 				_tcsicmp(pControl->GetClass(), _T("OptionUI")) != 0 &&
-				_tcsicmp(pControl->GetClass(), _T("TextUI")) != 0 )
+				_tcsicmp(pControl->GetClass(), _T("TextUI")) != 0 &&
+				_tcsicmp(pControl->GetClass(), _T("FadeButtonUI")) != 0 )
 				return HTCAPTION;
 	}
 

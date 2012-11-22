@@ -3,6 +3,8 @@
 
 namespace UiLib
 {
+	REGIST_DUICLASS(CComboBoxUI);
+
 	CComboBoxUI::CComboBoxUI()
 	{
 		m_nArrowWidth = 0;

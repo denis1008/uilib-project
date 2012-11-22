@@ -2,6 +2,14 @@
 <Window>
 	<HorizontalLayout name="AnimWnd">
 		<VerticalLayout paddidng="0,0,0,0" bkimage="WndFrame/examine_background.bmp" >
+			<HorizontalLayout height="60" >
+				<Button width="58" height="58" bkimage="file='Icon/checking.bkg.png'"  normalimage="file='Icon/C.png' source='0,0,58,58'" hotimage="" action="MouseEnterA|MouseLeaveA" />
+				<Button width="38" height="42" bkimage="file='Button/btn.png' fade='100' corner='5,11,5,11' source='0,0,96,24'" normalimage="file='Icon/anifc.png' source='0,0,38,42'" hotimage="" action="MouseEnterB|MouseLeaveB" />
+				<Button width="38" height="42" bkimage="file='Button/btn.png' fade='100' corner='5,11,5,11' source='0,0,96,24'" normalimage="file='Icon/newtask.ani.png' source='0,0,38,42'" hotimage="" action="MouseEnterC|MouseLeaveC" />
+				<Button width="38" height="42" bkimage="file='Button/btn.png' fade='100' corner='5,11,5,11' source='0,0,96,24'" normalimage="file='Icon/anivip.png' source='0,0,38,42'" hotimage="" action="MouseEnterD|MouseLeaveD" />
+				<Button name="TextMsg" text="按钮1" width="100" action="MouseEnterBtn|MouseLeaveBtn" hotimage="" normalimage="file='Button/btn.png' fade='0' corner='5,11,5,11' source='0,24,96,48'" bkimage="file='Button/btn.png' fade='100' corner='5,11,5,11' source='0,0,96,24'" />
+				<Button text="按钮2" width="100" action="MouseEnterBtn|MouseLeaveBtn" hotimage="" normalimage="file='Button/btn.png' fade='0' corner='5,11,5,11' source='0,24,96,48'" bkimage="file='Button/btn.png' fade='100' corner='5,11,5,11' source='0,0,96,24'" />
+			</HorizontalLayout>
 			<VerticalLayout height="80" inset="1,1,0,0" bkimage="WndFrame/examine_background.bmp">
 				<HorizontalLayout >
 					<Button name="CreateChartView" text="添加图表刻度" width="100" />
@@ -16,11 +24,10 @@
 					</HorizontalLayout>
 					</VerticalLayout>
 					<Button name="DelChartData" text="移除图表数据" width="100" />
-					<Button name="TextMsg" text="移除图表数据" width="100" />
 				</HorizontalLayout>
 			</VerticalLayout>
 			<Edit name="tset" bordersize="0" bottombordersize="1" />
-			<ChartView name="ChartView"  />
+			<ChartView name="ChartView" />
 		</VerticalLayout>
 		<VerticalLayout width="1" inset="0,1,0,1">
 			<Container bkimage="WndFrame/vertical_border.bmp" />
@@ -32,7 +39,7 @@
 			<HorizontalLayout height="1">
 				<Container bkimage="WndFrame/horizontal_border.bmp" />
 			</HorizontalLayout>
-			<TreeView bkcolor="#ffffffff" visiblefolderbtn="true" hscrollbar="true" visiblecheckbtn="true" itemminwidth="250" selitemtextcolor="#ffff00ff" itemhottextcolor="#ff0000ff" >
+			<TreeView bkcolor="#ffffffff" visiblefolderbtn="true" hscrollbar="true" vscrollbar="true" visiblecheckbtn="true" itemminwidth="250" selitemtextcolor="#ffff00ff" itemhottextcolor="#ff0000ff" >
 				<TreeNode text="A1" style="treenode" >
 					<TreeNode text="B1" style="treenode" >
 						<TreeNode text="C1" style="treenode" >

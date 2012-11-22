@@ -108,12 +108,12 @@ namespace UiLib
 		void RemoveAllSubTitleString();
 
 	public:
-		bool OnLastYear(void* _Param);
-		bool OnMoothSelect(void* _Param);
-		bool OnNextYear(void* _Param);
-		bool OnSelectMooth(void* _Param);
-		bool OnSelcetDay(void* _Param);
-		bool OnToday(void* _Param);
+		bool OnLastYear(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+		bool OnMoothSelect(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+		bool OnNextYear(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+		bool OnSelectMooth(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+		bool OnSelcetDay(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+		bool OnToday(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
 
 	public:
 		void SetEnabledMoothSel(bool _Enabled = true);
