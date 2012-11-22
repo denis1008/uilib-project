@@ -352,6 +352,22 @@ LRESULT WindowImplBase::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 LRESULT WindowImplBase::HandleCustomMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
+	if(m_PaintManager.m_aCustomEvents){
+		TEventUI mEvent = {0};
+		mEvent.Type			= uMsg;
+		mEvent.lParam		= lParam;
+		mEvent.wParam		= wParam;
+		mEvent.ptMouse.x	= 0;
+		mEvent.ptMouse.y	= 0;
+		mEvent.wKeyState	= 0;
+		mEvent.dwTimestamp	= GetTickCount();
+		mEvent.pSender		= NULL;
+		mEvent.chKey		= NULL;
+
+		bHandled = !m_PaintManager.m_aCustomEvents(&mEvent);
+
+		return bHandled;
+	}
 	bHandled = FALSE;
 	return 0;
 }
