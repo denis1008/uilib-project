@@ -25,10 +25,10 @@ namespace UiLib {
 	// 返回类型: 
 	// 参数信息: void * pObject
 	// 参数信息: void * pFn
-	// 参数信息: EVENTTYPE_UI _iEventType
+	// 参数信息: UINT _iEventType
 	// 函数说明: 
 	//************************************
-	CDelegateBase::CDelegateBase( void* pObject, void* pFn,EVENTTYPE_UI _iEventType /*= UIEVENT__ALL*/,LPARAM lParam /*= NULL*/,WPARAM wParam /*= NULL*/ )
+	CDelegateBase::CDelegateBase( void* pObject, void* pFn,UINT _iEventType /*= UIEVENT__ALL*/,LPARAM lParam /*= NULL*/,WPARAM wParam /*= NULL*/ )
 	{
 		m_pObject = pObject;
 		m_pFn = pFn;
@@ -83,6 +83,16 @@ namespace UiLib {
 	{
 		return m_pObject == rhs.m_pObject && m_pFn == rhs.m_pFn && m_iEventType == rhs.m_iEventType && m_sNotifyTypeName == rhs.m_sNotifyTypeName.GetData(); 
 	}
+	
+	//************************************
+	// 函数名称: CEventSource
+	// 返回类型: 
+	// 函数说明: 
+	//************************************
+	CEventSource::CEventSource()
+	{
+		m_aDelegates.Empty();
+	}
 
 	CEventSource::~CEventSource()
 	{
@@ -124,7 +134,7 @@ namespace UiLib {
 	{
 		for( int i = 0; i < m_aDelegates.GetSize(); i++ ) {
 			CDelegateBase* pObject = static_cast<CDelegateBase*>(m_aDelegates[i]);
-			if( pObject && !(*pObject)(param,pObject->GetLParam(),pObject->GetWParam()) ) return false;
+			if( pObject && !pObject->Invoke(param,pObject->GetLParam(),pObject->GetWParam()) ) return false;
 		}
 		return true;
 	}
@@ -133,7 +143,7 @@ namespace UiLib {
 	{
 		for( int i = 0; i < m_aDelegates.GetSize(); i++ ) {
 			CDelegateBase* pObject = static_cast<CDelegateBase*>(m_aDelegates[i]);
-			if( pObject && !(*pObject)(pTEventUI,pObject->GetLParam(),pObject->GetWParam()) ) return false;
+			if( pObject && !pObject->Invoke(pTEventUI,pObject->GetLParam(),pObject->GetWParam()) ) return false;
 		}
 		return true;
 	}
@@ -142,9 +152,10 @@ namespace UiLib {
 	{
 		for( int i = 0; i < m_aDelegates.GetSize(); i++ ) {
 			CDelegateBase* pObject = static_cast<CDelegateBase*>(m_aDelegates[i]);
-			if( pObject && !(*pObject)(pTNotifyUI,pObject->GetLParam(),pObject->GetWParam()) ) return false;
+			if( pObject && !pObject->Invoke(pTNotifyUI,pObject->GetLParam(),pObject->GetWParam()) ) return false;
 		}
 		return true;
 	}
+
 
 } // namespace UiLib

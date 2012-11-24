@@ -3912,4 +3912,15 @@ namespace UiLib {
 		return HasActionScriptGroup(*pTAGroup,pEventValue);
 	}
 
+	//************************************
+	// 函数名称: GetEventSource
+	// 返回类型: CEventSource&
+	// 函数说明: 
+	//************************************
+	CEventSource& CPaintManagerUI::GetEventSource()
+	{
+		static CEventSource m_aCustomEvents;
+		return m_aCustomEvents;
+	}
+
 } // namespace UiLib

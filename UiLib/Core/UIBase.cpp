@@ -14,13 +14,32 @@ namespace UiLib {
 void UILIB_API DUI__Trace(LPCTSTR pstrFormat, ...)
 {
 #ifdef _DEBUG
-    TCHAR szBuffer[300] = { 0 };
+    TCHAR szBuffer[2048] = { 0 };
     va_list args;
     va_start(args, pstrFormat);
     ::wvnsprintf(szBuffer, lengthof(szBuffer) - 2, pstrFormat, args);
     _tcscat(szBuffer, _T("\n"));
     va_end(args);
     ::OutputDebugString(szBuffer);
+#endif
+}
+
+//************************************
+// 函数名称: DUI__Trace
+// 返回类型: void UILIB_API
+// 参数信息: LPCSTR pstrFormat
+// 参数信息: ...
+// 函数说明: 
+//************************************
+void UILIB_API DUI__Trace( LPCSTR pstrFormat,... )
+{
+#ifdef _DEBUG
+	CHAR szBuffer[2048] = { 0 };
+	va_list args;
+	va_start(args,pstrFormat);
+	vsprintf_s(szBuffer,81920,pstrFormat,args);
+	va_end(args);
+	::OutputDebugStringA(szBuffer);
 #endif
 }
 
