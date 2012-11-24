@@ -790,6 +790,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Utils\DuiPointer.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Utils\DuiReflection.h"
 					>
 				</File>
