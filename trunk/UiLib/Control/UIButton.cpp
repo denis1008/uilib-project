@@ -388,15 +388,12 @@ namespace UiLib
 				else goto Label_ForeImage;
 			}
 		}
-
 		if( !m_sNormalImage.IsEmpty() ) {
 			if( !DrawImage(hDC, (LPCTSTR)m_sNormalImage) ) m_sNormalImage.Empty();
 			else goto Label_ForeImage;
 		}
-
 		if(!m_sForeImage.IsEmpty() )
 			goto Label_ForeImage;
-
 		return;
 
 Label_ForeImage:

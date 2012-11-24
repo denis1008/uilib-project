@@ -431,6 +431,7 @@ typedef struct tagTProperty
 
 		CDuiString nNewImageValue;
 		nNewImageValue.Format(_T("%s%d,%d,%d,%d%s"),sImageLeft.GetData(),nCurRect.left,nCurRect.top,nCurRect.right,nCurRect.bottom,sImageRight.GetData());
+
 		DUITRACE(_T("%s"),nNewImageValue.GetData());
 		return nNewImageValue.GetData();
 	}
@@ -859,6 +860,8 @@ public:
 	HICON GetThemeIcon(int Index, int cxySize) const;
 	const TEXTMETRIC& GetThemeFontInfo(UITYPE_FONT Index) const;
 	bool GetThemeColorPair(UITYPE_COLOR Index, COLORREF& clr1, COLORREF& clr2) const;
+
+	CEventSource& GetEventSource();
 private:
     static CControlUI* CALLBACK __FindControlFromNameHash(CControlUI* pThis, LPVOID pData);
     static CControlUI* CALLBACK __FindControlFromCount(CControlUI* pThis, LPVOID pData);
@@ -945,12 +948,11 @@ private:
     static short m_S;
     static short m_L;
     static CStdPtrArray m_aPreMessages;
-    static CStdPtrArray m_aPlugins;
+	static CStdPtrArray m_aPlugins;
 
 public:
 	static CDuiString m_pStrDefaultFontName;
 	CStdPtrArray m_aTranslateAccelerator;
-	CEventSource m_aCustomEvents;
 };
 
 } // namespace UiLib

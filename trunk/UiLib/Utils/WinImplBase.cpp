@@ -352,7 +352,7 @@ LRESULT WindowImplBase::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 LRESULT WindowImplBase::HandleCustomMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
-	if(m_PaintManager.m_aCustomEvents){
+	if(m_PaintManager.GetEventSource()){
 		TEventUI mEvent = {0};
 		mEvent.Type			= uMsg;
 		mEvent.lParam		= lParam;
@@ -364,7 +364,7 @@ LRESULT WindowImplBase::HandleCustomMessage(UINT uMsg, WPARAM wParam, LPARAM lPa
 		mEvent.pSender		= NULL;
 		mEvent.chKey		= NULL;
 
-		bHandled = !m_PaintManager.m_aCustomEvents(&mEvent);
+		bHandled = !m_PaintManager.GetEventSource()(&mEvent);
 
 		return bHandled;
 	}

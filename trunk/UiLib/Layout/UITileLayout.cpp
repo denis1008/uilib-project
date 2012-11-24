@@ -3,6 +3,8 @@
 
 namespace UiLib
 {
+	REGIST_DUICLASS(CTileLayoutUI);
+
 	CTileLayoutUI::CTileLayoutUI() : m_nColumns(1)
 	{
 		m_szItem.cx = m_szItem.cy = 0;

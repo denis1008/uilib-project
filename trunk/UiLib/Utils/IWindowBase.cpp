@@ -264,7 +264,7 @@ LRESULT IWindowBase::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
 
 LRESULT IWindowBase::HandleCustomMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
-	if(pm.m_aCustomEvents){
+	if(pm.GetEventSource()){
 		TEventUI mEvent = {0};
 		mEvent.Type			= uMsg;
 		mEvent.lParam		= lParam;
@@ -276,7 +276,7 @@ LRESULT IWindowBase::HandleCustomMessage(UINT uMsg, WPARAM wParam, LPARAM lParam
 		mEvent.pSender		= NULL;
 		mEvent.chKey		= NULL;
 
-		bHandled = !pm.m_aCustomEvents(&mEvent);
+		bHandled = !pm.GetEventSource()(&mEvent);
 
 		return bHandled;
 	}

@@ -33,6 +33,7 @@
 #pragma comment(lib,"comctl32.lib")
 #pragma comment(lib,"gdiplus.lib")
 
+#include "Utils/DuiPointer.h"
 #include "Utils/Utils.h"
 #include "Utils/Internal.h"
 #include "Utils/UIDelegate.h"
