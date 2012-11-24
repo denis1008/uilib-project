@@ -37,7 +37,7 @@ void UILIB_API DUI__Trace( LPCSTR pstrFormat,... )
 	CHAR szBuffer[2048] = { 0 };
 	va_list args;
 	va_start(args,pstrFormat);
-	vsprintf_s(szBuffer,81920,pstrFormat,args);
+	vsprintf_s(szBuffer,lengthof(szBuffer),pstrFormat,args);
 	va_end(args);
 	::OutputDebugStringA(szBuffer);
 #endif
