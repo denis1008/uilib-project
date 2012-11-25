@@ -171,6 +171,9 @@
     <ClCompile Include="Utils\DuiReflection.cpp">
       <Filter>源文件\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h">
@@ -323,10 +326,5 @@
     <ClInclude Include="Utils\DuiPointer.h">
       <Filter>头文件\Utils</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="StdAfx.cpp">
-      <Filter>源文件</Filter>
-    </None>
   </ItemGroup>
 </Project>

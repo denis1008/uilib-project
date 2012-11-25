@@ -385,7 +385,7 @@ void WindowImplBase::OnClick(TNotifyUI& msg)
 	CDuiString sCtrlName = msg.pSender->GetName();
 	if( sCtrlName == _T("closebtn") )
 	{
-		Close();
+		Close(IDCLOSE);
 		return; 
 	}
 	else if( sCtrlName == _T("minbtn"))

@@ -1925,7 +1925,10 @@ namespace UiLib {
 		}
 		if( event.Type == UIEVENT_BUTTONUP )
 		{
-			if( (m_uButtonState & UISTATE_CAPTURED) != 0 ) {
+			if( (m_uButtonState & UISTATE_CAPTURED) != 0 )
+				m_pManager->SendNotify(this,_T("headerwidthchanged"));
+
+			if((m_uButtonState & UISTATE_CAPTURED) != 0 ) {
 				m_uButtonState &= ~UISTATE_CAPTURED;
 				if( GetParent() ) 
 					GetParent()->NeedParentUpdate();
