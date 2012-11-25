@@ -364,6 +364,7 @@
       <ProcessorNumber>8</ProcessorNumber>
       <MinimalRebuild>
       </MinimalRebuild>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -654,7 +655,7 @@
     <ClCompile Include="Layout\UITabLayout.cpp" />
     <ClCompile Include="Layout\UITileLayout.cpp" />
     <ClCompile Include="Layout\UIVerticalLayout.cpp" />
-    <None Include="StdAfx.cpp">
+    <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2012|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2010|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2008|Win32'">NotUsing</PrecompiledHeader>
@@ -667,7 +668,7 @@
       <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">false</MinimalRebuild>
       <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2010|Win32'">false</MinimalRebuild>
       <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2008|Win32'">false</MinimalRebuild>
-    </None>
+    </ClCompile>
     <ClCompile Include="UIlib.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2012|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2010|Win32'">Create</PrecompiledHeader>

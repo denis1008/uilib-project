@@ -292,7 +292,7 @@ void IWindowBase::Notify( TNotifyUI& msg )
 		{
 			if( msg.pSender == mpCloseBtn )
 			{
-				Close(IDOK);
+				Close(IDCLOSE);
 			}
 			else if( msg.pSender == mpMinBtn )
 			{ 
