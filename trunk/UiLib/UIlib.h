@@ -1,3 +1,6 @@
+#ifndef UIlib_h__
+#define UIlib_h__
+
 #ifndef UILIB_EXPORTS
 #define UILIB_API
 #else
@@ -27,6 +30,9 @@
 #include <assert.h>
 #include <crtdbg.h>
 #include <malloc.h>
+#include <atlbase.h>
+#include <atlstr.h>
+#include <xstring>
 
 #pragma comment(lib,"oledlg.lib")
 #pragma comment(lib,"winmm.lib")
@@ -90,3 +96,4 @@
 #include "Utils/IWindowBase.h"
 
 namespace DuiLib = UiLib;
+#endif // UIlib_h__

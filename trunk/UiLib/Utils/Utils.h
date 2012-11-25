@@ -2,8 +2,6 @@
 #define __UTILS_H__
 
 #pragma once
-#include <GdiPlus.h>
-using namespace Gdiplus;
 
 namespace UiLib
 {
@@ -193,6 +191,8 @@ namespace UiLib
 		void Append(LPCTSTR pstr);
 		void Assign(LPCTSTR pstr, int nLength = -1);
 		LPCTSTR GetData() const;
+		std::wstring GetStringW();
+		std::string GetStringA();
 
 		void SetAt(int nIndex, TCHAR ch);
 		operator LPCTSTR() const;

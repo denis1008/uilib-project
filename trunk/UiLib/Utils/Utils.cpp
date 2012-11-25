@@ -731,6 +731,43 @@ namespace UiLib
 		return iRet;
 	}
 
+	//************************************
+	// 函数名称: GetStringW
+	// 返回类型: std::wstring
+	// 函数说明: 
+	//************************************
+	std::wstring CDuiString::GetStringW()
+	{
+#ifdef _UNICODE
+		return GetData();
+#else
+		if (!this->IsEmpty()){
+			wstring nRet = CA2W(GetData());
+			return nRet;
+		}
+		return NULL;
+#endif // _UNICODE
+	}
+
+	//************************************
+	// 函数名称: GetStringA
+	// 返回类型: std::string
+	// 函数说明: 
+	//************************************
+	std::string CDuiString::GetStringA()
+	{
+#ifdef _UNICODE
+		if(!IsEmpty()){
+			string nRet = CW2A(GetData());
+			return nRet;
+		}
+		return NULL;
+#else
+		return GetData();
+#endif // _UNICODE
+	}
+
+
 	/////////////////////////////////////////////////////////////////////////////
 	//
 	//
