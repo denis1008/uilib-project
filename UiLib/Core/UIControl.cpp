@@ -256,7 +256,20 @@ namespace UiLib
 		m_nBorderSize = nSize;
 		Invalidate();
 	}
-	
+
+	//************************************
+	// 函数名称: SetBorderSize
+	// 返回类型: void
+	// 参数信息: RECT rc
+	// 函数说明: 
+	//************************************
+	void CControlUI::SetBorderSize( RECT rc )
+	{
+		m_rcBorderSize = rc;
+		Invalidate();
+	}
+
+
 	//************************************
 	// 函数名称: GetBorderStyle
 	// 返回类型: int
@@ -1088,7 +1101,21 @@ namespace UiLib
 			SetFocusBorderColor(clrColor);
 		}
 		else if( _tcscmp(pstrName, _T("colorhsl")) == 0 ) SetColorHSL(_tcscmp(pstrValue, _T("true")) == 0);
-		else if( _tcscmp(pstrName, _T("bordersize")) == 0 ) SetBorderSize(_ttoi(pstrValue));
+		else if( _tcscmp(pstrName, _T("bordersize")) == 0 ) {
+			CDuiString nValue = pstrValue;
+			if(nValue.Find(',') < 0)
+				SetBorderSize(_ttoi(pstrValue));
+			else
+			{
+				RECT rcPadding = { 0 };
+				LPTSTR pstr = NULL;
+				rcPadding.left = _tcstol(pstrValue, &pstr, 10);  ASSERT(pstr);
+				rcPadding.top = _tcstol(pstr + 1, &pstr, 10);    ASSERT(pstr);
+				rcPadding.right = _tcstol(pstr + 1, &pstr, 10);  ASSERT(pstr);
+				rcPadding.bottom = _tcstol(pstr + 1, &pstr, 10); ASSERT(pstr);
+				SetBorderSize(rcPadding);
+			}
+		}
 		else if( _tcscmp(pstrName, _T("leftbordersize")) == 0 ) SetLeftBorderSize(_ttoi(pstrValue));
 		else if( _tcscmp(pstrName, _T("topbordersize")) == 0 ) SetTopBorderSize(_ttoi(pstrValue));
 		else if( _tcscmp(pstrName, _T("rightbordersize")) == 0 ) SetRightBorderSize(_ttoi(pstrValue));
@@ -1627,7 +1654,6 @@ namespace UiLib
 					CRenderEngine::DrawRect(hDC, m_rcItem, m_nBorderSize, GetAdjustColor(m_dwBorderColor));
 			}
 		}
-		
 	}
 
 	void CControlUI::DoPostPaint(HDC hDC, const RECT& rcPaint)

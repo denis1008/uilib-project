@@ -299,6 +299,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -657,7 +658,7 @@
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2012|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2010|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2008|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2008|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">Create</PrecompiledHeader>
       <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">false</MinimalRebuild>
       <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2010|Win32'">false</MinimalRebuild>
@@ -667,11 +668,22 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Release_2008|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Release_2010|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Release_2012|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="UIlib.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2012|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2010|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2008|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">StdAfx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2012|Win32'">StdAfx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Static_Release_2012|Win32'">StdAfx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2012|Win32'">StdAfx.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="UIlib.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2012|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2010|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2008|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">StdAfx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2012|Win32'">StdAfx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Static_Release_2012|Win32'">StdAfx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2012|Win32'">StdAfx.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Utils\DuiReflection.cpp" />
     <ClCompile Include="Utils\IWindowBase.cpp" />
@@ -697,8 +709,11 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">WIN32;_DEBUG;_WINDOWS;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2010|Win32'">WIN32;_DEBUG;_WINDOWS;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2008|Win32'">WIN32;_DEBUG;_WINDOWS;UILIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2008|Win32'">
-      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2008|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Static_Debug_2012|Win32'">StdAfx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DLL_Release_2012|Win32'">StdAfx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Static_Release_2012|Win32'">StdAfx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2012|Win32'">StdAfx.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Utils\WinImplBase.cpp" />
     <ClCompile Include="Utils\XUnzip.cpp">

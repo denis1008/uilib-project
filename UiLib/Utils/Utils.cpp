@@ -745,7 +745,7 @@ namespace UiLib
 			wstring nRet = CA2W(GetData());
 			return nRet;
 		}
-		return NULL;
+		return _T("");
 #endif // _UNICODE
 	}
 
@@ -761,7 +761,7 @@ namespace UiLib
 			string nRet = CW2A(GetData());
 			return nRet;
 		}
-		return NULL;
+		return "";
 #else
 		return GetData();
 #endif // _UNICODE
