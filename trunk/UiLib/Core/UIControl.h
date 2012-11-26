@@ -59,6 +59,7 @@ public:
     void SetColorHSL(bool bColorHSL);
     int GetBorderSize() const;
     void SetBorderSize(int nSize);
+	void SetBorderSize(RECT rc);
 	int GetBorderStyle() const;
 	void SetBorderStyle(int nStyle);
     SIZE GetBorderRound() const;

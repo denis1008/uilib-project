@@ -50,9 +50,9 @@
 #define _WIN32_WINNT 0x0500
 #endif
 
+
 #include <olectl.h>
 #include <gdiplus.h>
-
 #include "UIlib.h"
 
 #define lengthof(x) (sizeof(x)/sizeof(*x))
