@@ -1,4 +1,26 @@
+2012-11-27
++Button 增加calendardestname属性
++DUITRACE 增加换行符
+*修复日历控件的上月与下月日期的选择BUG，并调整默认配色样式
+*调整窗口基类收到ESC键后的退出返回值
+
+2012-11-26
++Control 增加bordersize对RECT值的边框定向宽度设置的支持。以支持对边框bordersize="1,1,1,1" 等效于bordersize="1"
+*修正CStdDuilib的GetStringA()和GetStringW() 在空值下返回异常的BUG
+*消除DLL方式编译UILabel的一些警告提示
+
+2012-11-24
++增加一个DUITRACE 的DEBUG输出宏。
++增加 headerwidthchanged 事件，ListHeaderItem列宽修改后触发
++CDuiString 增加 GetStringW()  GetStringA() 两个方法
+*调整VS2012在2008 2010 2012的编译器下的属性设置。
+*调整基类对模态状况关闭时的返回值由原来IDOK 改成 IDCLOSE
+*增加一个智能指针类
+*并修复一个WM_* 事件的绑定BUG
+*修复 DUITRACE 宏的访问内存越界BUG
+
 2012-11-22
++增加GetManager().m_aCustomEvents属性，可以绑定WM_* 系统事件的支持，备注：这个函数只允许绑定TEvent的回调方法
 +增加控件类的反射机制
 +增加定时器类，支持对OnTimer的调用绑定以及自定义参数的传递
 +增加XML属性控制动画，支持动画控制的属性值类型为 int、size、rect、color、image

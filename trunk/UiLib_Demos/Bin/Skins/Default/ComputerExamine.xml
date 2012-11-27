@@ -26,8 +26,8 @@
 					<Button name="DelChartData" text="移除图表数据" width="100" />
 				</HorizontalLayout>
 			</VerticalLayout>
-			<Edit name="tset" bordersize="0" bottombordersize="1" />
 			<ChartView name="ChartView" />
+			<Edit name="tset" bordersize="0" bottombordersize="1" />
 		</VerticalLayout>
 		<VerticalLayout width="1" inset="0,1,0,1">
 			<Container bkimage="WndFrame/vertical_border.bmp" />

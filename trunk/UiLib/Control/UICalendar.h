@@ -54,8 +54,8 @@ namespace UiLib
 		virtual CControlUI* CreateDayPanel(int _Week,LPCTSTR _GroupName) {return NULL;};
 		virtual CControlUI* CreateInfoPanel(){return NULL;};
 		virtual void InitWeekPanel(CControlUI* _Control,int _Week) {};
-		virtual	void InitDayPanel(CControlUI* _Control,TCalendarInfo& _CalendarInfo) {};
-		virtual void InitDayPanel(CControlUI* _Control,int _Year,int _Mooth,int _Day,int _Week,int _WeekLine,int _AsMooth) {};
+		virtual void InitDayPanel( CControlUI* _Control,bool bWeekEnd,TCalendarInfo& _CalendarInfo ){};
+		virtual void InitDayPanel( CControlUI* _Control,bool bWeekEnd,int _Year,int _Mooth,int _Day,int _Week,int _WeekLine,int _AsMooth ){};
 		virtual void OnCalendarUpdateStart(int _Year,int _Mooth) {};
 		virtual void OnCalendarUpdateEnd(int _Year,int _Mooth) {};
 		virtual void OnCalendarChange(int _Year,int _Mooth,int _Day){};
@@ -79,8 +79,8 @@ namespace UiLib
 		CControlUI* CreateDayPanel(int _Week,LPCTSTR _GroupName);
 		CControlUI* CreateInfoPanel();
 		void InitWeekPanel(CControlUI* _Control,int _Week);
-		void InitDayPanel(CControlUI* _Control,TCalendarInfo& _CalendarInfo);
-		void InitDayPanel(CControlUI* _Control,int _Year,int _Mooth,int _Day,int _Week,int _WeekLine,int _AsMooth);
+		void InitDayPanel( CControlUI* _Control,bool bWeekEnd,TCalendarInfo& _CalendarInfo );
+		void InitDayPanel( CControlUI* _Control,bool bWeekEnd,int _Year,int _Mooth,int _Day,int _Week,int _WeekLine,int _AsMooth );
 		void OnCalendarUpdateStart(int _Year,int _Mooth);
 		void OnCalendarChange(int _Year,int _Mooth,int _Day);
 	public:
@@ -129,7 +129,7 @@ namespace UiLib
 
 		void AnyCalendarStyle(LPCTSTR _StyleStr,TCalendarStyle* _TCalendarStyle = NULL);
 
-		static void ShowCalendarDlg(CControlUI* _pControl);
+		static void ShowCalendarDlg( CButtonUI* _pControl );
 	private:
 		CDuiString				m_sComboTargetName;
 		CDuiString				mDateTime;

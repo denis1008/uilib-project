@@ -394,7 +394,7 @@ LRESULT IWindowBase::ResponseDefaultKeyEvent(WPARAM wParam)
 	}
 	else if (wParam == VK_ESCAPE)
 	{
-		Close();
+		Close(IDCLOSE);
 		return TRUE;
 	}
 

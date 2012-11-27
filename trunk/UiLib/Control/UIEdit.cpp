@@ -124,7 +124,6 @@ namespace UiLib
 			}
 		}
 		else if( uMsg == WM_KEYDOWN ) {
-
 			TEventUI event = { 0 };
 			event.Type = UIEVENT_KEYDOWN;
 			event.chKey = (TCHAR)wParam;
@@ -144,7 +143,10 @@ namespace UiLib
 			::SetTextColor((HDC)wParam, RGB(GetBValue(dwTextColor),GetGValue(dwTextColor),GetRValue(dwTextColor)));
 			if( m_hBkBrush == NULL ) {
 				DWORD clrColor = !m_pOwner->IsReadOnly()?m_pOwner->GetNativeEditBkColor():m_pOwner->GetDisabledBkColor();
-				m_hBkBrush = ::CreateSolidBrush(RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor)));
+				if(clrColor != 0)
+					m_hBkBrush = ::CreateSolidBrush(RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor)));
+				else 
+					return (LRESULT)::HBRUSH(GetStockObject(HOLLOW_BRUSH));
 			}
 			return (LRESULT)m_hBkBrush;
 		}
