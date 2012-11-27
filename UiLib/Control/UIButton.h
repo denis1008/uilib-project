@@ -31,6 +31,8 @@ namespace UiLib
 
 		void SetHotBkColor(DWORD dwColor);
 		DWORD GetHotBkColor() const;
+		void SetCalendarValDest(LPCTSTR pstrValue);
+		LPCTSTR GetCalendarValDest();
 		void SetCalendarName(LPCTSTR pStrCalendarName);
 		LPCTSTR GetCalendarName();
 		void SetCalendarStyle(LPCTSTR pStrCalendarStyle);
@@ -78,6 +80,7 @@ namespace UiLib
 		CDuiString	m_sFocusedImage;
 		CDuiString	m_sDisabledImage;
 
+		CDuiString	m_sSalendarValDest;
 		CDuiString	m_sCalendarName;
 		CDuiString	m_sCalendarStyle;
 		CDuiString	m_sCalendarProfile;

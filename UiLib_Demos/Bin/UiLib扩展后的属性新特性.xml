@@ -117,6 +117,7 @@
 		<Attribute name="hotbkcolor" default="" type="STRING" comment="鼠标悬浮在按钮上时的按钮背景颜色,如(0xFFFF0000)"/>
 		<Attribute name="foreimage" default="" type="STRING" comment="最前端图片"/>
 		<Attribute name="hotforeimage" default="" type="STRING" comment="获得焦点时的最前端状态图片"/>
+		<Attribute name="calendardestname" default="" type="STRING" comment="作为日历选择按钮时，将选择的日期赋值到该名称的控件上，否则设置到自己的text属性上"/>
 		<Attribute name="calendarname" default="" type="STRING" comment="日历名，不为空时将启用日历选择功能"/>
 		<Attribute name="calendarstyle" default="" type="STRING" comment="日历界面样式"/>
 		<Attribute name="calendarprofile" default="" type="STRING" comment="日历控件属性"/>

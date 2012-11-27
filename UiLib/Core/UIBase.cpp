@@ -18,7 +18,7 @@ void UILIB_API DUI__Trace(LPCTSTR pstrFormat, ...)
     va_list args;
     va_start(args, pstrFormat);
     ::wvnsprintf(szBuffer, lengthof(szBuffer) - 2, pstrFormat, args);
-    _tcscat(szBuffer, _T("\n"));
+    _tcscat(szBuffer, _T("\r\n"));
     va_end(args);
     ::OutputDebugString(szBuffer);
 #endif
@@ -38,6 +38,7 @@ void UILIB_API DUI__Trace( LPCSTR pstrFormat,... )
 	va_list args;
 	va_start(args,pstrFormat);
 	vsprintf_s(szBuffer,lengthof(szBuffer),pstrFormat,args);
+	strcat(szBuffer, "\r\n");
 	va_end(args);
 	::OutputDebugStringA(szBuffer);
 #endif

@@ -115,8 +115,11 @@ namespace UiLib
 			m_pManager->SendNotify(this, _T("click"));
 			TriggerEffects(GetClickInEffect());
 			if(!m_sCalendarName.IsEmpty()){
-				CCalendarUI::ShowCalendarDlg(this);
-				m_pManager->SendNotify(this,_T("OnSelectDate"));
+				CButtonUI* pCalendarDestObj = static_cast<CButtonUI*>(GetManager()->FindControl(GetCalendarValDest()));
+				if(!pCalendarDestObj)
+					pCalendarDestObj = this;
+				CCalendarUI::ShowCalendarDlg(pCalendarDestObj);
+				m_pManager->SendNotify(pCalendarDestObj,_T("OnSelectDate"));
 			}
 			BindTriggerTabSel();
 		}
@@ -272,6 +275,7 @@ namespace UiLib
 		else if( _tcscmp(pstrName, _T("disabledimage")) == 0 ) SetDisabledImage(pstrValue);
 		else if( _tcscmp(pstrName, _T("foreimage")) == 0 ) SetForeImage(pstrValue);
 		else if( _tcscmp(pstrName, _T("hotforeimage")) == 0 ) SetHotForeImage(pstrValue);
+		else if( _tcscmp(pstrName, _T("calendardestname")) == 0 ) SetCalendarValDest(pstrValue);
 		else if( _tcscmp(pstrName, _T("calendarname")) == 0 ) SetCalendarName(pstrValue);
 		else if( _tcscmp(pstrName, _T("calendarstyle")) == 0 ) SetCalendarStyle(pstrValue);
 		else if( _tcscmp(pstrName, _T("calendarprofile")) == 0 ) SetCalendarProfile(pstrValue);
@@ -872,6 +876,27 @@ GoPropertyActionTimer:
 			return CControlUI::GetAttribute(pstrName);
 
 		return nRetData;
+	}
+
+	//************************************
+	// 函数名称: SetCalendarValDest
+	// 返回类型: void
+	// 参数信息: LPCTSTR pstrValue
+	// 函数说明: 
+	//************************************
+	void CButtonUI::SetCalendarValDest( LPCTSTR pstrValue )
+	{
+		m_sSalendarValDest = pstrValue;
+	}
+
+	//************************************
+	// 函数名称: GetCalendarValDest
+	// 返回类型: LPCTSTR
+	// 函数说明: 
+	//************************************
+	LPCTSTR CButtonUI::GetCalendarValDest()
+	{
+		return m_sSalendarValDest.GetData();
 	}
 
 }
