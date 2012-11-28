@@ -29,7 +29,6 @@ namespace UiLib
 		if(GetDuiClassMaps().size() && GetDuiClassMaps().find(_duiClassName) == GetDuiClassMaps().end())
 		{
 			DUITRACE(_T("没有找到类对象：%S "),_duiClassName.c_str());
-			ASSERT(0);
 			return NULL;
 		}
 
