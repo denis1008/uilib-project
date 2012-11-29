@@ -19,8 +19,8 @@ namespace UiLib
 
 		void SetEnabled(bool bEnable = true);
 		void SetText(LPCTSTR pstrText);
-		void SetMaxChar(UINT uMax);
-		UINT GetMaxChar();
+		void SetMaxChar(int uMax);
+		int GetMaxChar();
 		void SetReadOnly(bool bReadOnly);
 		bool IsReadOnly() const;
 		void SetPasswordMode(bool bPasswordMode);
@@ -84,7 +84,7 @@ namespace UiLib
 		bool		m_bEnableTime;
 		CDuiString	m_sCheckVal;
 		
-		UINT m_uMaxChar;
+		int m_uMaxChar;
 		bool m_bReadOnly;
 		bool m_bPasswordMode;
 		bool m_bMatchCase;
