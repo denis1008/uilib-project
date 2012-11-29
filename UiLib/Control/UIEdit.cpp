@@ -182,7 +182,7 @@ namespace UiLib
 	//
 	//
 
-	CEditUI::CEditUI() : m_pWindow(NULL), m_uMaxChar(255), m_bReadOnly(false), 
+	CEditUI::CEditUI() : m_pWindow(NULL), m_uMaxChar(-1), m_bReadOnly(false), 
 		m_bPasswordMode(false), m_cPasswordChar(_T('*')), m_uButtonState(0), 
 		m_dwEditbkColor(0xFFFFFFFF), m_iWindowStyls(0),m_sTipValueColor(0xFFBAC0C5)
 	{
@@ -242,19 +242,20 @@ namespace UiLib
 		}
 		if( event.Type == UIEVENT_KILLFOCUS && IsEnabled() ) 
 		{
-			if(m_RegularCheckStr.GetLength() > 0)
-			{
-				if(!MatchRegular(true))
-					m_pManager->SendNotify(this,_T("OnEditRegex"),IDNO);
+ 			if(m_RegularCheckStr.GetLength() > 0)
+ 			{
+				if(!MatchRegular(true)){
+					GetManager()->SendNotify(this,_T("OnEditRegex"),IDNO);
+					event.Type = UIEVENT_SETFOCUS;
+					DoEvent(event);
+					return;
+				}
 				else
-					m_pManager->SendNotify(this,_T("OnEditRegex"),IDYES);
-
-				m_pManager->SetFocus(this);
-
-				return;
-			}
+					GetManager()->SendNotify(this,_T("OnEditRegex"),IDYES);
+ 			}
 			SetInternVisible(false);
 			Invalidate();
+			return;
 		}
 		if( event.Type == UIEVENT_BUTTONDOWN || event.Type == UIEVENT_DBLCLICK || event.Type == UIEVENT_RBUTTONDOWN) 
 		{
@@ -339,13 +340,13 @@ namespace UiLib
 		Invalidate();
 	}
 	
-	void CEditUI::SetMaxChar(UINT uMax)
+	void CEditUI::SetMaxChar(int uMax)
 	{
 		m_uMaxChar = uMax;
 		if( m_pWindow != NULL ) Edit_LimitText(*m_pWindow, m_uMaxChar);
 	}
 
-	UINT CEditUI::GetMaxChar()
+	int CEditUI::GetMaxChar()
 	{
 		return m_uMaxChar;
 	}
