@@ -550,117 +550,11 @@ namespace UiLib
 				}
 				continue;
 			}
-// 			else if( (_tcscmp(pstrClass, _T("ChartXLabels")) == 0 || _tcscmp(pstrClass, _T("ChartData")) == 0) && pParent ) {
-// 				CChartViewUI* pChartView = static_cast<CChartViewUI*>(pParent->GetInterface(_T("ChartView")));
-// 				if(!pChartView)
-// 					continue;
-// 
-// 				if(_tcscmp(pstrClass, _T("ChartXLabels")) == 0 && node.HasChildren()){
-// 					for( CMarkupNode subnode = node.GetChild() ; subnode.IsValid(); subnode = subnode.GetSibling() ) {
-// 						if(_tcscmp(subnode.GetName(), _T("ChartXLabelItem")) == 0){
-// 							pChartView->AddGroup(subnode.GetAttributeValue(_T("text")));
-// 						}
-// 					}
-// 					continue;
-// 				}
-// 
-// 				if(_tcscmp(pstrClass, _T("ChartData")) == 0 && node.HasChildren()){
-// 					for( CMarkupNode subnode = node.GetChild() ; subnode.IsValid(); subnode = subnode.GetSibling() ) {
-// 						if(_tcscmp(subnode.GetName(), _T("ChartSeries")) == 0){
-// 							LPCTSTR pstrValue = subnode.GetAttributeValue(_T("bkcolor"));
-// 							if( *pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);
-// 							LPTSTR pstr = NULL;
-// 							LPCTSTR pstrValue1 = subnode.GetAttributeValue(_T("bkcolor1"));
-// 							if( *pstrValue1 == _T('#')) pstrValue1 = ::CharNext(pstrValue1);
-// 							LPTSTR pstr1 = NULL;
-// 							LPCTSTR pstrValue2 = subnode.GetAttributeValue(_T("bkcolor2"));
-// 							if( *pstrValue2 == _T('#')) pstrValue2 = ::CharNext(pstrValue2);
-// 							LPTSTR pstr2 = NULL;
-// 							long nSeriesID = pChartView->AddSeries(subnode.GetAttributeValue(_T("text")),_tcstoul(pstrValue, &pstr, 16),_tcstoul(pstrValue1, &pstr1, 16),_tcstoul(pstrValue2, &pstr2, 16));
-// 							if( nSeriesID > 0){
-// 								int nLabelID = 0;
-// 								for( CMarkupNode itemnode = subnode.GetChild() ; itemnode.IsValid(); itemnode = itemnode.GetSibling() ) {
-// 									if(_tcscmp(itemnode.GetName(), _T("ChartDataItem")) == 0){
-// 										pChartView->AddValue(nSeriesID,nLabelID,_wtof(itemnode.GetAttributeValue(_T("value"))));
-// 									}
-// 									nLabelID++;
-// 								}
-// 							}
-// 						}
-// 					}
-// 					continue;
-// 				}
-// 				continue;
-// 			}
 			else {
 				CDuiString szNodeName;
 				szNodeName.Format(_T("C%sUI"),pstrClass);
 				pControl = CreateDuiInstance<CControlUI*>(szNodeName.GetData());
-				/*
-				SIZE_T cchLen = _tclen(pstrClass);
-				switch( cchLen ) {
-				case 4:
-					if( _tcscmp(pstrClass, _T("Edit")) == 0 )						pControl = new CEditUI;
-					else if( _tcscmp(pstrClass, _T("List")) == 0 )					pControl = new CListUI;
-					else if( _tcscmp(pstrClass, _T("Text")) == 0 )					pControl = new CTextUI;
-					break;
-				case 5:
-					if( _tcscmp(pstrClass, _T("Combo")) == 0 )						pControl = new CComboUI;
-					else if( _tcscmp(pstrClass, _T("Label")) == 0 )					pControl = new CLabelUI;
-					break;
-				case 6:
-					if( _tcscmp(pstrClass, _T("Button")) == 0 )						pControl = new CButtonUI;
-					else if( _tcscmp(pstrClass, _T("Option")) == 0 )				pControl = new COptionUI;
-					else if( _tcscmp(pstrClass, _T("Slider")) == 0 )				pControl = new CSliderUI;
-					break;
-				case 7:
-					if( _tcscmp(pstrClass, _T("Control")) == 0 )					pControl = new CControlUI;
-					else if( _tcscmp(pstrClass, _T("GifAnim")) == 0 )				pControl = new CGifAnimUI;
-					else if( _tcscmp(pstrClass, _T("ActiveX")) == 0 )				pControl = new CActiveXUI;
-					break;
-				case 8:
-					if( _tcscmp(pstrClass, _T("Progress")) == 0 )					pControl = new CProgressUI;
-					else if(  _tcscmp(pstrClass, _T("RichEdit")) == 0 )				pControl = new CRichEditUI;
-					// add by:zjie
-					else if (_tcscmp(pstrClass, _T("CheckBox")) == 0)				pControl = new CCheckBoxUI;
-					else if (_tcscmp(pstrClass, _T("RadioBox")) == 0)				pControl = new CRadioBoxUI;
-					else if (_tcscmp(pstrClass, _T("ComboBox")) == 0)				pControl = new CComboBoxUI;
-					// add by:zjie
-					else if( _tcscmp(pstrClass, _T("TreeView")) == 0)				pControl = new CTreeViewUI;
-					else if( _tcscmp(pstrClass, _T("Calendar")) == 0)				pControl = new CCalendarUI;
-					break;
-				case 9:
-					if( _tcscmp(pstrClass, _T("Container")) == 0 )					pControl = new CContainerUI;
-					else if( _tcscmp(pstrClass, _T("TabLayout")) == 0 )				pControl = new CTabLayoutUI;
-					else if( _tcscmp(pstrClass, _T("ScrollBar")) == 0 )				pControl = new CScrollBarUI; 
-					else if( _tcscmp(pstrClass, _T("ChartView")) == 0 )				pControl = new CChartViewUI;
-					break;
-				case 10:
-					if( _tcscmp(pstrClass, _T("ListHeader")) == 0 )					pControl = new CListHeaderUI;
-					else if( _tcscmp(pstrClass, _T("TileLayout")) == 0 )			pControl = new CTileLayoutUI;
-					else if( _tcscmp(pstrClass, _T("WebBrowser")) == 0 )			pControl = new CWebBrowserUI;
-					else if( _tcscmp(pstrClass, _T("FadeButton")) == 0 )			pControl = new CFadeButtonUI;
-					break;
-				case 11:
-					if (_tcscmp(pstrClass, _T("ChildLayout")) == 0)					pControl=new CChildLayoutUI;
-					break;
-				case 14:
-					if( _tcscmp(pstrClass, _T("VerticalLayout")) == 0 )				pControl = new CVerticalLayoutUI;
-					else if( _tcscmp(pstrClass, _T("ListHeaderItem")) == 0 )		pControl = new CListHeaderItemUI;
-					break;
-				case 15:
-					if( _tcscmp(pstrClass, _T("ListTextElement")) == 0 )			pControl = new CListTextElementUI;
-					break;
-				case 16:
-					if( _tcscmp(pstrClass, _T("HorizontalLayout")) == 0 )			pControl = new CHorizontalLayoutUI;
-					else if( _tcscmp(pstrClass, _T("ListLabelElement")) == 0 )		pControl = new CListLabelElementUI;
-					break;
-				case 20:
-					if( _tcscmp(pstrClass, _T("ListContainerElement")) == 0 )		pControl = new CListContainerElementUI;
-					else if( _tcscmp(pstrClass, _T("ListImageTextElement")) == 0 )   pControl = new CListImageTextElementUI;
-					break;
-				}
-				*/
+
 				// User-supplied control factory
 				if( pControl == NULL ) {
 					CStdPtrArray* pPlugins = CPaintManagerUI::GetPlugins();
@@ -727,6 +621,8 @@ namespace UiLib
 				int nAttributes = node.GetAttributeCount();
 				
 				CDuiString szName = node.GetAttributeValue(_T("name"));
+
+				pControl->SetStyleName(node.GetName());
 				
 				if(node.HasAttribute(_T("name")) && szName.GetLength() > 0)
 					pControl->SetStyleName(szName.GetData());
