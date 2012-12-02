@@ -1436,41 +1436,34 @@ namespace UiLib {
 	//************************************
 	bool CPaintManagerUI::AddControlStyle( LPCTSTR pStrStyleName,LPCTSTR pStrKey,LPCTSTR pStrVal,LPCTSTR pStylesName /*= NULL*/ )
 	{
-		try
-		{
-			CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
-			if(pStylesName)
-				pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
-			
-			if(!pCurPtrMap){
-				pCurPtrMap = new CStdStringPtrMap();
-				m_mStyles.Set(pStylesName,(LPVOID)pCurPtrMap);
-			}
+		CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
+		if(pStylesName)
+			pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
 
-			CStdStringPtrMap* pPtrMap = static_cast<CStdStringPtrMap*>(GetControlStyles(pStrStyleName,pStylesName));
-
-			if(!pPtrMap){
-				pPtrMap = new CStdStringPtrMap();
-				pCurPtrMap->Set(pStrStyleName,(LPVOID)pPtrMap);
-			}
-
-			if(pPtrMap)
-			{
-				CDuiString* nVal = new CDuiString(pStrVal);
-
-				if( pPtrMap->Find(pStrKey) == NULL )
-					pPtrMap->Set(pStrKey,nVal);
-				else
-					delete nVal;
-				nVal = NULL;
-				return true;
-			}
-			return false;
+		if(!pCurPtrMap){
+			pCurPtrMap = new CStdStringPtrMap();
+			m_mStyles.Set(pStylesName,(LPVOID)pCurPtrMap);
 		}
-		catch(...)
-		{
-			throw "CPaintManagerUI::AddControlStyle";
+
+		CStdStringPtrMap* pPtrMap = static_cast<CStdStringPtrMap*>(GetControlStyles(pStrStyleName,pStylesName));
+
+		if(!pPtrMap){
+			pPtrMap = new CStdStringPtrMap();
+			pCurPtrMap->Set(pStrStyleName,(LPVOID)pPtrMap);
 		}
+
+		if(pPtrMap)
+		{
+			CDuiString* nVal = new CDuiString(pStrVal);
+
+			if( pPtrMap->Find(pStrKey) == NULL )
+				pPtrMap->Set(pStrKey,nVal);
+			else
+				delete nVal;
+			nVal = NULL;
+			return true;
+		}
+		return false;
 	}
 
 	//************************************
@@ -1486,26 +1479,19 @@ namespace UiLib {
 	//************************************
 	bool CPaintManagerUI::AddControlStyle( LPCTSTR pStrStyleName,CStdStringPtrMap* _StyleMap,LPCTSTR pStylesName /*= NULL*/ )
 	{
-		try
-		{
-			CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
-			if(pStylesName)
-				pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
+		CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
+		if(pStylesName)
+			pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
 
-			if(!pCurPtrMap){
-				pCurPtrMap = new CStdStringPtrMap();
-				m_mStyles.Set(pStylesName,(LPVOID)pCurPtrMap);
-			}
+		if(!pCurPtrMap){
+			pCurPtrMap = new CStdStringPtrMap();
+			m_mStyles.Set(pStylesName,(LPVOID)pCurPtrMap);
+		}
 
-			LPVOID pStyle = pCurPtrMap->Find(pStrStyleName);
-			if(pStyle)
-				return false;
-			return NULL != pCurPtrMap->Set(pStrStyleName,(LPVOID)_StyleMap);
-		}
-		catch(...)
-		{
-			throw "CPaintManagerUI::AddControlStyle";
-		}
+		LPVOID pStyle = pCurPtrMap->Find(pStrStyleName);
+		if(pStyle)
+			return false;
+		return NULL != pCurPtrMap->Set(pStrStyleName,(LPVOID)_StyleMap);
 	}
 
 	//************************************
@@ -1522,40 +1508,33 @@ namespace UiLib {
 	//************************************
 	bool CPaintManagerUI::SetControlStyle( LPCTSTR pStrStyleName,LPCTSTR pStrKey,LPCTSTR pStrVal,LPCTSTR pStylesName /*= NULL*/ )
 	{
-		try
-		{
-			CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
-			if(pStylesName)
-				pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
+		CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
+		if(pStylesName)
+			pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
 
-			if(!pCurPtrMap){
-				pCurPtrMap = new CStdStringPtrMap();
-				m_mStyles.Set(pStylesName,(LPVOID)pCurPtrMap);
-			}
-
-			CStdStringPtrMap* pPtrMap = static_cast<CStdStringPtrMap*>(GetControlStyles(pStrStyleName,pStylesName));
-
-			if(!pPtrMap){
-				pPtrMap = new CStdStringPtrMap();
-				pCurPtrMap->Set(pStrStyleName,(LPVOID)pPtrMap);
-			}
-
-			if(pPtrMap)
-			{
-				CDuiString* nVal = new CDuiString(pStrVal);
-
-				if( pPtrMap->Find(pStrKey))
-					delete pPtrMap->Find(pStrKey);
-
-				pPtrMap->Set(pStrKey,nVal);
-				return true;
-			}
-			return false;
+		if(!pCurPtrMap){
+			pCurPtrMap = new CStdStringPtrMap();
+			m_mStyles.Set(pStylesName,(LPVOID)pCurPtrMap);
 		}
-		catch(...)
-		{
-			throw "CPaintManagerUI::SetControlStyle";
+
+		CStdStringPtrMap* pPtrMap = static_cast<CStdStringPtrMap*>(GetControlStyles(pStrStyleName,pStylesName));
+
+		if(!pPtrMap){
+			pPtrMap = new CStdStringPtrMap();
+			pCurPtrMap->Set(pStrStyleName,(LPVOID)pPtrMap);
 		}
+
+		if(pPtrMap)
+		{
+			CDuiString* nVal = new CDuiString(pStrVal);
+
+			if( pPtrMap->Find(pStrKey))
+				delete pPtrMap->Find(pStrKey);
+
+			pPtrMap->Set(pStrKey,nVal);
+			return true;
+		}
+		return false;
 	}
 
 	//************************************
@@ -1571,28 +1550,21 @@ namespace UiLib {
 	//************************************
 	bool CPaintManagerUI::SetControlStyle( LPCTSTR pStrStyleName,CStdStringPtrMap* _StyleMap,LPCTSTR pStylesName /*= NULL*/ )
 	{
-		try
-		{
-			CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
-			if(pStylesName)
-				pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
+		CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
+		if(pStylesName)
+			pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
 
-			if(!pCurPtrMap){
-				pCurPtrMap = new CStdStringPtrMap();
-				m_mStyles.Set(pStylesName,(LPVOID)pCurPtrMap);
-			}
-
-			LPVOID pStyle = pCurPtrMap->Find(pStrStyleName);
-			if(pStyle)
-				RemoveControlStyle(pStrStyleName,NULL,pStylesName);
-
-			pCurPtrMap->Set(pStrStyleName,(LPVOID)_StyleMap);
-			return true;
+		if(!pCurPtrMap){
+			pCurPtrMap = new CStdStringPtrMap();
+			m_mStyles.Set(pStylesName,(LPVOID)pCurPtrMap);
 		}
-		catch(...)
-		{
-			throw "CPaintManagerUI::SetControlStyle";
-		}
+
+		LPVOID pStyle = pCurPtrMap->Find(pStrStyleName);
+		if(pStyle)
+			RemoveControlStyle(pStrStyleName,NULL,pStylesName);
+
+		pCurPtrMap->Set(pStrStyleName,(LPVOID)_StyleMap);
+		return true;
 	}
 
 	//************************************
@@ -1608,22 +1580,15 @@ namespace UiLib {
 	//************************************
 	UiLib::CDuiString CPaintManagerUI::GetControlStyle( LPCTSTR pStrStyleName,LPCTSTR pStrKey,LPCTSTR pStylesName /*= NULL*/ )
 	{
-		try
-		{
-			if(pStrStyleName == NULL || pStrKey == NULL)
-				return _T("");
+		if(pStrStyleName == NULL || pStrKey == NULL)
+			return _T("");
 
-			CStdStringPtrMap* pPtrMap = static_cast<CStdStringPtrMap*>(GetControlStyles(pStrStyleName,pStylesName));
-			if(NULL == pPtrMap)
-				return _T("");
+		CStdStringPtrMap* pPtrMap = static_cast<CStdStringPtrMap*>(GetControlStyles(pStrStyleName,pStylesName));
+		if(NULL == pPtrMap)
+			return _T("");
 
-			CDuiString* nStrVal = static_cast<CDuiString*>(pPtrMap->Find(pStrKey));
-			return NULL == nStrVal?_T(""):nStrVal->GetData();
-		}
-		catch(...)
-		{
-			throw "CPaintManagerUI::GetControlStyle";
-		}
+		CDuiString* nStrVal = static_cast<CDuiString*>(pPtrMap->Find(pStrKey));
+		return NULL == nStrVal?_T(""):nStrVal->GetData();
 	}
 
 	//************************************
@@ -1637,21 +1602,14 @@ namespace UiLib {
 	//************************************
 	CStdStringPtrMap* CPaintManagerUI::GetControlsStyles( LPCTSTR pStylesName /*= NULL*/ ) const
 	{
-		try
-		{
-			CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
-			if(pStylesName)
-				pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
+		CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
+		if(pStylesName)
+			pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
 
-			if(!pCurPtrMap)
-				return NULL;
+		if(!pCurPtrMap)
+			return NULL;
 
-			return pCurPtrMap;
-		}
-		catch(...)
-		{
-			throw "CPaintManagerUI::GetControlsStyles";
-		}
+		return pCurPtrMap;
 	}
 
 	//************************************
@@ -1666,25 +1624,18 @@ namespace UiLib {
 	//************************************
 	CStdStringPtrMap* CPaintManagerUI::GetControlStyles( LPCTSTR pStrStyleName,LPCTSTR pStylesName /*= NULL*/ ) const
 	{
-		try
-		{
-			CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
-			if(pStylesName)
-				pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
+		CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
+		if(pStylesName)
+			pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
 
-			if(!pCurPtrMap)
-				return NULL;
+		if(!pCurPtrMap)
+			return NULL;
 
-			if(pCurPtrMap->GetSize() == 0 || pStrStyleName == NULL)
-				return NULL;
+		if(pCurPtrMap->GetSize() == 0 || pStrStyleName == NULL)
+			return NULL;
 
-			CStdStringPtrMap* pControlStyle = static_cast<CStdStringPtrMap*>(pCurPtrMap->Find(pStrStyleName));
-			return pControlStyle?pControlStyle:NULL;
-		}
-		catch(...)
-		{
-			throw "CPaintManagerUI::GetControlStyles";
-		}
+		CStdStringPtrMap* pControlStyle = static_cast<CStdStringPtrMap*>(pCurPtrMap->Find(pStrStyleName));
+		return pControlStyle?pControlStyle:NULL;
 	}
 
 	//************************************
@@ -1700,40 +1651,33 @@ namespace UiLib {
 	//************************************
 	bool CPaintManagerUI::RemoveControlStyle( LPCTSTR pStrStyleName,LPCTSTR pStrKey /*= NULL*/,LPCTSTR pStylesName /*= NULL*/ )
 	{
-		try
-		{
-			if(pStrStyleName == NULL)
-				return false;
+		if(pStrStyleName == NULL)
+			return false;
 
-			CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
-			if(pStylesName)
-				pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
+		CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
+		if(pStylesName)
+			pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
 
-			if(!pCurPtrMap)
-				return false;
+		if(!pCurPtrMap)
+			return false;
 
-			CStdStringPtrMap* pPtrMap = GetControlStyles(pStrStyleName,pStylesName);
+		CStdStringPtrMap* pPtrMap = GetControlStyles(pStrStyleName,pStylesName);
 
-			if(pStrKey == NULL && pCurPtrMap->Remove(pStrStyleName)){
-				delete pPtrMap;
-				pPtrMap = NULL;
+		if(pStrKey == NULL && pCurPtrMap->Remove(pStrStyleName)){
+			delete pPtrMap;
+			pPtrMap = NULL;
+			return true;
+		}
+
+		if(pPtrMap){
+			CDuiString* pVal = static_cast<CDuiString*>(pPtrMap->Find(pStrKey));
+			if(pVal && pPtrMap->Remove(pStrKey)){
+				delete pVal;
+				pVal = NULL;
 				return true;
 			}
-
-			if(pPtrMap){
-				CDuiString* pVal = static_cast<CDuiString*>(pPtrMap->Find(pStrKey));
-				if(pVal && pPtrMap->Remove(pStrKey)){
-					delete pVal;
-					pVal = NULL;
-					return true;
-				}
-			}
-			return false;
 		}
-		catch(...)
-		{
-			throw "CPaintManagerUI::RemoveControlStyle";
-		}
+		return false;
 	}
 
 	//************************************
@@ -1748,47 +1692,40 @@ namespace UiLib {
 	//************************************
 	void CPaintManagerUI::RemoveAllControlStyle( LPCTSTR pStrStyleName /*= NULL*/,LPCTSTR pStylesName /*= NULL*/ )
 	{
-		try
-		{
-			CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
-			if(pStylesName)
-				pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
+		CStdStringPtrMap* pCurPtrMap = m_pControlsStyle;
+		if(pStylesName)
+			pCurPtrMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
 
-			if(!pCurPtrMap)
+		if(!pCurPtrMap)
+			return;
+
+		if(pStrStyleName){
+			CStdStringPtrMap* pPtrMap = GetControlStyles(pStrStyleName,pStylesName);
+			if(!pPtrMap)
 				return;
 
-			if(pStrStyleName){
-				CStdStringPtrMap* pPtrMap = GetControlStyles(pStrStyleName,pStylesName);
-				if(!pPtrMap)
-					return;
-
-				CDuiString* pVal = NULL;
-				for( int i = 0; i< pPtrMap->GetSize(); i++ ) {
-					if(LPCTSTR key = pPtrMap->GetAt(i)) {
-						pVal = static_cast<CDuiString*>(pPtrMap->Find(key));
-						if(pVal)
-							delete pVal;
-						pVal = NULL;
-					}
-				}
-				pPtrMap->RemoveAll();
-				delete pPtrMap;
-				pPtrMap = NULL;
-				pCurPtrMap->Remove(pStrStyleName);
-				return;
-			}
-
-			for( int i = 0; i< pCurPtrMap->GetSize(); i++ ) {
-				if(LPCTSTR key = pCurPtrMap->GetAt(i)) {
-					RemoveAllControlStyle(key,pStylesName);
+			CDuiString* pVal = NULL;
+			for( int i = 0; i< pPtrMap->GetSize(); i++ ) {
+				if(LPCTSTR key = pPtrMap->GetAt(i)) {
+					pVal = static_cast<CDuiString*>(pPtrMap->Find(key));
+					if(pVal)
+						delete pVal;
+					pVal = NULL;
 				}
 			}
-			pCurPtrMap->RemoveAll();
+			pPtrMap->RemoveAll();
+			delete pPtrMap;
+			pPtrMap = NULL;
+			pCurPtrMap->Remove(pStrStyleName);
+			return;
 		}
-		catch(...)
-		{
-			throw "CPaintManagerUI::RemoveAllControlStyle";
+
+		for( int i = 0; i< pCurPtrMap->GetSize(); i++ ) {
+			if(LPCTSTR key = pCurPtrMap->GetAt(i)) {
+				RemoveAllControlStyle(key,pStylesName);
+			}
 		}
+		pCurPtrMap->RemoveAll();
 	}
 
 	//************************************
@@ -1803,33 +1740,26 @@ namespace UiLib {
 	//************************************
 	bool CPaintManagerUI::SetCurStyles( LPCTSTR pStylesName /*= NULL*/,bool _NowUpdate /*= true*/ )
 	{
-		try
-		{
-			if(!pStylesName){
-				m_pControlsStyle	= &m_mControlsStyle;
-				m_sCurStylesName.Empty();
+		if(!pStylesName){
+			m_pControlsStyle	= &m_mControlsStyle;
+			m_sCurStylesName.Empty();
+			if(_NowUpdate)
+				::PostMessage(m_hWndPaint,WM_RELOADSTYLE,NULL,NULL);
+			return true;
+		}
+
+		if(pStylesName){
+			CStdStringPtrMap* pStyleMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
+			if(pStyleMap){
+				m_pControlsStyle	= pStyleMap;
+				m_sCurStylesName	= pStylesName;
 				if(_NowUpdate)
 					::PostMessage(m_hWndPaint,WM_RELOADSTYLE,NULL,NULL);
 				return true;
 			}
-
-			if(pStylesName){
-				CStdStringPtrMap* pStyleMap = static_cast<CStdStringPtrMap*>(m_mStyles.Find(pStylesName));
-				if(pStyleMap){
-					m_pControlsStyle	= pStyleMap;
-					m_sCurStylesName	= pStylesName;
-					if(_NowUpdate)
-						::PostMessage(m_hWndPaint,WM_RELOADSTYLE,NULL,NULL);
-					return true;
-				}
-			}
-
-			return false;
 		}
-		catch(...)
-		{
-			throw "CPaintManagerUI::SetCurStyles";
-		}
+
+		return false;
 	}
 
 	//************************************
@@ -1867,14 +1797,52 @@ namespace UiLib {
 	//************************************
 	UiLib::CDuiString CPaintManagerUI::GetCurStylesName()
 	{
-		try
+		return m_sCurStylesName.GetData();
+	}
+
+	//************************************
+	// Method:    RemoveStyles
+	// FullName:  CPaintManagerUI::RemoveStyles
+	// Access:    public 
+	// Returns:   bool
+	// Qualifier:
+	// Parameter: LPCTSTR pStylesName
+	// Node:	  
+	//************************************
+	bool CPaintManagerUI::RemoveStyles( LPCTSTR pStylesName )
+	{
+		if(m_sCurStylesName == pStylesName)
+			return false;
+
+		for(int nIndex = 0;nIndex < m_mStyles.GetSize();nIndex++)
 		{
-			return m_sCurStylesName.GetData();
+			CDuiString nKey = m_mStyles.GetAt(nIndex);
+			if(nKey == pStylesName)
+				continue;
+
+			RemoveAllControlStyle(NULL,nKey.GetData());
+			return m_mStyles.Remove(nKey);
 		}
-		catch(...)
+		return false;
+	}
+
+	//************************************
+	// Method:    RemoveAllStyles
+	// FullName:  CPaintManagerUI::RemoveAllStyles
+	// Access:    public 
+	// Returns:   void
+	// Qualifier:
+	// Node:	  
+	//************************************
+	void CPaintManagerUI::RemoveAllStyles()
+	{
+		SetCurStyles(NULL);
+		for(int nIndex = 0;nIndex < m_mStyles.GetSize();nIndex++)
 		{
-			throw "CPaintManagerUI::GetCurStylesName";
+			CDuiString nKey = m_mStyles.GetAt(nIndex);
+			RemoveStyles(nKey.GetData());
 		}
+		m_mStyles.RemoveAll();
 	}
 
 	void CPaintManagerUI::MessageLoop()
@@ -1892,65 +1860,6 @@ namespace UiLib {
 #endif
 				}
 			}
-		}
-	}
-
-	//************************************
-	// Method:    RemoveStyles
-	// FullName:  CPaintManagerUI::RemoveStyles
-	// Access:    public 
-	// Returns:   bool
-	// Qualifier:
-	// Parameter: LPCTSTR pStylesName
-	// Node:	  
-	//************************************
-	bool CPaintManagerUI::RemoveStyles( LPCTSTR pStylesName )
-	{
-		try
-		{
-			if(m_sCurStylesName == pStylesName)
-				return false;
-
-			for(int nIndex = 0;nIndex < m_mStyles.GetSize();nIndex++)
-			{
-				CDuiString nKey = m_mStyles.GetAt(nIndex);
-				if(nKey == pStylesName)
-					continue;
-
-				RemoveAllControlStyle(NULL,nKey.GetData());
-				return m_mStyles.Remove(nKey);
-			}
-			return false;
-		}
-		catch(...)
-		{
-			throw "CPaintManagerUI::RemoveStyles";
-		}
-	}
-
-	//************************************
-	// Method:    RemoveAllStyles
-	// FullName:  CPaintManagerUI::RemoveAllStyles
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Node:	  
-	//************************************
-	void CPaintManagerUI::RemoveAllStyles()
-	{
-		try
-		{
-			SetCurStyles(NULL);
-			for(int nIndex = 0;nIndex < m_mStyles.GetSize();nIndex++)
-			{
-				CDuiString nKey = m_mStyles.GetAt(nIndex);
-				RemoveStyles(nKey.GetData());
-			}
-			m_mStyles.RemoveAll();
-		}
-		catch(...)
-		{
-			throw "CPaintManagerUI::RemoveAllStyles";
 		}
 	}
 
@@ -2164,24 +2073,17 @@ namespace UiLib {
 	//************************************
 	void CPaintManagerUI::EventAllControl( TEventUI& event,CControlUI* pControl /*= NULL*/ )
 	{
-		try
-		{
-			IContainerUI* pContainer = static_cast<IContainerUI*>(pControl->GetInterface(_T("IContainer")));
-			if(pContainer){
-				int nCountNode = pContainer->GetCount();
-				for(int nIndex = 0;nIndex < nCountNode;nIndex++)
-				{
-					CControlUI* nControl = pContainer->GetItemAt(nIndex);
-					if(nControl)
-						nControl->Event(event);
-					
-					EventAllControl(event,nControl);
-				}
+		IContainerUI* pContainer = static_cast<IContainerUI*>(pControl->GetInterface(_T("IContainer")));
+		if(pContainer){
+			int nCountNode = pContainer->GetCount();
+			for(int nIndex = 0;nIndex < nCountNode;nIndex++)
+			{
+				CControlUI* nControl = pContainer->GetItemAt(nIndex);
+				if(nControl)
+					nControl->Event(event);
+
+				EventAllControl(event,nControl);
 			}
-		}
-		catch(...)
-		{
-			throw "CPaintManagerUI::EventAllControl";
 		}
 	}
 
