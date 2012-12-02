@@ -37,6 +37,7 @@
 		<Attribute name="stylename" default="" type="STRING" comment="样式名称"/>
 		<!--
 		除stylename属性外可将任意控件属性作为模版属性。
+		若stylename等于XML的节点元控件元素名，则将作为控件的默认样式：如<Style stylename="Button" bkcolor="#ffffffff" />则所有Button控件的默认背景为#ffffffff
 		包括控件的name属性，也可定义到样式中。
 		按控件的具体拥有的属性进行组合。
 		相同属性名，则为最后个生效。
