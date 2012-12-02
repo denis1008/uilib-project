@@ -115,11 +115,8 @@ namespace UiLib
 			m_pManager->SendNotify(this, _T("click"));
 			TriggerEffects(GetClickInEffect());
 			if(!m_sCalendarName.IsEmpty()){
-				CButtonUI* pCalendarDestObj = static_cast<CButtonUI*>(GetManager()->FindControl(GetCalendarValDest()));
-				if(!pCalendarDestObj)
-					pCalendarDestObj = this;
-				CCalendarUI::ShowCalendarDlg(pCalendarDestObj);
-				m_pManager->SendNotify(pCalendarDestObj,_T("OnSelectDate"));
+				CCalendarUI::ShowCalendarDlg(this);
+				m_pManager->SendNotify(this,_T("OnSelectDate"));
 			}
 			BindTriggerTabSel();
 		}

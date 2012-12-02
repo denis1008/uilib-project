@@ -53,7 +53,7 @@ CCalendarDlg::CCalendarDlg(CButtonUI* _pControl)
 	rc = rcOwner;
 
 	rc.left  += 0;
-	rc.top   += rcOwner.GetHeight()-4; // // CVerticalLayoutUI 默认的Inset 调整
+	rc.top   += rcOwner.GetHeight(); // // CVerticalLayoutUI 默认的Inset 调整
 	rc.right  = rc.left +200;
 	rc.bottom = rc.top + 168;	// 计算弹出窗口高度
  
@@ -87,7 +87,7 @@ CCalendarDlg::CCalendarDlg(CButtonUI* _pControl)
 	{
         rc = rcOwner;
  
-		rc.top   += rcOwner.GetHeight()-4; // // CVerticalLayoutUI 默认的Inset 调整
+		rc.top   += rcOwner.GetHeight(); // // CVerticalLayoutUI 默认的Inset 调整
 		rc.bottom = rc.top + 168;
         rc.left  -= rcOwner.GetWidth();
 		rc.right  = rc.left +200;
@@ -128,7 +128,7 @@ LRESULT CCalendarDlg::OnCreate( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& b
 	if(!GetSkinFile().IsEmpty())
 		pm.SetResourcePath(GetSkinFile());
 
-	CDuiString nStrRoot =_T("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<Window size=\"222,170\" bktrans=\"false\"><Calendar name=\"CalendarDlg\" bordersize=\"1\" bordercolor=\"#ffbac0c5\" inset=\"2,2,2,2\" bkcolor=\"#FFFFFFFF\" /></Window>");
+	CDuiString nStrRoot =_T("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<Window size=\"222,170\" ><Calendar name=\"CalendarDlg\" bordersize=\"1\" bordercolor=\"#ffbac0c5\" inset=\"2,2,2,2\" bkcolor=\"#FFFFFFFF\" /></Window>");
 
 	CControlUI* pRoot = builder.Create(nStrRoot.GetData(), (UINT)0, NULL, &pm);
 	pm.AttachDialog(pRoot);
@@ -301,11 +301,10 @@ void CCalendarDlg::Init()
 
 	if(pCalendar)
 	{
-		CButtonUI* pControl = static_cast<CButtonUI*>(pCControl);
-		if(pControl->GetCalendarStyle())
-			pCalendar->AnyCalendarStyle(pControl->GetCalendarStyle());
-		if(pControl->GetCalendarProfile())
-			pCalendar->ApplyAttributeList(pControl->GetCalendarProfile());
+		if(pCControl->GetCalendarStyle())
+			pCalendar->AnyCalendarStyle(pCControl->GetCalendarStyle());
+		if(pCControl->GetCalendarProfile())
+			pCalendar->ApplyAttributeList(pCControl->GetCalendarProfile());
 	} 
 }
 
@@ -315,8 +314,13 @@ void CCalendarDlg::Notify( TNotifyUI& msg )
 	{
 		if(!pCalendar)
 			return;
-		if(pCControl)
-			pCControl->SetText(pCalendar->GetCurSelDateTime());
+		if(pCControl){
+			CControlUI* pCalendarDestObj = pCControl->GetManager()->FindControl(pCControl->GetCalendarValDest());
+			if(!pCalendarDestObj)
+				pCalendarDestObj = pCControl;
+
+			pCalendarDestObj->SetText(pCalendar->GetCurSelDateTime());
+		}
 		Close(IDOK);
 	}
 }
