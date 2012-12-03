@@ -2677,6 +2677,7 @@ namespace UiLib {
 		for( int i = 0; i < pInfo->nColumns; i++ )
 		{
 			RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.bottom };
+			RECT rcItemLine = rcItem;
 			rcItem.left += pInfo->rcTextPadding.left;
 			rcItem.right -= pInfo->rcTextPadding.right;
 			rcItem.top += pInfo->rcTextPadding.top;
@@ -2697,10 +2698,10 @@ namespace UiLib {
 
 			if(pInfo->dwLineColor != 0 && pInfo->bShowVLine && i < vLineColumns){
 				RECT nRc;
-				nRc.left	= rcItem.right-1;
-				nRc.top		= rcItem.top;
-				nRc.right	= rcItem.right-1;
-				nRc.bottom	= rcItem.bottom;
+				nRc.left	= rcItemLine.right-1;
+				nRc.top		= rcItemLine.top;
+				nRc.right	= rcItemLine.right-1;
+				nRc.bottom	= rcItemLine.bottom;
 
 				CRenderEngine::DrawLine(hDC,nRc,1,pInfo->dwLineColor);
 			}
@@ -3308,6 +3309,7 @@ namespace UiLib {
 				CRenderEngine::DrawImageString(hDC, m_pManager, rcImg, m_rcPaint, pImg, NULL);
 
 			RECT rcText = GetItemTextRect(i);
+			RECT rcVLine = rcText;
 			CDuiString strText;
 			if( pCallback ) strText = pCallback->GetItemText(this, m_iIndex, i);
 			else strText.Assign(GetText(i));
@@ -3323,10 +3325,10 @@ namespace UiLib {
 
 			if(pInfo->dwLineColor != 0 && pInfo->bShowVLine && i < vLineColumns){
 				RECT nRc;
-				nRc.left	= rcText.right-1;
-				nRc.top		= rcText.top;
-				nRc.right	= rcText.right-1;
-				nRc.bottom	= rcText.bottom;
+				nRc.left	= rcVLine.right-1 + pInfo->rcTextPadding.right;
+				nRc.top		= rcVLine.top - pInfo->rcTextPadding.top;
+				nRc.right	= nRc.left;
+				nRc.bottom	= rcVLine.bottom + pInfo->rcTextPadding.top;
 
 				CRenderEngine::DrawLine(hDC,nRc,1,pInfo->dwLineColor);
 			}
