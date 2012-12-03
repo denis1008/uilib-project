@@ -44,6 +44,8 @@ typedef struct tagTListInfoUI
     bool bMultiExpandable;
 	SIZE szCheckImg;
 	SIZE szIconImg;
+	bool bShowVLine;
+	bool bShowHLine;
 } TListInfoUI;
 
 
@@ -168,6 +170,8 @@ public:
 	void SetItemLineColor(DWORD dwLineColor);
 	void SetCheckImgSize(SIZE szCheckImg);
 	void SetIconImgSize(SIZE szIconImg);
+	void SetShowVLine(bool bVLine);
+	void SetShowHLine(bool bHLine);
     bool IsItemShowHtml();
     void SetItemShowHtml(bool bShowHtml = true);
 	RECT GetItemTextPadding() const;
@@ -187,6 +191,8 @@ public:
 	DWORD GetItemLineColor() const;
 	SIZE GetCheckImgSize() const;
 	SIZE GetIconImgSize() const;
+	bool IsShowVLine() const;
+	bool IsShowHLine() const;
 
     void SetMultiExpanding(bool bMultiExpandable);
 	int GetExpandedItem() const;

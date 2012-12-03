@@ -36,6 +36,8 @@ namespace UiLib {
 		m_ListInfo.dwLineColor = 0;
 		m_ListInfo.bShowHtml = false;
 		m_ListInfo.bMultiExpandable = false;
+		m_ListInfo.bShowHLine = true;
+		m_ListInfo.bShowVLine = true;
 		::ZeroMemory(&m_ListInfo.rcTextPadding, sizeof(m_ListInfo.rcTextPadding));
 		::ZeroMemory(&m_ListInfo.rcColumn, sizeof(m_ListInfo.rcColumn));
 		::ZeroMemory(&m_ListInfo.szCheckImg, sizeof(m_ListInfo.szCheckImg));
@@ -716,6 +718,8 @@ namespace UiLib {
 		else if( _tcscmp(pstrName, _T("scrollselect")) == 0 ) SetScrollSelect(_tcscmp(pstrValue, _T("true")) == 0);
 		else if( _tcscmp(pstrName, _T("multiexpanding")) == 0 ) SetMultiExpanding(_tcscmp(pstrValue, _T("true")) == 0);
 		else if( _tcscmp(pstrName, _T("multipleitem")) == 0 ) SetMultipleItem(_tcscmp(pstrValue, _T("true")) == 0);
+		else if( _tcscmp(pstrName, _T("showvline")) == 0 ) SetShowVLine(_tcscmp(pstrValue, _T("true")) == 0);
+		else if( _tcscmp(pstrName, _T("showhline")) == 0 ) SetShowHLine(_tcscmp(pstrValue, _T("true")) == 0);
 		else if( _tcscmp(pstrName, _T("itemfont")) == 0 ) m_ListInfo.nFont = _ttoi(pstrValue);
 		else if( _tcscmp(pstrName, _T("itemalign")) == 0 ) {
 			if( _tcsstr(pstrValue, _T("left")) != NULL ) {
@@ -1221,6 +1225,28 @@ namespace UiLib {
 			throw "CListUI::SetIconImgSize";
 		}
 	}
+	
+	//************************************
+	// 函数名称: SetShowVLine
+	// 返回类型: void
+	// 参数信息: bool bVLine
+	// 函数说明: 
+	//************************************
+	void CListUI::SetShowVLine( bool bVLine )
+	{
+		m_ListInfo.bShowVLine = bVLine;
+	}
+
+	//************************************
+	// 函数名称: SetShowHLine
+	// 返回类型: void
+	// 参数信息: bool bHLine
+	// 函数说明: 
+	//************************************
+	void CListUI::SetShowHLine( bool bHLine )
+	{
+		m_ListInfo.bShowHLine = bHLine;
+	}
 
 	//************************************
 	// Method:    GetCheckImgSize
@@ -1261,6 +1287,27 @@ namespace UiLib {
 			throw "CListUI::GetIconImgSize";
 		}
 	}
+	
+	//************************************
+	// 函数名称: IsShowVLine
+	// 返回类型: bool
+	// 函数说明: 
+	//************************************
+	bool CListUI::IsShowVLine() const
+	{
+		return m_ListInfo.bShowVLine;
+	}
+
+	//************************************
+	// 函数名称: IsShowHLine
+	// 返回类型: bool
+	// 函数说明: 
+	//************************************
+	bool CListUI::IsShowHLine() const
+	{
+		return m_ListInfo.bShowHLine;
+	}
+
 	//************************************
 	// Method:    SortItems
 	// FullName:  CListUI::SortItems
@@ -1323,6 +1370,8 @@ namespace UiLib {
 			throw "CListUI::GetMultipleItem";
 		}
 	}
+
+
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -2295,7 +2344,7 @@ namespace UiLib {
 			}
 		}
 
-		if ( pInfo->dwLineColor != 0 ) {
+		if ( pInfo->dwLineColor != 0 && pInfo->bShowHLine ) {
 			RECT rcLine = { m_rcItem.left, m_rcItem.bottom - 1, m_rcItem.right, m_rcItem.bottom - 1 };
 			CRenderEngine::DrawLine(hDC, rcLine, 1, GetAdjustColor(pInfo->dwLineColor));
 		}
@@ -2623,6 +2672,7 @@ namespace UiLib {
 		//if( pCallback == NULL ) return;
 
 		m_nLinks = 0;
+		int vLineColumns = pInfo->nColumns - 1;
 		int nLinks = lengthof(m_rcLinks);
 		for( int i = 0; i < pInfo->nColumns; i++ )
 		{
@@ -2644,6 +2694,16 @@ namespace UiLib {
 
 			m_nLinks += nLinks;
 			nLinks = lengthof(m_rcLinks) - m_nLinks; 
+
+			if(pInfo->dwLineColor != 0 && pInfo->bShowVLine && i < vLineColumns){
+				RECT nRc;
+				nRc.left	= rcItem.right-1;
+				nRc.top		= rcItem.top;
+				nRc.right	= rcItem.right-1;
+				nRc.bottom	= rcItem.bottom;
+
+				CRenderEngine::DrawLine(hDC,nRc,1,pInfo->dwLineColor);
+			}
 		}
 		for( int i = m_nLinks; i < lengthof(m_rcLinks); i++ ) {
 			::ZeroMemory(m_rcLinks + i, sizeof(RECT));
@@ -3227,6 +3287,8 @@ namespace UiLib {
 		if( !IsEnabled() ) {
 			iTextColor = pInfo->dwDisabledTextColor;
 		}
+
+		int vLineColumns = pInfo->nColumns -1;
 		IListCallbackUI* pCallback = m_pOwner->GetTextCallback();
 		for( int i = 0; i < pInfo->nColumns; i++ )
 		{
@@ -3258,6 +3320,16 @@ namespace UiLib {
 			else
 				CRenderEngine::DrawText(hDC, m_pManager, rcText, strText.GetData(), iTextColor, \
 				pInfo->nFont, DT_SINGLELINE | pInfo->uTextStyle);
+
+			if(pInfo->dwLineColor != 0 && pInfo->bShowVLine && i < vLineColumns){
+				RECT nRc;
+				nRc.left	= rcText.right-1;
+				nRc.top		= rcText.top;
+				nRc.right	= rcText.right-1;
+				nRc.bottom	= rcText.bottom;
+
+				CRenderEngine::DrawLine(hDC,nRc,1,pInfo->dwLineColor);
+			}
 		}
 	}
 
@@ -3542,7 +3614,7 @@ namespace UiLib {
 			}
 		}
 
-		if ( pInfo->dwLineColor != 0 ) {
+		if ( pInfo->dwLineColor != 0 && pInfo->bShowHLine ) {
 			RECT rcLine = { m_rcItem.left, m_rcItem.bottom - 1, m_rcItem.right, m_rcItem.bottom - 1 };
 			CRenderEngine::DrawLine(hDC, rcLine, 1, GetAdjustColor(pInfo->dwLineColor));
 		}
