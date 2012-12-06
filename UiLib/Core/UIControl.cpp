@@ -1641,7 +1641,8 @@ namespace UiLib
 					}
 					if(m_rcBorderSize.right > 0){
 						rcBorder		= m_rcItem;
-						rcBorder.left	= m_rcItem.right;
+						rcBorder.left	= m_rcItem.right - m_rcBorderSize.right;
+						rcBorder.right	= rcBorder.left;
 						CRenderEngine::DrawLine(hDC,rcBorder,m_rcBorderSize.right,GetAdjustColor(m_dwBorderColor),m_nBorderStyle);
 					}
 					if(m_rcBorderSize.bottom > 0){

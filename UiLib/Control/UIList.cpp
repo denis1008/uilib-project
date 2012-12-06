@@ -56,6 +56,9 @@ namespace UiLib {
 
 	LPVOID CListUI::GetInterface(LPCTSTR pstrName)
 	{
+		if(m_pHeader)
+			m_ListInfo.nColumns = MIN(m_pHeader->GetCount(), UILIST_MAX_COLUMNS);
+
 		if( _tcscmp(pstrName, _T("List")) == 0 ) return static_cast<CListUI*>(this);
 		if( _tcscmp(pstrName, _T("IList")) == 0 ) return static_cast<IListUI*>(this);
 		if( _tcscmp(pstrName, _T("IListOwner")) == 0 ) return static_cast<IListOwnerUI*>(this);
@@ -3247,16 +3250,19 @@ namespace UiLib {
 				{			
 					SetCheck(iIndex, !GetCheck(iIndex));
 					Invalidate();
-					m_pManager->SendNotify(m_pOwner->GetList(), _T("list_check_click"), m_iIndex, iIndex);
+					m_pManager->SendNotify(this, _T("list_check_click"), m_iIndex, iIndex);
 				}
 			}
 		}
 
 		if( event.Type == UIEVENT_DBLCLICK )
 		{
-			if( IsEnabled() ) {			
+			if( IsEnabled() ) {		
+				UINT flags = 0;
+				int iIndex = HitTest(event.ptMouse, &flags);
+
 				Invalidate();
-				m_pManager->SendNotify(m_pOwner->GetList(), _T("list_item_dbclick"), m_iIndex);			
+				m_pManager->SendNotify(this, _T("list_item_dbclick"), m_iIndex, iIndex);
 				return;
 			}				
 		}
