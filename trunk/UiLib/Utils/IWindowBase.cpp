@@ -3,7 +3,8 @@
 
 IWindowBase::IWindowBase(LPCTSTR _ZipSkin /*= NULL*/)
 {
-	ZipSkinPath = _ZipSkin?_ZipSkin:_T("");
+	m_lpResourceZIPBuffer = NULL;
+	ZipSkinPath		= _ZipSkin?_ZipSkin:_T("");
 
 #pragma region 窗口关闭按钮
 	mpCloseBtn		= NULL;
@@ -15,7 +16,8 @@ IWindowBase::IWindowBase(LPCTSTR _ZipSkin /*= NULL*/)
 
 IWindowBase::~IWindowBase()
 {
-	
+	if(m_lpResourceZIPBuffer)
+		delete[] m_lpResourceZIPBuffer;
 }
 
 LPCTSTR IWindowBase::GetWindowClassName() const
@@ -233,33 +235,63 @@ LRESULT IWindowBase::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
 
 	pm.Init(m_hWnd);
 	pm.AddPreMessageFilter(this);
-
-	CDialogBuilder builder;
-
 	pm.SetResourcePath(GetSkinFolder().GetData());
 	
-	if(!ZipSkinPath.IsEmpty())
+	switch(GetResourceType())
 	{
-		pm.SetResourceZip(ZipSkinPath.GetData());
+	case UILIB_ZIP:
+		if(!ZipSkinPath.IsEmpty())
+			pm.SetResourceZip(ZipSkinPath.GetData(),true);
+		break;
+	case UILIB_ZIPRESOURCE:
+		{
+			HRSRC hResource = ::FindResource(pm.GetResourceDll(), GetResourceID(), _T("ZIPRES"));
+			if( hResource == NULL )
+				return 0L;
+			DWORD dwSize = 0;
+			HGLOBAL hGlobal = ::LoadResource(pm.GetResourceDll(), hResource);
+			if( hGlobal == NULL ) 
+			{
+				::FreeResource(hResource);
+				return 0L;
+			}
+			dwSize = ::SizeofResource(pm.GetResourceDll(), hResource);
+			if( dwSize == 0 )
+				return 0L;
+			m_lpResourceZIPBuffer = new BYTE[ dwSize ];
+			if (m_lpResourceZIPBuffer != NULL)
+			{
+				::CopyMemory(m_lpResourceZIPBuffer, (LPBYTE)::LockResource(hGlobal), dwSize);
+			}
+
+			::FreeResource(hResource);
+
+			pm.SetResourceZip(m_lpResourceZIPBuffer, dwSize);
+		}
+		break;
 	}
 
-	if(!GetSkinFile().IsEmpty())
-	{
-		CControlUI* pRoot = builder.Create(GetSkinFile().GetData(), (UINT)0, this, &pm);
-		pm.AttachDialog(pRoot);
-		pm.AddNotifier(this);
+	CDialogBuilder builder;
+	CControlUI* pRoot = builder.Create(GetSkinFile().GetData(), (UINT)0, this, &pm);
+
+	if(!pRoot){
+		MessageBox(m_hWnd,_T("初始化界面资源失败！"),_T("异常信息"),MB_OK|MB_ICONERROR);
+		this->Close(IDCLOSE);
+	}
+
+	pm.AttachDialog(pRoot);
+	pm.AddNotifier(this);
 
 #pragma region 窗口关闭按钮
-		mpCloseBtn					= static_cast<CButtonUI*>(pm.FindControl(_T("SysCloseBtn")));
-		mpMaxBtn					= static_cast<CButtonUI*>(pm.FindControl(_T("SysMaxBtn")));
-		mpRestoreBtn				= static_cast<CButtonUI*>(pm.FindControl(_T("SysRestoreBtn")));
-		mpMinBtn					= static_cast<CButtonUI*>(pm.FindControl(_T("SysMinBtn")));
+	mpCloseBtn					= static_cast<CButtonUI*>(pm.FindControl(_T("SysCloseBtn")));
+	mpMaxBtn					= static_cast<CButtonUI*>(pm.FindControl(_T("SysMaxBtn")));
+	mpRestoreBtn				= static_cast<CButtonUI*>(pm.FindControl(_T("SysRestoreBtn")));
+	mpMinBtn					= static_cast<CButtonUI*>(pm.FindControl(_T("SysMinBtn")));
 #pragma endregion 窗口关闭按钮
 
-		Init();
-		return 0;
-	}
-	return 1;
+	Init();
+	return 0;
+	
 }
 
 LRESULT IWindowBase::HandleCustomMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
@@ -378,6 +410,17 @@ LRESULT IWindowBase::MessageHandler( UINT uMsg, WPARAM wParam, LPARAM lParam, bo
 				break;
 			}
 		}
+		else if(uMsg == WM_SYSKEYDOWN)
+		{
+			switch (wParam)
+			{
+			case VK_F4:
+				pm.SendNotify(mpCloseBtn,_T("click"));
+				return FALSE;
+			default:
+				break;
+			}
+		}
 		return FALSE;
 	}
 	catch(...)
@@ -394,10 +437,9 @@ LRESULT IWindowBase::ResponseDefaultKeyEvent(WPARAM wParam)
 	}
 	else if (wParam == VK_ESCAPE)
 	{
-		Close(IDCLOSE);
+		pm.SendNotify(mpCloseBtn,_T("click"),VK_ESCAPE);
 		return TRUE;
 	}
-
 	return FALSE;
 }
 
@@ -419,4 +461,34 @@ CPaintManagerUI* IWindowBase::GetPaintManager()
 	{
 		throw "IWindowBase::GetPaintManager";
 	}
+}
+
+//************************************
+// 函数名称: GetClassStyle
+// 返回类型: UINT
+// 函数说明: 
+//************************************
+UINT IWindowBase::GetClassStyle() const
+{
+	return CS_DBLCLKS;
+}
+
+//************************************
+// 函数名称: GetResourceType
+// 返回类型: UiLib::UILIB_RESOURCETYPE
+// 函数说明: 
+//************************************
+UiLib::UILIB_RESOURCETYPE IWindowBase::GetResourceType() const
+{
+	return UILIB_FILE;
+}
+
+//************************************
+// 函数名称: GetResourceID
+// 返回类型: LPCTSTR
+// 函数说明: 
+//************************************
+LPCTSTR IWindowBase::GetResourceID() const
+{
+	return _T("");
 }

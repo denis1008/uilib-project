@@ -32,7 +32,7 @@ namespace UiLib
 		pItemButton		= new COptionUI();
 
 		this->SetFixedHeight(18);
-		this->SetFixedWidth(250);
+		//this->SetFixedWidth(250);
 		pFolderButton->SetFixedWidth(GetFixedHeight());
 		pDottedLine->SetFixedWidth(2);
 		pCheckBox->SetFixedWidth(GetFixedHeight());
@@ -108,6 +108,14 @@ namespace UiLib
 		}
 
 		CListContainerElementUI::DoEvent(event);
+
+		if(event.Type == UIEVENT_RBUTTONDOWN)
+		{
+			if(IsEnabled()){
+				m_pManager->SendNotify(this, _T("itemrclick"));
+			}
+			return;
+		}
 
 		if( event.Type == UIEVENT_DBLCLICK )
 		{

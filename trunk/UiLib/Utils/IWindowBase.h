@@ -6,7 +6,9 @@
 
 using namespace UiLib;
 
-class UILIB_API IWindowBase : public CWindowWnd
+class UILIB_API IWindowBase 
+	: public CWindowWnd
+	, public CNotifyPump
 	, public INotifyUI
 	, public IMessageFilterUI
 	, public IDialogBuilderCallback
@@ -42,7 +44,7 @@ public:
 	virtual LRESULT OnLButtonUp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	virtual LRESULT HandleCustomMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-
+	
 	virtual void Notify(TNotifyUI& msg);
 
 public:
@@ -57,11 +59,13 @@ public:
 protected:
 	virtual CDuiString GetSkinFolder();
 	virtual CDuiString GetSkinFile() = 0;
-
+	virtual UINT GetClassStyle() const;
+	virtual UILIB_RESOURCETYPE GetResourceType() const;
+	virtual LPCTSTR GetResourceID() const;
 	virtual LRESULT ResponseDefaultKeyEvent(WPARAM wParam);
-
 protected:
 	CDuiString		ZipSkinPath;
 	CPaintManagerUI pm;
+	LPBYTE m_lpResourceZIPBuffer;
 };
 #endif // IWindowBase_h__
