@@ -316,10 +316,11 @@ void CCalendarDlg::Notify( TNotifyUI& msg )
 			return;
 		if(pCControl){
 			CControlUI* pCalendarDestObj = pCControl->GetManager()->FindControl(pCControl->GetCalendarValDest());
-			if(!pCalendarDestObj)
-				pCalendarDestObj = pCControl;
-
-			pCalendarDestObj->SetText(pCalendar->GetCurSelDateTime());
+			if(pCalendarDestObj){
+				pCalendarDestObj->SetText(pCalendar->GetCurSelDateTime());
+			}
+			pCControl->SetUserData(pCalendar->GetCurSelDateTime());
+			pCControl->GetManager()->SendNotify(pCControl,_T("OnSelcetDay"));
 		}
 		Close(IDOK);
 	}

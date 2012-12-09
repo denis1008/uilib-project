@@ -112,8 +112,8 @@
 		<Attribute name="bkimage" default="" type="STRING" comment="Gif动画图片"/>
 	</GifAnim>
 	
-	<!--UiLib 扩展事件 OnSelectDate 日期选择完成时触发该事件-->
-	<Button parent="Label" notifies="OnSelectDate setfocus killfocus timer menu click windowinit(root)">
+	<!--UiLib 扩展事件 OnSelcetDay 日期选择完成时触发该事件-->
+	<Button parent="Label" notifies="OnSelcetDay setfocus killfocus timer menu click windowinit(root)">
 		<!--UiLib 扩展属性-->
 		<Attribute name="hotbkcolor" default="" type="STRING" comment="鼠标悬浮在按钮上时的按钮背景颜色,如(0xFFFF0000)"/>
 		<Attribute name="foreimage" default="" type="STRING" comment="最前端图片"/>

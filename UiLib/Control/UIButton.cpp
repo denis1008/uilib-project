@@ -116,7 +116,6 @@ namespace UiLib
 			TriggerEffects(GetClickInEffect());
 			if(!m_sCalendarName.IsEmpty()){
 				CCalendarUI::ShowCalendarDlg(this);
-				m_pManager->SendNotify(this,_T("OnSelectDate"));
 			}
 			BindTriggerTabSel();
 		}
