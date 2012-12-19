@@ -107,9 +107,17 @@ namespace UiLib
 		bool Add(T pData){return CStdPtrArray::Add(pData);};
 		bool SetAt(int iIndex, T pData){return CStdPtrArray::SetAt(iIndex,pData);};
 		bool InsertAt(int iIndex, T pData){return CStdPtrArray::InsertAt(iIndex,pData);};
+		bool Remove(int iIndex,bool bDeleteObj = false){
+			if(bDeleteObj){
+				T p = GetAt(iIndex);
+				if(p)
+					delete p;
+			}
+			return CStdPtrArray::Remove(iIndex);
+		}
 		T* GetData(){return static_cast<T>(CStdPtrArray::GetData());};
 		T GetAt(int iIndex) const {return static_cast<T>(CStdPtrArray::GetAt(iIndex));};
-		T operator[] (int nIndex) const{return static_cast<T>(CStdPtrArray:::operator[](nIndex));};
+		T operator[] (int nIndex) const{return static_cast<T>(CStdPtrArray::operator[](nIndex));};
 	};
 
 	/////////////////////////////////////////////////////////////////////////////////////
