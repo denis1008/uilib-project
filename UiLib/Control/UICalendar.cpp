@@ -15,10 +15,10 @@ REGIST_DUICLASS(CCalendarUI);
 
 class CCalendarDlg : public CWindowWnd,public INotifyUI,public IMessageFilterUI
 {
-	public:
+public:
 	CCalendarDlg(CButtonUI* _pControl);
 	~CCalendarDlg();
-	public:
+public:
 	CDuiString GetSkinFile();
 	LPCTSTR GetWindowClassName() const;
 	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
@@ -34,7 +34,7 @@ class CCalendarDlg : public CWindowWnd,public INotifyUI,public IMessageFilterUI
 	LRESULT OnGetMinMaxInfo(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-	private:
+private:
 	CCalendarUI*	pCalendar;
 	CButtonUI*		pCControl;
 	CDuiString		ZipSkinPath;
@@ -182,7 +182,6 @@ LRESULT CCalendarDlg::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		case WM_CREATE:         lRes = OnCreate(uMsg, wParam, lParam, bHandled); break; 
 		case WM_NCHITTEST:      lRes = OnNcHitTest(uMsg, wParam, lParam, bHandled); break;
-		case WM_GETMINMAXINFO:  lRes = OnGetMinMaxInfo(uMsg, wParam, lParam, bHandled); break;
 		case WM_SIZE:           lRes = OnSize(uMsg, wParam, lParam, bHandled); break;
 		case WM_SYSCOMMAND:     lRes = OnSysCommand(uMsg, wParam, lParam, bHandled); break;
 		case WM_KILLFOCUS:
@@ -247,24 +246,6 @@ LRESULT CCalendarDlg::OnNcHitTest(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&
 	return HTCLIENT;
 }
 
-LRESULT CCalendarDlg::OnGetMinMaxInfo(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
-{
-	MONITORINFO oMonitor = {};
-	oMonitor.cbSize = sizeof(oMonitor);
-	::GetMonitorInfo(::MonitorFromWindow(*this, MONITOR_DEFAULTTOPRIMARY), &oMonitor);
-	CDuiRect rcWork = oMonitor.rcWork;
-	rcWork.Offset(-oMonitor.rcMonitor.left, -oMonitor.rcMonitor.top);
-
-	LPMINMAXINFO lpMMI = (LPMINMAXINFO) lParam;
-	lpMMI->ptMaxPosition.x   = rcWork.left;
-	lpMMI->ptMaxPosition.y   = rcWork.top;
-	lpMMI->ptMaxSize.x       = rcWork.right;
-	lpMMI->ptMaxSize.y       = rcWork.bottom;
-
-	bHandled = FALSE;
-	return 0;
-}
-
 LRESULT CCalendarDlg::OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	SIZE szRoundCorner = pm.GetRoundCorner();
@@ -305,7 +286,7 @@ void CCalendarDlg::Init()
 			pCalendar->AnyCalendarStyle(pCControl->GetCalendarStyle());
 		if(pCControl->GetCalendarProfile())
 			pCalendar->ApplyAttributeList(pCControl->GetCalendarProfile());
-	} 
+	}
 }
 
 void CCalendarDlg::Notify( TNotifyUI& msg )
