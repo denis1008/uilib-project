@@ -259,7 +259,8 @@
       <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D
+xcopy $(ProjectDir)*.tlh $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -285,7 +286,8 @@
       <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D
+xcopy $(ProjectDir)*.tlh $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -311,7 +313,8 @@
       <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D
+xcopy $(ProjectDir)*.tlh $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -347,7 +350,8 @@
       </AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D
+xcopy $(ProjectDir)*.tlh $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -383,7 +387,8 @@
       </AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D
+xcopy $(ProjectDir)*.tlh $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -419,7 +424,8 @@
       </AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D
+xcopy $(ProjectDir)*.tlh $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -451,7 +457,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D
+xcopy $(ProjectDir)*.tlh $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -483,7 +490,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D
+xcopy $(ProjectDir)*.tlh $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -515,7 +523,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D
+xcopy $(ProjectDir)*.tlh $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -547,7 +556,8 @@
       <AdditionalLibraryDirectories>$(SolutionDir)\CommonFile\$(Configuration)\</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
-      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D
+xcopy $(ProjectDir)*.tlh $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -579,7 +589,8 @@
       <AdditionalLibraryDirectories>$(SolutionDir)\CommonFile\$(Configuration)\</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
-      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D
+xcopy $(ProjectDir)*.tlh $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -611,7 +622,8 @@
       <AdditionalLibraryDirectories>$(SolutionDir)\CommonFile\$(Configuration)\</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
-      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
+      <Command>xcopy $(ProjectDir)*.h $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D
+xcopy $(ProjectDir)*.tlh $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
