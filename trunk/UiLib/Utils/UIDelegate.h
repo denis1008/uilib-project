@@ -7,12 +7,25 @@ namespace UiLib {
 	typedef struct tagTEventUI TEventUI;
 	typedef struct tagTNotifyUI TNotifyUI;
 
+	typedef bool (*FunVoid)(void* pParam,LPARAM lParam,WPARAM wParam);
+	typedef bool (*FunTEvent)(TEventUI* pTEventUI,LPARAM lParam,WPARAM wParam);
+	typedef bool (*FunTNotify)(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
+
 	class CDelegateBase;
 	
 	class UILIB_API IDelegate
 	{
 	public:
-		virtual void* GetFn() const = 0;
+		typedef union {
+			FunVoid pFunVoid;
+			FunTEvent pFunTEvent;
+			FunTNotify pFunTNotify;
+		}FnType;
+
+	public:
+		virtual FunVoid GetFunVoid() const = 0;
+		virtual FunTEvent GetFunTEvent() const = 0;
+		virtual FunTNotify GetFunTNotify() const = 0;
 		virtual LPARAM GetLParam() const = 0;
 		virtual WPARAM GetWParam() const = 0;
 	public:
@@ -25,13 +38,15 @@ namespace UiLib {
 	class UILIB_API CDelegateBase : public IDelegate
 	{
 	public:
-		CDelegateBase(void* pObject, void* pFn,LPARAM lParam = NULL,WPARAM wParam = NULL);
-		CDelegateBase(void* pObject, void* pFn,UINT _iEventType,LPARAM lParam = NULL,WPARAM wParam = NULL);
-		CDelegateBase(void* pObject, void* pFn,LPCTSTR _sNotifyTypeName,LPARAM lParam = NULL,WPARAM wParam = NULL);
+		CDelegateBase(void* pObject, FunVoid pFn,LPARAM lParam = NULL,WPARAM wParam = NULL);
+		CDelegateBase(void* pObject, FunTEvent pFn,UINT _iEventType,LPARAM lParam = NULL,WPARAM wParam = NULL);
+		CDelegateBase(void* pObject, FunTNotify pFn,LPCTSTR _sNotifyTypeName,LPARAM lParam = NULL,WPARAM wParam = NULL);
 		CDelegateBase(const CDelegateBase& rhs);
 
 		virtual ~CDelegateBase();
-		void* GetFn() const { return m_pFn;};
+		FunVoid GetFunVoid() const{return m_unionFnType.pFunVoid;};
+		FunTEvent GetFunTEvent() const{return m_unionFnType.pFunTEvent;};
+		FunTNotify GetFunTNotify() const{return m_unionFnType.pFunTNotify;};
 		LPARAM GetLParam() const { return m_lParam;};
 		WPARAM GetWParam() const { return m_wParam;};
 		bool Equals(const CDelegateBase& rhs) const;
@@ -48,7 +63,7 @@ namespace UiLib {
 
 	private:
 		void* m_pObject;
-		void* m_pFn;
+		FnType m_unionFnType;
 		LPARAM m_lParam;
 		WPARAM m_wParam;
 	protected:
@@ -58,58 +73,55 @@ namespace UiLib {
 
 	class UILIB_API CDelegateStatic: public CDelegateBase
 	{
-		typedef bool (*Fn)(void* pParam,LPARAM lParam,WPARAM wParam);
-		typedef bool (*TEventFun)(TEventUI* pTEventUI,LPARAM lParam,WPARAM wParam);
-		typedef bool (*TNotifyFun)(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
 	public:
-		CDelegateStatic(Fn pFn,LPARAM lParam = NULL,WPARAM wParam = NULL) : CDelegateBase(NULL, pFn,lParam,wParam) { } 
-		CDelegateStatic(TEventFun pFn,UINT _iEventType = 0,LPARAM lParam = NULL,WPARAM wParam = NULL) : CDelegateBase(NULL, pFn,_iEventType,lParam,wParam) { } 
-		CDelegateStatic(TNotifyFun pFn,LPCTSTR _sNotifyTypeName = NULL,LPARAM lParam = NULL,WPARAM wParam = NULL) : CDelegateBase(NULL, pFn,_sNotifyTypeName,lParam,wParam) { } 
+		CDelegateStatic(FunVoid pFunVoid,LPARAM lParam = NULL,WPARAM wParam = NULL) : CDelegateBase(NULL, pFunVoid,lParam,wParam) { } 
+		CDelegateStatic(FunTEvent pFunTEvent,UINT _iEventType = 0,LPARAM lParam = NULL,WPARAM wParam = NULL) : CDelegateBase(NULL, pFunTEvent,_iEventType,lParam,wParam) { } 
+		CDelegateStatic(FunTNotify pFunTNotify,LPCTSTR _sNotifyTypeName = NULL,LPARAM lParam = NULL,WPARAM wParam = NULL) : CDelegateBase(NULL, pFunTNotify,_sNotifyTypeName,lParam,wParam) { } 
 		CDelegateStatic(const CDelegateStatic& rhs) : CDelegateBase(rhs) { } 
 		virtual CDelegateBase* Copy() const { return new CDelegateStatic(*this); }
 
 	protected:
 		virtual bool Invoke(void* param,LPARAM lParam = NULL,WPARAM wParam = NULL)
 		{
-			Fn pFn = (Fn)GetFn();
-			return (*pFn)(param,lParam,wParam); 
+			FunVoid pFunVoid = GetFunVoid();
+			return pFunVoid(param,lParam,wParam); 
 		}
 
 		virtual bool Invoke(TEventUI* pTEventUI,LPARAM lParam = NULL,WPARAM wParam = NULL)
 		{
-			TEventFun pFn = (TEventFun)GetFn();
-			return !(*pFn)(pTEventUI,lParam,wParam); 
+			FunTEvent pFunTEvent = GetFunTEvent();
+			return !pFunTEvent(pTEventUI,lParam,wParam); 
 		};
 
 		virtual bool Invoke(TNotifyUI* pTNotifyUI,LPARAM lParam = NULL,WPARAM wParam = NULL)
 		{
-			TNotifyFun pFn = (TNotifyFun)GetFn();
-			return (*pFn)(pTNotifyUI,lParam,wParam); 
+			FunTNotify pFunTNotify = GetFunTNotify();
+			return pFunTNotify(pTNotifyUI,lParam,wParam);
 		};
 	};
 
 	template <class O, class T,class P = LPARAM>
 	class UILIB_API CDelegate : public CDelegateBase
 	{
-		typedef bool (T::* Fn)(void* pParam,P lParam,WPARAM wParam);
-		typedef bool (T::*TEventFun)(TEventUI* pTEventUI,P lParam,WPARAM wParam);
-		typedef bool (T::*TNotifyFun)(TNotifyUI* pTNotifyUI,P lParam,WPARAM wParam);
+		typedef bool (T::*CMFunVoid)(void* pParam,P lParam,WPARAM wParam);
+		typedef bool (T::*CMFunTEvent)(TEventUI* pTEventUI,P lParam,WPARAM wParam);
+		typedef bool (T::*CMFunTNotify)(TNotifyUI* pTNotifyUI,P lParam,WPARAM wParam);
 	public:
-		CDelegate(O* pObj, Fn pFn,P lParam = NULL,WPARAM wParam = NULL) : CDelegateBase(pObj, *(void**)&pFn,(LPARAM)lParam,wParam), m_pFn(pFn),m_pTEventFun(NULL),m_pTNotifyFun(NULL){}
-		CDelegate(O* pObj, TEventFun pFn,UINT _iEventType = 0,P lParam = NULL,WPARAM wParam = NULL) : CDelegateBase(pObj, *(void**)&pFn,_iEventType,(LPARAM)lParam,wParam), m_pFn(NULL),m_pTEventFun(pFn),m_pTNotifyFun(NULL) { }
-		CDelegate(O* pObj, TNotifyFun pFn,LPCTSTR _sNotifyTypeName = NULL,P lParam = NULL,WPARAM wParam = NULL) : CDelegateBase(pObj, *(void**)&pFn,_sNotifyTypeName,(LPARAM)lParam,wParam), m_pFn(NULL),m_pTEventFun(NULL),m_pTNotifyFun(pFn) { }
-		CDelegate(const CDelegate& rhs) : CDelegateBase(rhs) { m_pFn = rhs.m_pFn;m_pTEventFun = rhs.m_pTEventFun;m_pTNotifyFun = rhs.m_pTNotifyFun;} 
+		CDelegate(O* pObj, CMFunVoid pCMFunVoid,P lParam = NULL,WPARAM wParam = NULL) : CDelegateBase(pObj, *(FunVoid*)&pCMFunVoid,(LPARAM)lParam,wParam), m_pCMFunVoid(pCMFunVoid),m_pCMFunTEvent(NULL),m_pCMFunTNotify(NULL){}
+		CDelegate(O* pObj, CMFunTEvent pCMFunTEvent,UINT _iEventType = 0,P lParam = NULL,WPARAM wParam = NULL) : CDelegateBase(pObj, *(FunTEvent*)&pCMFunTEvent,_iEventType,(LPARAM)lParam,wParam), m_pCMFunVoid(NULL),m_pCMFunTEvent(pCMFunTEvent),m_pCMFunTNotify(NULL) { }
+		CDelegate(O* pObj, CMFunTNotify pCMFunTNotify,LPCTSTR _sNotifyTypeName = NULL,P lParam = NULL,WPARAM wParam = NULL) : CDelegateBase(pObj, *(FunTNotify*)&pCMFunTNotify,_sNotifyTypeName,(LPARAM)lParam,wParam), m_pCMFunVoid(NULL),m_pCMFunTEvent(NULL),m_pCMFunTNotify(pCMFunTNotify) { }
+		CDelegate(const CDelegate& rhs) : CDelegateBase(rhs) { m_pCMFunVoid = rhs.m_pCMFunVoid;m_pCMFunTEvent = rhs.m_pCMFunTEvent;m_pCMFunTNotify = rhs.m_pCMFunTNotify;} 
 		virtual CDelegateBase* Copy() const { return new CDelegate(*this); }
 
 	protected:
 		virtual bool Invoke(void* param,LPARAM lParam = NULL,WPARAM wParam = NULL)
 		{
 			O* pObject = (O*) GetObj();
-			if(pObject && m_pFn)
-				return (pObject->*m_pFn)(param,(P)GetLParam(),GetWParam());
-			else if(pObject && m_pTEventFun)
+			if(pObject && m_pCMFunVoid)
+				return (pObject->*m_pCMFunVoid)(param,(P)GetLParam(),GetWParam());
+			else if(pObject && m_pCMFunTEvent)
 				return Invoke((TEventUI*)param,GetLParam(),GetWParam());
-			else if(pObject && m_pTNotifyFun)
+			else if(pObject && m_pCMFunTNotify)
 				return Invoke((TNotifyUI*)param,GetLParam(),GetWParam());
 
 			return true;
@@ -119,9 +131,9 @@ namespace UiLib {
 		{
 			O* pObject = (O*) GetObj();
 			if(pObject && pTEventUI && GetEventType() == 0)
-				return (pObject->*m_pTEventFun)(pTEventUI,(P)GetLParam(),GetWParam()); 
+				return (pObject->*m_pCMFunTEvent)(pTEventUI,(P)GetLParam(),GetWParam()); 
 			else if(pObject && pTEventUI && pTEventUI->Type == GetEventType())
-				return (pObject->*m_pTEventFun)(pTEventUI,(P)GetLParam(),GetWParam());
+				return (pObject->*m_pCMFunTEvent)(pTEventUI,(P)GetLParam(),GetWParam());
 
 			return true;
 		};
@@ -130,17 +142,17 @@ namespace UiLib {
 		{
 			O* pObject = (O*) GetObj();
 			if(pObject && GetNotifyTypeName().IsEmpty())
-				return (pObject->*m_pTNotifyFun)(pTNotifyUI,(P)GetLParam(),GetWParam());
+				return (pObject->*m_pCMFunTNotify)(pTNotifyUI,(P)GetLParam(),GetWParam());
 			else if(pObject && pTNotifyUI && pTNotifyUI->sType == GetNotifyTypeName())
-				return (pObject->*m_pTNotifyFun)(pTNotifyUI,(P)GetLParam(),GetWParam());
+				return (pObject->*m_pCMFunTNotify)(pTNotifyUI,(P)GetLParam(),GetWParam());
 
 			return true;
 		};
 
 	private:
-		Fn m_pFn;
-		TEventFun m_pTEventFun;
-		TNotifyFun m_pTNotifyFun;
+		CMFunVoid m_pCMFunVoid;
+		CMFunTEvent m_pCMFunTEvent;
+		CMFunTNotify m_pCMFunTNotify;
 	};
 
 	template <class O, class T,class P>
@@ -161,24 +173,20 @@ namespace UiLib {
 		return CDelegate<O, T, P>(pObject, pFn,(LPCTSTR)_sNotifyTypeName,lParam,wParam);
 	}
 
-	inline CDelegateStatic MakeDelegate(bool (*pFn)(void* pParam,LPARAM lParam,WPARAM wParam),LPARAM lParam = NULL,WPARAM wParam = NULL)
+	inline CDelegateStatic MakeDelegate(FunVoid pFunVoid,LPARAM lParam = NULL,WPARAM wParam = NULL)
 	{
-		return CDelegateStatic(pFn,lParam,wParam); 
+		return CDelegateStatic(pFunVoid,lParam,wParam);
 	}
 
-	inline CDelegateStatic MakeDelegate(bool (*pFn)(TEventUI* pTEventUI,LPARAM lParam,WPARAM wParam),UINT _iEventType,LPARAM lParam = NULL,WPARAM wParam = NULL)
+	inline CDelegateStatic MakeDelegate(FunTEvent pFunTEvent,UINT _iEventType,LPARAM lParam = NULL,WPARAM wParam = NULL)
 	{
-		return CDelegateStatic(pFn,_iEventType,lParam,wParam); 
+		return CDelegateStatic(pFunTEvent,_iEventType,lParam,wParam); 
 	}
 
-	inline CDelegateStatic MakeDelegate(bool (*pFn)(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam),LPCTSTR _sNotifyTypeName,LPARAM lParam = NULL,WPARAM wParam = NULL)
+	inline CDelegateStatic MakeDelegate(FunTNotify pFunTNotify,LPCTSTR _sNotifyTypeName,LPARAM lParam = NULL,WPARAM wParam = NULL)
 	{
-		return CDelegateStatic(pFn,_sNotifyTypeName,lParam,wParam); 
+		return CDelegateStatic(pFunTNotify,_sNotifyTypeName,lParam,wParam); 
 	}
-
-	typedef bool (*FnType)(void* pParam,LPARAM lParam,WPARAM wParam);
-	typedef bool (*TEventFunType)(TEventUI* pTEventUI,LPARAM lParam,WPARAM wParam);
-	typedef bool (*TNotifyFunType)(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
 
 	class UILIB_API CEventSource
 	{
@@ -187,15 +195,15 @@ namespace UiLib {
 		~CEventSource();
 		operator bool();
 		void operator+= (const CDelegateBase& d); // add const for gcc
-		void operator+= (FnType pFn){(*this) += MakeDelegate(pFn);};
+		void operator+= (FunVoid pFunVoid){(*this) += MakeDelegate(pFunVoid);};
 		void operator-= (const CDelegateBase& d);
-		void operator-= (FnType pFn){(*this) -= MakeDelegate(pFn);};
+		void operator-= (FunVoid pFunVoid){(*this) -= MakeDelegate(pFunVoid);};
 		bool operator() (void* param);
 		bool operator() (TEventUI* pTEventUI);
 		bool operator() (TNotifyUI* pTNotifyUI);
 
 	protected:
-		CStdPtrArray m_aDelegates;
+		TStdPtrArray<CDelegateBase*> m_aDelegates;
 	};
 
 } // namespace UiLib

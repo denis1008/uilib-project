@@ -685,6 +685,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Static_Release_2012|Win32'">StdAfx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2012|Win32'">StdAfx.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Utils\DuiAutoComplete.cpp" />
     <ClCompile Include="Utils\DuiReflection.cpp" />
     <ClCompile Include="Utils\IWindowBase.cpp" />
     <ClCompile Include="Utils\stb_image.c">
@@ -773,6 +774,7 @@
     <ClInclude Include="Layout\UIVerticalLayout.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="UIlib.h" />
+    <ClInclude Include="Utils\DuiAutoComplete.h" />
     <ClInclude Include="Utils\downloadmgr.h" />
     <ClInclude Include="Utils\DuiPointer.h" />
     <ClInclude Include="Utils\DuiReflection.h" />

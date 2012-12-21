@@ -1,3 +1,41 @@
+2012-12-21
+* 事件绑定的相关代码规范化及提高可读性的调整
+* 同步并生成最新UiLib Demo
+
+2012-12-19
+* 移除UICalendar类中无用到的代码
++ 增加CEditUI自动完成接口类
+
+2012-12-12
+* 修正UiLib扩展后的属性新特性.xml 文件浏览器打开解析失败的BUG
+
+2012-12-09
+* 调整Button按钮的日历绑定事件的通知
+
+2012-12-06
+* 调整List 相关消息参数
+* 修正定向边框绘制计算
+* IWindowBase 调整 Atl+F4 的消息转为关闭按钮的click消息
++ IWindowBase 对嵌入资源加载的支持
++ IWindowBase 增加UI资源解析失败提示
++ TreeView 增加itemrclick事件
+
+2012-12-03
++ 新增 List 支持表格横向和纵向的线条显示控制，XML属性为 showvline showhline
+* 修正List 的 showvline showhline 属性与 itemshowhtml 属性冲突问题
+
+2012-12-02
++增加Style对XML的默认元素名的样式化
+-移除一些无用的注释代码
+*修正Button弹窗日历引起的异常
+
+2012-11-29
+* 调整Edit maxchar默认长度为-1，即系统支持的最大长度
+* 修复Edit的焦点设置BUG
+
+2012-11-28
++ 修复类反射导致的自定义控件DEBUG模式无法实例化的BUG
+
 2012-11-27
 +Button 增加calendardestname属性
 +DUITRACE 增加换行符
