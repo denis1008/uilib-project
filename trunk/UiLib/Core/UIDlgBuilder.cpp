@@ -449,7 +449,14 @@ namespace UiLib
 							LPTSTR pstr = NULL;
 							DWORD clrColor = _tcstoul(pstrValue, &pstr, 16);
 							pManager->SetDefaultSelectedBkColor(clrColor);
-						} 
+						}
+						else if(_tcscmp(pstrName, _T("trayiconid")) == 0 ) {
+							if(_ttoi(pstrValue) > 0)
+								pManager->GetTrayObject().CreateTrayIcon(pManager->GetPaintWindow(),_ttoi(pstrValue));
+						}
+						else if(_tcscmp(pstrName, _T("traytiptext")) == 0 ) {
+							pManager->GetTrayObject().SetTooltipText(pstrValue);
+						}
 					}
 				}
 			}

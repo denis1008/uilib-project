@@ -504,7 +504,15 @@
 				Name="Utils"
 				>
 				<File
+					RelativePath=".\Utils\DuiAutoComplete.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Utils\DuiReflection.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Utils\DuiTrayIcon.cpp"
 					>
 				</File>
 				<File
@@ -790,11 +798,19 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Utils\DuiAutoComplete.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Utils\DuiPointer.h"
 					>
 				</File>
 				<File
 					RelativePath=".\Utils\DuiReflection.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Utils\DuiTrayIcon.h"
 					>
 				</File>
 				<File

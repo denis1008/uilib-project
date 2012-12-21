@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Window size="900,600" roundcorner="3,3" sizebox="3,3,3,3" caption="2,2,2,96" bktrans="true" >
+<Window size="900,600" roundcorner="3,3" sizebox="3,3,3,3" caption="2,2,2,96" bktrans="true" trayiconid="107" traytiptext="提十五州" >
 	<Font name="微软雅黑,雅黑,宋体" size="12" />
 	<Font name="微软雅黑,雅黑,宋体" size="12" bold="true" />
 	<Font name="微软雅黑,雅黑,宋体" size="22" bold="true" />
@@ -51,15 +51,18 @@
 	<Styles name="LateStyle" stylefile="WndBtn.xml">
 		<Style stylename="Option" textcolor="#FFbac0c5" hottextcolor="#FF386382" selectedtextcolor="#FF386382" disabledtextcolor="#FFbac0c5" textpadding="18,2,0,0" align="left" selectedimage="file='Button/RadioBtnSel.png' source='0,0,13,13' dest='0,5,14,19'" normalimage="file='Button/RadioBtnNon.png' source='0,0,13,13' dest='0,5,14,19'" />
 		<Style stylename="BtnStyle" name="EffectsDemo" mouseclickeffects="EffectsDemo" animeffects="true" font="1" width="70" height="60" textpadding="0,40,0,0" textcolor="#C1C1C1" hottextcolor="#FFFFFF" selectedtextcolor="#010101" disabledtextcolor="#FFa3c6f2" normalimage="" foreimage="file='Icon/CtrlDemo.png' dest='10,0,57,53'" />
+		<Style stylename="StartTrayAminCtrl" name="StartTrayAminCtrl" font="1" width="120" height="60" textpadding="0,40,0,0" textcolor="#C1C1C1" hottextcolor="#FFFFFF" selectedtextcolor="#010101" disabledtextcolor="#FFa3c6f2" normalimage="" foreimage="file='Icon/CtrlDemo.png' dest='10,0,57,53'" />
 		<Style stylename="MainWnd" bkcolor="#FFFFFFFF" bkimage="file='WndFrame/WndFrameBK.png' corner='6,96,6,2'" inset="1,0,1,1" colorhsl="true" vscrollbar="true" />
 		<Style stylename="FadeButtonDemo" width="100" height="22" textcolor="#000000" hottextcolor="#FFFFFF" focusedtextcolor="#000000" pushedtextcolor="#77a8de" normalimage="file='Button/btn.png' corner='5,11,5,11' source='0,0,96,24'" hotimage="file='Button/btn.png' corner='5,11,5,11' source='0,24,96,48'" pushedimage="file='Button/btn.png' corner='5,11,5,11' source='0,48,96,72'" disabledimage="file='Button/btn.png' corner='5,11,5,11' source='0,72,96,96'" />
 		<Style stylename="treenode" folderattr="padding=&quot;0,1,0,0&quot; width=&quot;16&quot; height=&quot;16&quot; normalimage=&quot;file='Icon/treeview_b.png' source='0,0,16,16' &quot; hotimage=&quot;file='Icon/treeview_b.png' source='16,0,32,16' &quot; selectedimage=&quot;file='Icon/treeview_a.png' source='0,0,16,16' &quot; selectedhotimage=&quot;file='Icon/treeview_a.png' source='16,0,32,16' &quot;" checkboxattr="width=&quot;16&quot; height=&quot;16&quot; normalimage=&quot;file='Icon/unchecked.png' &quot; selectedimage=&quot;file='Icon/checked.png' &quot;" />
 	</Styles>
-	<Styles name="LangChinese" inherit="LateStyle" >
+	<Styles name="LangChinese" inherit="LateStyle" default="true" >
 		<Style stylename="BtnStyle" text="语言切换" />
+		<Style stylename="StartTrayAminCtrl" text="托盘图标控制" />
 	</Styles>
-	<Styles name="LangEnglish" inherit="LateStyle" default="true" >
+	<Styles name="LangEnglish" inherit="LateStyle" >
 		<Style stylename="BtnStyle" text="LangSwitch" />
+		<Style stylename="StartTrayAminCtrl" text="TrayIconAminCtrl" />
 	</Styles>
 	
 	<VerticalLayout style="MainWnd" >
@@ -82,6 +85,7 @@
 		<Label float="true" pos="10,2,0,0" enabledeffect="true" enabledshadow="true" transshadow1="100" enabledstroke="true" strokecolor="#ffffffff"  shadowoffset="2,-120" text="UiLib Open Source Community" align="center" width="350" height="26" disabledtextcolor="#FFa3c6f2" bkimage="file='WndFrame/ModuleTitleBG.png' corner='5,2,5,5' fade='188'" font="2" />
 		<HorizontalLayout float="true" pos="10,10,800,98" inset="10,24,0,0" childpadding="5" name="MenuBar">
 			<Button style="BtnStyle" />
+			<Button style="StartTrayAminCtrl" />
 			<Button name="CalenderBtn" text="日历测试" calendarprofile="bordercolor=&quot;#ff3b3b3b&quot; bordersize=&quot;1&quot; inset=&quot;2,2,2,2&quot; bkcolor=&quot;#FFFFFFFF&quot;" width="120" height="30" calendarname="test"  normalimage="" />
 			<Label enabledeffect="true" enabledshadow="true" transshadow1="100" enabledstroke="true" strokecolor="#ffffffff"  shadowoffset="5,-100" text="深圳码农公司" align="center" width="250" height="26" disabledtextcolor="#FFa3c6f2" font="2" />
 			<Label enabledeffect="true" enabledshadow="true" enabledstroke="false" transshadow="255" transtext="255" transshadow1="0" transtext1="0" textcolor="#ff0680C9" shadowoffset="2,120" text="渐变透明" align="center" gradientlength="38" disabledtextcolor="#FFa3c6f2" font="2" />

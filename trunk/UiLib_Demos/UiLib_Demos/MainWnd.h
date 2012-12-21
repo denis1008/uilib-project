@@ -23,6 +23,7 @@ public:
 	void Notify(TNotifyUI& msg);
 	void OnFinalMessage(HWND hWnd);
 
+	bool OnStartTrayAminCtrlClick(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
 	bool OnMsgBtnMouseEnter(TEventUI* pTEventUI,LPARAM lParam,WPARAM wParam);
 	bool OnMsgBtnMouseLeave(TEventUI* pTEventUI,LPARAM lParam,WPARAM wParam);
 	bool OnMsgBtnClick(TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam);
@@ -51,7 +52,6 @@ private:
 	CChartViewUI*	pChartView;
 	CHorizontalLayoutUI* pAnimWnd;
 	HMENU			hMenu;
-	NOTIFYICONDATA	nid;
 
 };
 

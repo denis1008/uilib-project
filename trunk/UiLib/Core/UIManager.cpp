@@ -3825,4 +3825,14 @@ namespace UiLib {
 		return m_aCustomEvents;
 	}
 
+	//************************************
+	// 函数名称: GetTrayObject
+	// 返回类型: CDuiTrayIcon&
+	// 函数说明: 
+	//************************************
+	CDuiTrayIcon& CPaintManagerUI::GetTrayObject()
+	{
+		return mDuiTray;
+	}
+
 } // namespace UiLib

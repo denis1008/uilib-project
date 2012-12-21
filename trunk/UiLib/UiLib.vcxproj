@@ -687,6 +687,7 @@
     </ClCompile>
     <ClCompile Include="Utils\DuiAutoComplete.cpp" />
     <ClCompile Include="Utils\DuiReflection.cpp" />
+    <ClCompile Include="Utils\DuiTrayIcon.cpp" />
     <ClCompile Include="Utils\IWindowBase.cpp" />
     <ClCompile Include="Utils\stb_image.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Static_Release_2012|Win32'">NotUsing</PrecompiledHeader>
@@ -778,6 +779,7 @@
     <ClInclude Include="Utils\downloadmgr.h" />
     <ClInclude Include="Utils\DuiPointer.h" />
     <ClInclude Include="Utils\DuiReflection.h" />
+    <ClInclude Include="Utils\DuiTrayIcon.h" />
     <ClInclude Include="Utils\Internal.h" />
     <ClInclude Include="Utils\IWindowBase.h" />
     <ClInclude Include="Utils\UIDelegate.h" />

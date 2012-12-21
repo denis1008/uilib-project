@@ -175,7 +175,10 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Utils\DuiAutoComplete.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\DuiTrayIcon.cpp">
+      <Filter>源文件\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -330,7 +333,10 @@
       <Filter>头文件\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Utils\DuiAutoComplete.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\DuiTrayIcon.h">
+      <Filter>头文件\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

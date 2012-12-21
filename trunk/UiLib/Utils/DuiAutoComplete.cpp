@@ -25,8 +25,8 @@ namespace UiLib
 	CDuiAutoComplete::~CDuiAutoComplete()
 	{
 		Clear();
-		if (m_fBound && m_pac)
-			m_pac.Release();
+		if (m_fBound && GetIAutoComplete())
+			GetIAutoComplete().Release();
 		m_fBound = FALSE;
 	}
 
@@ -41,14 +41,14 @@ namespace UiLib
 	BOOL CDuiAutoComplete::Bind(HWND p_hWndEdit, DWORD p_dwOptions, LPCTSTR p_lpszFormatString)
 	{
 		ATLASSERT(::IsWindow(p_hWndEdit));
-		if ((m_fBound) || (m_pac))
+		if ((m_fBound) || (GetIAutoComplete()))
 			return FALSE;
 
-		HRESULT hr = m_pac.CoCreateInstance(CLSID_AutoComplete);
+		HRESULT hr = GetIAutoComplete().CoCreateInstance(CLSID_AutoComplete);
 		if (SUCCEEDED(hr))
 		{
 			if (p_dwOptions){
-				CComQIPtr<IAutoComplete2> pAC2(m_pac);
+				CComQIPtr<IAutoComplete2> pAC2(GetIAutoComplete());
 				if (pAC2){
 					pAC2->SetOptions(p_dwOptions);
 					pAC2.Release();
@@ -56,7 +56,7 @@ namespace UiLib
 			}
 
 			USES_CONVERSION;
-			if (SUCCEEDED(hr = m_pac->Init(p_hWndEdit, this, NULL, T2CW(p_lpszFormatString))))
+			if (SUCCEEDED(hr = GetIAutoComplete()->Init(p_hWndEdit, this, NULL, T2CW(p_lpszFormatString))))
 			{
 				m_fBound = TRUE;
 				return TRUE;
@@ -74,8 +74,8 @@ namespace UiLib
 	{
 		if (!m_fBound)
 			return;
-		if (m_fBound && m_pac){
-			m_pac.Release();
+		if (m_fBound && GetIAutoComplete()){
+			GetIAutoComplete().Release();
 			m_fBound = FALSE;
 		}
 	}
@@ -185,7 +185,7 @@ namespace UiLib
 	//************************************
 	BOOL CDuiAutoComplete::Disable()
 	{
-		if ((!m_pac) || (!m_fBound))
+		if ((!GetIAutoComplete()) || (!m_fBound))
 			return FALSE;
 		return SUCCEEDED(EnDisable(FALSE));
 	}
@@ -198,7 +198,7 @@ namespace UiLib
 	//************************************
 	BOOL CDuiAutoComplete::Enable(VOID)
 	{
-		if ((!m_pac) || (m_fBound))
+		if ((!GetIAutoComplete()) || (m_fBound))
 			return FALSE;
 		return SUCCEEDED(EnDisable(TRUE));
 	}
@@ -366,9 +366,7 @@ namespace UiLib
 	//************************************
 	HRESULT CDuiAutoComplete::EnDisable(BOOL p_fEnable)
 	{
-		ATLASSERT(m_pac);
-
-		HRESULT hr = m_pac->Enable(p_fEnable);
+		HRESULT hr = GetIAutoComplete()->Enable(p_fEnable);
 		if (SUCCEEDED(hr))
 			m_fBound = p_fEnable;
 		return hr;
@@ -436,6 +434,17 @@ namespace UiLib
 			return CDuiString(); 
 		else
 			return m_sStringArrayMap.GetAt(pos)->GetData();
+	}
+
+	//************************************
+	// 函数名称: GetIAutoComplete
+	// 返回类型: CComPtr<IAutoComplete>&
+	// 函数说明: 
+	//************************************
+	CComPtr<IAutoComplete>& CDuiAutoComplete::GetIAutoComplete()
+	{
+		static CComPtr<IAutoComplete> m_pac;
+		return m_pac;
 	}
 
 }

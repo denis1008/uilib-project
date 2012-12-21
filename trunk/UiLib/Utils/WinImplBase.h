@@ -24,7 +24,7 @@ namespace UiLib
 	{
 	public:
 		WindowImplBase(){};
-		virtual ~WindowImplBase(){};
+		virtual ~WindowImplBase(){m_PaintManager.GetTrayObject().DeleteTrayIcon();};
 		virtual void InitWindow(){};
 		virtual void OnFinalMessage( HWND hWnd );
 		virtual void Notify(TNotifyUI& msg);
