@@ -621,6 +621,7 @@
   <ItemGroup>
     <ClCompile Include="Control\UICalendar.cpp" />
     <ClCompile Include="Control\UIChartView.cpp" />
+    <ClCompile Include="Control\UIFlash.cpp" />
     <ClCompile Include="Control\UIGifAnim.cpp" />
     <ClCompile Include="Control\UIActiveX.cpp" />
     <ClCompile Include="Control\UIAnimation.cpp" />
@@ -736,6 +737,7 @@
   <ItemGroup>
     <ClInclude Include="Control\UICalendar.h" />
     <ClInclude Include="Control\UIChartView.h" />
+    <ClInclude Include="Control\UIFlash.h" />
     <ClInclude Include="Control\UIGifAnim.h" />
     <ClInclude Include="Control\UIActiveX.h" />
     <ClInclude Include="Control\UIAnimation.h" />
@@ -780,12 +782,16 @@
     <ClInclude Include="Utils\DuiPointer.h" />
     <ClInclude Include="Utils\DuiReflection.h" />
     <ClInclude Include="Utils\DuiTrayIcon.h" />
+    <ClInclude Include="Utils\FlashEventHandler.h" />
     <ClInclude Include="Utils\Internal.h" />
     <ClInclude Include="Utils\IWindowBase.h" />
     <ClInclude Include="Utils\UIDelegate.h" />
     <ClInclude Include="Utils\Utils.h" />
     <ClInclude Include="Utils\WebBrowserEventHandler.h" />
     <ClInclude Include="Utils\WinImplBase.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Utils\flash11.tlh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
