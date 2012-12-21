@@ -388,6 +388,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Control\UIFlash.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Control\UIGifAnim.cpp"
 					>
 				</File>
@@ -663,6 +667,10 @@
 				</File>
 				<File
 					RelativePath=".\Control\UIFadeButton.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Control\UIFlash.h"
 					>
 				</File>
 				<File
