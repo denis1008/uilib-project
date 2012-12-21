@@ -15,8 +15,6 @@
 		<Attribute name="linkfontcolor" default="0xFF0000FF" type="DWORD" comment="默认的link字体颜色,如(0xFF0000FF)"/>
 		<Attribute name="linkhoverfontcolor" default="0xFFD3215F" type="DWORD" comment="默认的linkhoverfont字体颜色,如(0xFFD3215F)"/>
 		<Attribute name="selectedcolor" default="0xFFBAE4FF" type="DWORD" comment="默认的selected字体颜色,如(0xFFBAE4FF)"/>
-		<Attribute name="trayiconid" default="" type="UINT" comment="图标资源ID，将显示在托盘"/>
-		<Attribute name="traytiptext" default="" type="STRING" comment="托盘图标在鼠标闲停时提示的文本，备注：有效长度小于64字节"/>
 	</Window>
 	<Include parent="Container" >
 		<Attribute name="xmlfile" default="" type="STRING" comment="外部XML布局文件"/>
