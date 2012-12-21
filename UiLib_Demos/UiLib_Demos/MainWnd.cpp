@@ -113,26 +113,13 @@ void CMainWnd::Init()
 	try
 	{
 		IWindowBase::Init();
-
-#ifndef _UNICODE
-		strcpy(nid.szTip,"双击主显示界面");//信息提示条
-		Shell_NotifyIconA(NIM_ADD,&nid);//在托盘区添加图标
-#else
-		wcscpy_s(nid.szTip,L"双击主显示界面");//信息提示条
-		Shell_NotifyIcon(NIM_ADD,&nid);//在托盘区添加图标
-#endif
-
+		
 		pAnimWnd		= static_cast<CHorizontalLayoutUI*>(pm.FindControl(_T("AnimWnd")));
 		pTestLabel		= static_cast<CLabelUI*>(pm.FindControl(_T("TestLabel")));
 		pChartView		= static_cast<CChartViewUI*>(pm.FindControl(_T("ChartView")));
 		pEffectsDemo	= static_cast<CButtonUI*>(pm.FindControl(_T("EffectsDemo")));
 		
-		nid.cbSize				= (DWORD)sizeof(NOTIFYICONDATA);
-		nid.hWnd				= m_hWnd;
-		nid.uID					= IDI_UILIB_DEMOS;
-		nid.uFlags				= NIF_ICON|NIF_MESSAGE|NIF_TIP ;
-		nid.uCallbackMessage	= WM_USER + 1;
-		nid.hIcon				= LoadIcon(pm.GetInstance(),MAKEINTRESOURCE(IDI_UILIB_DEMOS));
+		CButtonUI*	pStartTrayAminCtrl	= static_cast<CButtonUI*>(pm.FindControl(_T("StartTrayAminCtrl")));
 
 		CButtonUI*	pTextMsgBtn			= static_cast<CButtonUI*>(pm.FindControl(_T("TextMsg")));
 		CButtonUI*	pAddNodeBtn			= static_cast<CButtonUI*>(pm.FindControl(_T("AddNode")));
@@ -146,6 +133,7 @@ void CMainWnd::Init()
 		CButtonUI*	pLegendBottomBtn	= static_cast<CButtonUI*>(pm.FindControl(_T("LegendBottom")));
 		CButtonUI*	pDelChartDataBtn	= static_cast<CButtonUI*>(pm.FindControl(_T("DelChartData")));
 
+		pStartTrayAminCtrl->OnNotify	+= MakeDelegate(this,&CMainWnd::OnStartTrayAminCtrlClick,_T("click"));
 		pEffectsDemo->OnNotify			+= MakeDelegate(this,&CMainWnd::OnEffectsBtnClick,_T("click"));
 		pTextMsgBtn->OnNotify			+= MakeDelegate(this,&CMainWnd::OnMsgBtnClick,_T("click"));
 		pTextMsgBtn->OnEvent			+= MakeDelegate(this,&CMainWnd::OnMsgBtnMouseEnter,UIEVENT_MOUSEENTER);
@@ -234,10 +222,9 @@ void CMainWnd::OnFinalMessage( HWND hWnd )
 {
 	try
 	{
-		::Shell_NotifyIcon(NIM_DELETE,&nid);
-
 		IWindowBase::OnFinalMessage(hWnd);
 		PostQuitMessage(0);
+		delete this;
 	}
 	catch (...)
 	{
@@ -253,6 +240,24 @@ void CMainWnd::OnFinalMessage( HWND hWnd )
 bool CMainWnd::OnMsgBtnClick( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 {
 	MessageBox(m_hWnd,_T("我是绑定的按钮点击消息 OK!"),_T("消息路由"),MB_OK);
+	return true;
+}
+
+//************************************
+// 函数名称: OnStartTrayAminCtrlClick
+// 返回类型: bool
+// 参数信息: TNotifyUI * pTNotifyUI
+// 参数信息: LPARAM lParam
+// 参数信息: WPARAM wParam
+// 函数说明: 
+//************************************
+bool CMainWnd::OnStartTrayAminCtrlClick( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
+{
+	if(pm.GetTrayObject().IsTwinkling())
+		pm.GetTrayObject().StopTwinkling();
+	else
+		pm.GetTrayObject().StartTwinkling();
+
 	return true;
 }
 

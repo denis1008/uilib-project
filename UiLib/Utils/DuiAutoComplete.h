@@ -8,11 +8,11 @@
 
 namespace UiLib
 {
-	class CDuiAutoComplete : public IEnumString
+	class UILIB_API CDuiAutoComplete : public IEnumString
 	{
 	private:
 		TStdPtrArray<CDuiString*> m_sStringArrayMap;
-		CComPtr<IAutoComplete> m_pac;
+		CComPtr<IAutoComplete>& GetIAutoComplete();
 
 		ULONG m_nCurrentElement;
 		ULONG m_nRefCount;

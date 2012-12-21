@@ -44,6 +44,7 @@
 #include "Utils/Internal.h"
 #include "Utils/UIDelegate.h"
 #include "Utils/DuiAutoComplete.h"
+#include "Utils/DuiTrayIcon.h"
 
 #include "Core/UITimer.h"
 #include "Core/UIDefine.h"

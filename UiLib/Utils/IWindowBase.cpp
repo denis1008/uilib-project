@@ -16,6 +16,7 @@ IWindowBase::IWindowBase(LPCTSTR _ZipSkin /*= NULL*/)
 
 IWindowBase::~IWindowBase()
 {
+	pm.GetTrayObject().DeleteTrayIcon();
 	if(m_lpResourceZIPBuffer)
 		delete[] m_lpResourceZIPBuffer;
 }

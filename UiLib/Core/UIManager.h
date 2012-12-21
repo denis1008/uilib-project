@@ -55,6 +55,7 @@ typedef enum EVENTTYPE_UI
     UIEVENT_NOTIFY,
 	UIEVENT_COMMAND,
 	UIEVENT_RELOADSTYLE,
+	UIEVENT_TRAYICON,
     UIEVENT__LAST,
 };
 
@@ -862,6 +863,7 @@ public:
 	bool GetThemeColorPair(UITYPE_COLOR Index, COLORREF& clr1, COLORREF& clr2) const;
 
 	CEventSource& GetEventSource();
+	CDuiTrayIcon& GetTrayObject();
 private:
     static CControlUI* CALLBACK __FindControlFromNameHash(CControlUI* pThis, LPVOID pData);
     static CControlUI* CALLBACK __FindControlFromCount(CControlUI* pThis, LPVOID pData);
@@ -884,6 +886,8 @@ private:
     HWND m_hwndTooltip;
     TOOLINFO m_ToolTip;
     bool m_bShowUpdateRect;
+	//
+	CDuiTrayIcon mDuiTray;
     //
     CControlUI* m_pRoot;
     CControlUI* m_pFocus;
