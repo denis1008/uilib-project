@@ -3821,7 +3821,6 @@ namespace UiLib {
 	//************************************
 	CEventSource& CPaintManagerUI::GetEventSource()
 	{
-		static CEventSource m_aCustomEvents;
 		return m_aCustomEvents;
 	}
 

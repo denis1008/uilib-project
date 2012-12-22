@@ -941,6 +941,8 @@ private:
 
     CStdStringPtrMap m_mImageHash;
     CStdStringPtrMap m_DefaultAttrHash;
+	//
+	CEventSource m_aCustomEvents;
     //
     static HINSTANCE m_hInstance;
     static HINSTANCE m_hResourceInstance;
