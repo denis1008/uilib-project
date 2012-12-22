@@ -178,6 +178,19 @@ namespace UiLib{
 	CDuiTimerBase::~CDuiTimerBase( void )
 	{
 		InnerKillTimer();
+		m_pObject		= NULL;
+		m_pFun			= NULL;
+		m_pParam		= NULL;
+		m_iCurTimer		= NULL;
+		m_iInterval		= NULL;
+		m_iTotalTimer	= NULL;
+		m_hWnd			= NULL;
+		m_lParam		= NULL;
+		m_wParam		= NULL;
+		m_bAutoStart	= true;
+		m_bLoop			= false;
+		m_bReverse		= false;
+		m_bInverted		= false;
 	}
 
 	//************************************
