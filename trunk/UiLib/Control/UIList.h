@@ -424,7 +424,7 @@ public:
 	bool Select(bool bSelect = true);
 
     LPCTSTR GetText(int iIndex) const;
-    void SetText(int iIndex, LPCTSTR pstrText);
+    void SetText(int iIndex, LPCTSTR pstrText,int uTextStyle = -1);
 
     void SetOwner(CControlUI* pOwner);
     CDuiString* GetLinkContent(int iIndex);
@@ -442,6 +442,7 @@ protected:
     int m_nHoverLink;
     IListUI* m_pOwner;
     CStdPtrArray m_aTexts;
+	TStdPtrArray<int*> m_uTextsStyle;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////
