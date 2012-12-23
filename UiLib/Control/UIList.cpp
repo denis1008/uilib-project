@@ -2496,7 +2496,10 @@ namespace UiLib {
 		for( int it = 0; it < m_aTexts.GetSize(); it++ ) {
 			pText = static_cast<CDuiString*>(m_aTexts[it]);
 			if( pText ) delete pText;
+			int *pAlign = m_uTextsStyle.GetAt(it);
+			if(pAlign) delete pAlign;
 		}
+		m_uTextsStyle.Empty();
 		m_aTexts.Empty();
 	}
 
@@ -2523,20 +2526,24 @@ namespace UiLib {
 		return NULL;
 	}
 
-	void CListTextElementUI::SetText(int iIndex, LPCTSTR pstrText)
+	void CListTextElementUI::SetText(int iIndex, LPCTSTR pstrText,int uTextStyle/* = -1*/)
 	{
 		if( m_pOwner == NULL ) return;
 		TListInfoUI* pInfo = m_pOwner->GetListInfo();
 		if( iIndex < 0 || iIndex >= pInfo->nColumns ) return;
-		while( m_aTexts.GetSize() < pInfo->nColumns ) { m_aTexts.Add(NULL); }
+		while( m_aTexts.GetSize() < pInfo->nColumns ) { m_aTexts.Add(NULL);m_uTextsStyle.Add(NULL); }
 
 		CDuiString* pText = static_cast<CDuiString*>(m_aTexts[iIndex]);
 		if( (pText == NULL && pstrText == NULL) || (pText && *pText == pstrText) ) return;
 
-		if ( pText ) //by cddjr 2011/10/20
+		if ( pText ){ //by cddjr 2011/10/20
 			pText->Assign(pstrText);
-		else
+			int* pAlign = m_uTextsStyle.GetAt(iIndex);
+		}
+		else 
 			m_aTexts.SetAt(iIndex, new CDuiString(pstrText));
+
+		m_uTextsStyle.SetAt(iIndex,new int(uTextStyle));
 		Invalidate();
 	}
 
@@ -2679,6 +2686,10 @@ namespace UiLib {
 		int nLinks = lengthof(m_rcLinks);
 		for( int i = 0; i < pInfo->nColumns; i++ )
 		{
+			int nTextAlgin = *m_uTextsStyle.GetAt(i);
+			if(nTextAlgin < 0)
+				nTextAlgin = DT_SINGLELINE | pInfo->uTextStyle;
+
 			RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.bottom };
 			RECT rcItemLine = rcItem;
 			rcItem.left += pInfo->rcTextPadding.left;
@@ -2691,10 +2702,10 @@ namespace UiLib {
 			else strText.Assign(GetText(i));
 			if( pInfo->bShowHtml )
 				CRenderEngine::DrawHtmlText(hDC, m_pManager, rcItem, strText.GetData(), iTextColor, \
-				&m_rcLinks[m_nLinks], &m_sLinks[m_nLinks], nLinks, DT_SINGLELINE | pInfo->uTextStyle);
+				&m_rcLinks[m_nLinks], &m_sLinks[m_nLinks], nLinks, nTextAlgin);
 			else
 				CRenderEngine::DrawText(hDC, m_pManager, rcItem, strText.GetData(), iTextColor, \
-				pInfo->nFont, DT_SINGLELINE | pInfo->uTextStyle);
+				pInfo->nFont,nTextAlgin);
 
 			m_nLinks += nLinks;
 			nLinks = lengthof(m_rcLinks) - m_nLinks; 
@@ -3299,6 +3310,10 @@ namespace UiLib {
 		IListCallbackUI* pCallback = m_pOwner->GetTextCallback();
 		for( int i = 0; i < pInfo->nColumns; i++ )
 		{
+			int nTextAlgin = *m_uTextsStyle.GetAt(i);
+			if(nTextAlgin < 0)
+				nTextAlgin = DT_SINGLELINE | pInfo->uTextStyle;
+
 			LPCTSTR pImg;		
 			if (GetCheckFlag(i))
 			{
@@ -3323,11 +3338,11 @@ namespace UiLib {
 			{
 				int nLinks = 0;
 				CRenderEngine::DrawHtmlText(hDC, m_pManager, rcText, strText.GetData(), iTextColor, \
-					NULL, NULL, nLinks, DT_SINGLELINE | pInfo->uTextStyle);
+					NULL, NULL, nLinks, nTextAlgin);
 			}
 			else
 				CRenderEngine::DrawText(hDC, m_pManager, rcText, strText.GetData(), iTextColor, \
-				pInfo->nFont, DT_SINGLELINE | pInfo->uTextStyle);
+				pInfo->nFont, nTextAlgin);
 
 			if(pInfo->dwLineColor != 0 && pInfo->bShowVLine && i < vLineColumns){
 				RECT nRc;
