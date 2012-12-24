@@ -2531,7 +2531,7 @@ namespace UiLib {
 		if( m_pOwner == NULL ) return;
 		TListInfoUI* pInfo = m_pOwner->GetListInfo();
 		if( iIndex < 0 || iIndex >= pInfo->nColumns ) return;
-		while( m_aTexts.GetSize() < pInfo->nColumns ) { m_aTexts.Add(NULL);m_uTextsStyle.Add(NULL); }
+		while( m_aTexts.GetSize() < pInfo->nColumns ) { m_aTexts.Add(NULL);m_uTextsStyle.Add(new int(-1)); }
 
 		CDuiString* pText = static_cast<CDuiString*>(m_aTexts[iIndex]);
 		if( (pText == NULL && pstrText == NULL) || (pText && *pText == pstrText) ) return;
@@ -2678,8 +2678,6 @@ namespace UiLib {
 			iTextColor = pInfo->dwDisabledTextColor;
 		}
 		IListCallbackUI* pCallback = m_pOwner->GetTextCallback();
-		//ASSERT(pCallback);
-		//if( pCallback == NULL ) return;
 
 		m_nLinks = 0;
 		int vLineColumns = pInfo->nColumns - 1;
