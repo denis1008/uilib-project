@@ -183,6 +183,9 @@
     <ClCompile Include="Control\UIFlash.cpp">
       <Filter>源文件\Control</Filter>
     </ClCompile>
+    <ClCompile Include="Utils\DuiHardwareInfo.cpp">
+      <Filter>源文件\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h">
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="Control\UIFlash.h">
       <Filter>头文件\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\DuiHardwareInfo.h">
+      <Filter>头文件\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
