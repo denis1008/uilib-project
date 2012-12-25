@@ -699,6 +699,7 @@ xcopy $(ProjectDir)*.tlh $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Comma
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_2012|Win32'">StdAfx.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Utils\DuiAutoComplete.cpp" />
+    <ClCompile Include="Utils\DuiHardwareInfo.cpp" />
     <ClCompile Include="Utils\DuiReflection.cpp" />
     <ClCompile Include="Utils\DuiTrayIcon.cpp" />
     <ClCompile Include="Utils\IWindowBase.cpp" />
@@ -791,6 +792,7 @@ xcopy $(ProjectDir)*.tlh $(SolutionDir)\Common\Include\UiLib\ /E /S /Y /D</Comma
     <ClInclude Include="UIlib.h" />
     <ClInclude Include="Utils\DuiAutoComplete.h" />
     <ClInclude Include="Utils\downloadmgr.h" />
+    <ClInclude Include="Utils\DuiHardwareInfo.h" />
     <ClInclude Include="Utils\DuiPointer.h" />
     <ClInclude Include="Utils\DuiReflection.h" />
     <ClInclude Include="Utils\DuiTrayIcon.h" />

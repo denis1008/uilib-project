@@ -65,6 +65,7 @@ public:
     CWindowWnd();
 
     HWND GetHWND() const;
+	HWND GetHWNDPARENT() const;
     operator HWND() const;
 
     bool RegisterWindowClass();
@@ -78,7 +79,7 @@ public:
     void ShowWindow(bool bShow = true, bool bTakeFocus = true);
     UINT ShowModal();
     void Close(UINT nRet = IDOK);
-    void CenterWindow();
+    void CenterWindow(DWORD nMonitorIndex = 0);
     void SetIcon(UINT nRes);
 
     LRESULT SendMessage(UINT uMsg, WPARAM wParam = 0, LPARAM lParam = 0L);
@@ -98,6 +99,7 @@ protected:
 
 protected:
     HWND m_hWnd;
+	HWND m_hWndParent;
     WNDPROC m_OldWndProc;
     bool m_bSubclassed;
 };

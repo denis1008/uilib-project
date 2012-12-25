@@ -2,7 +2,7 @@
 <!-- 以下仅列出对DuiLib扩展后支持的新特性。可能有错漏，欢迎补充。(UiLib@qq.com) -->
 <Controls>
 	<Window parent="">
-		<Attribute name="trayiconid" default="" type="UINT" comment="图标资源ID，将显示在托盘"/>
+		<Attribute name="trayiconid" default="" type="UINT" comment="图标资源ID，将显示在托盘的图标资源ID"/>
 		<Attribute name="traytiptext" default="" type="STRING" comment="托盘图标在鼠标闲停时提示的文本，备注：有效长度小于64字节"/>
 	</Window>
 	<!--动作组定义标识-->

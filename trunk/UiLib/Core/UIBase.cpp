@@ -230,13 +230,23 @@ void CNotifyPump::NotifyPump(TNotifyUI& msg)
 //
 //
 
-CWindowWnd::CWindowWnd() : m_hWnd(NULL), m_OldWndProc(::DefWindowProc), m_bSubclassed(false)
+CWindowWnd::CWindowWnd() : m_hWnd(NULL),m_hWndParent(NULL), m_OldWndProc(::DefWindowProc), m_bSubclassed(false)
 {
 }
 
 HWND CWindowWnd::GetHWND() const 
 { 
     return m_hWnd; 
+}
+
+//************************************
+// 函数名称: GetHWNDPARENT
+// 返回类型: HWND
+// 函数说明: 
+//************************************
+HWND CWindowWnd::GetHWNDPARENT() const
+{
+	return m_hWndParent;
 }
 
 UINT CWindowWnd::GetClassStyle() const
@@ -270,6 +280,7 @@ HWND CWindowWnd::Create(HWND hwndParent, LPCTSTR pstrName, DWORD dwStyle, DWORD 
     if( GetSuperClassName() == NULL && !RegisterWindowClass() ) return NULL;
     m_hWnd = ::CreateWindowEx(dwExStyle, GetWindowClassName(), pstrName, dwStyle, x, y, cx, cy, hwndParent, hMenu, CPaintManagerUI::GetInstance(), this);
     ASSERT(m_hWnd!=NULL);
+	m_hWndParent = hwndParent;
     return m_hWnd;
 }
 
@@ -335,32 +346,77 @@ void CWindowWnd::Close(UINT nRet)
     PostMessage(WM_CLOSE, (WPARAM)nRet, 0L);
 }
 
-void CWindowWnd::CenterWindow()
+// void CWindowWnd::CenterWindow(DWORD nMonitorIndex = 0)
+// {
+//     ASSERT(::IsWindow(m_hWnd));
+//     ASSERT((GetWindowStyle(m_hWnd)&WS_CHILD)==0);
+//     RECT rcDlg = { 0 };
+//     ::GetWindowRect(m_hWnd, &rcDlg);
+//     RECT rcArea = { 0 };
+//     RECT rcCenter = { 0 };
+//     HWND hWndParent = ::GetParent(m_hWnd);
+//     HWND hWndCenter = ::GetWindowOwner(m_hWnd);
+//     ::SystemParametersInfo(SPI_GETWORKAREA, NULL, &rcArea, NULL);
+//     if( hWndCenter == NULL ) rcCenter = rcArea; else ::GetWindowRect(hWndCenter, &rcCenter);
+// 
+//     int DlgWidth = rcDlg.right - rcDlg.left;
+//     int DlgHeight = rcDlg.bottom - rcDlg.top;
+// 
+//     // Find dialog's upper left based on rcCenter
+//     int xLeft = (rcCenter.left + rcCenter.right) / 2 - DlgWidth / 2;
+//     int yTop = (rcCenter.top + rcCenter.bottom) / 2 - DlgHeight / 2;
+// 
+//     // The dialog is outside the screen, move it inside
+//     if( xLeft < rcArea.left ) xLeft = rcArea.left;
+//     else if( xLeft + DlgWidth > rcArea.right ) xLeft = rcArea.right - DlgWidth;
+//     if( yTop < rcArea.top ) yTop = rcArea.top;
+//     else if( yTop + DlgHeight > rcArea.bottom ) yTop = rcArea.bottom - DlgHeight;
+//     ::SetWindowPos(m_hWnd, NULL, xLeft, yTop, -1, -1, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+// }
+
+//************************************
+// 函数名称: CenterWindow
+// 返回类型: void
+// 参数信息: DWORD nMonitorIndex 
+// 函数说明: 当nMonitorIndex = 0时自动判断窗口居中位置，若子窗口则自在父窗口中居中
+//************************************
+void CWindowWnd::CenterWindow( DWORD nMonitorIndex /*= 0*/ )
 {
-    ASSERT(::IsWindow(m_hWnd));
-    ASSERT((GetWindowStyle(m_hWnd)&WS_CHILD)==0);
-    RECT rcDlg = { 0 };
-    ::GetWindowRect(m_hWnd, &rcDlg);
-    RECT rcArea = { 0 };
-    RECT rcCenter = { 0 };
-    HWND hWndParent = ::GetParent(m_hWnd);
-    HWND hWndCenter = ::GetWindowOwner(m_hWnd);
-    ::SystemParametersInfo(SPI_GETWORKAREA, NULL, &rcArea, NULL);
-    if( hWndCenter == NULL ) rcCenter = rcArea; else ::GetWindowRect(hWndCenter, &rcCenter);
+	DWORD mMonitorIndex = nMonitorIndex;
+	if(DuiMonitor::GetMonitorCount() < nMonitorIndex || (nMonitorIndex == 0 && GetHWNDPARENT() == NULL))
+		nMonitorIndex = 1;
 
-    int DlgWidth = rcDlg.right - rcDlg.left;
-    int DlgHeight = rcDlg.bottom - rcDlg.top;
+	HWND mParentHwnd = GetHWNDPARENT();
+	RECT mParentWndRect;
+	GetWindowRect(mParentHwnd,&mParentWndRect);
+	INT mParentWndHeight = mParentWndRect.bottom - mParentWndRect.top;
+	INT mParentWndWidth	 = mParentWndRect.right - mParentWndRect.left;
 
-    // Find dialog's upper left based on rcCenter
-    int xLeft = (rcCenter.left + rcCenter.right) / 2 - DlgWidth / 2;
-    int yTop = (rcCenter.top + rcCenter.bottom) / 2 - DlgHeight / 2;
+	if(GetHWNDPARENT() == NULL)
+	{
+		SIZE mMonitor = DuiMonitor::GetMonitorSize(nMonitorIndex);
+		POINTL mPoint = DuiMonitor::GetMonitorXY(nMonitorIndex);
+		
+		mParentWndRect.left		= mPoint.x;
+		mParentWndRect.top		= mPoint.y;
+		mParentWndRect.right	= mMonitor.cx;
+		mParentWndRect.bottom	= mMonitor.cy;
 
-    // The dialog is outside the screen, move it inside
-    if( xLeft < rcArea.left ) xLeft = rcArea.left;
-    else if( xLeft + DlgWidth > rcArea.right ) xLeft = rcArea.right - DlgWidth;
-    if( yTop < rcArea.top ) yTop = rcArea.top;
-    else if( yTop + DlgHeight > rcArea.bottom ) yTop = rcArea.bottom - DlgHeight;
-    ::SetWindowPos(m_hWnd, NULL, xLeft, yTop, -1, -1, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+		mParentWndWidth			= mMonitor.cx;
+		mParentWndHeight		= mMonitor.cy;
+	}
+
+	RECT mCurWndRect;
+	GetWindowRect(m_hWnd,&mCurWndRect);
+	INT mCurWndHeight	= mCurWndRect.bottom - mCurWndRect.top;
+	INT mCurWndWidth	= mCurWndRect.right - mCurWndRect.left;
+
+	mCurWndRect.top		= LONG(mParentWndRect.top + (mParentWndHeight/2 - mCurWndHeight/2));
+	mCurWndRect.left	= LONG(mParentWndRect.left + (mParentWndWidth/2 - mCurWndWidth/2));
+	mCurWndRect.bottom	= LONG(mParentWndRect.bottom - (mParentWndHeight/2 - mCurWndHeight/2));
+	mCurWndRect.right	= LONG(mParentWndRect.right - (mParentWndWidth/2 - mCurWndWidth/2));
+
+	::SetWindowPos(m_hWnd,NULL,mCurWndRect.left,mCurWndRect.top,0,0,SWP_NOSIZE | SWP_NOZORDER);
 }
 
 void CWindowWnd::SetIcon(UINT nRes)
