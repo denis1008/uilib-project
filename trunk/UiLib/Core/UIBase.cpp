@@ -346,34 +346,6 @@ void CWindowWnd::Close(UINT nRet)
     PostMessage(WM_CLOSE, (WPARAM)nRet, 0L);
 }
 
-// void CWindowWnd::CenterWindow(DWORD nMonitorIndex = 0)
-// {
-//     ASSERT(::IsWindow(m_hWnd));
-//     ASSERT((GetWindowStyle(m_hWnd)&WS_CHILD)==0);
-//     RECT rcDlg = { 0 };
-//     ::GetWindowRect(m_hWnd, &rcDlg);
-//     RECT rcArea = { 0 };
-//     RECT rcCenter = { 0 };
-//     HWND hWndParent = ::GetParent(m_hWnd);
-//     HWND hWndCenter = ::GetWindowOwner(m_hWnd);
-//     ::SystemParametersInfo(SPI_GETWORKAREA, NULL, &rcArea, NULL);
-//     if( hWndCenter == NULL ) rcCenter = rcArea; else ::GetWindowRect(hWndCenter, &rcCenter);
-// 
-//     int DlgWidth = rcDlg.right - rcDlg.left;
-//     int DlgHeight = rcDlg.bottom - rcDlg.top;
-// 
-//     // Find dialog's upper left based on rcCenter
-//     int xLeft = (rcCenter.left + rcCenter.right) / 2 - DlgWidth / 2;
-//     int yTop = (rcCenter.top + rcCenter.bottom) / 2 - DlgHeight / 2;
-// 
-//     // The dialog is outside the screen, move it inside
-//     if( xLeft < rcArea.left ) xLeft = rcArea.left;
-//     else if( xLeft + DlgWidth > rcArea.right ) xLeft = rcArea.right - DlgWidth;
-//     if( yTop < rcArea.top ) yTop = rcArea.top;
-//     else if( yTop + DlgHeight > rcArea.bottom ) yTop = rcArea.bottom - DlgHeight;
-//     ::SetWindowPos(m_hWnd, NULL, xLeft, yTop, -1, -1, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
-// }
-
 //************************************
 // 函数名称: CenterWindow
 // 返回类型: void
