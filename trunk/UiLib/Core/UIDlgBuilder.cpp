@@ -327,9 +327,11 @@ namespace UiLib
 											pControlValue = pstrValue;
 										}
 									}
+#ifdef UILIB_D3D
 									if( pControlName ) {
 										pManager->AddEffectsStyle(pControlName, pControlValue);
 									}
+#endif
 								}
 							}
 							break;
@@ -355,9 +357,11 @@ namespace UiLib
 								pControlValue = pstrValue;
 							}
 						}
+#ifdef UILIB_D3D
 						if( pControlName ) {
 							pManager->AddEffectsStyle(pControlName, pControlValue);
 						}
+#endif
 					}
 				}
 			}

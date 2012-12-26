@@ -51,7 +51,10 @@
 #include "Core/UIDefine.h"
 #include "Core/UIBase.h"
 #include "Core/UIManager.h"
+
+#ifdef UILIB_D3D
 #include "Core/UIDxAnimation.h"
+#endif // UILIB_D3D
 
 #include "Core/UIControl.h"
 #include "Core/UIContainer.h"

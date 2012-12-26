@@ -31,6 +31,7 @@ namespace UiLib
 		m_nBorderStyle(PS_SOLID),
 		pCurTActionProperty(NULL)
 	{
+#ifdef UILIB_D3D
 		m_tCurEffects.m_bEnableEffect	= false;
 		m_tCurEffects.m_iZoom			= -1;
 		m_tCurEffects.m_dFillingBK		= 0xffffffff;
@@ -43,6 +44,7 @@ namespace UiLib
 		memcpy(&m_tMouseInEffects,&m_tCurEffects,sizeof(TEffectAge));
 		memcpy(&m_tMouseOutEffects,&m_tCurEffects,sizeof(TEffectAge));
 		memcpy(&m_tMouseClickEffects,&m_tCurEffects,sizeof(TEffectAge));
+#endif
 
 		m_cXY.cx = m_cXY.cy = 0;
 		m_cxyFixed.cx = m_cxyFixed.cy = 0;
@@ -977,12 +979,16 @@ namespace UiLib
 		}
 		if( event.Type == UIEVENT_MOUSEENTER )
 		{
+#ifdef UILIB_D3D
 			TriggerEffects(&m_tMouseInEffects);
+#endif
 			Invalidate();
 		}
 		if( event.Type == UIEVENT_MOUSELEAVE )
 		{
+#ifdef UILIB_D3D
 			TriggerEffects(&m_tMouseOutEffects);
+#endif
 			Invalidate();
 		}
 		if( event.Type == UIEVENT_TIMER )
@@ -1147,6 +1153,7 @@ namespace UiLib
 		else if( _tcscmp(pstrName, _T("float")) == 0 ) SetFloat(_tcscmp(pstrValue, _T("true")) == 0);
 		else if( _tcscmp(pstrName, _T("shortcut")) == 0 ) SetShortcut(pstrValue[0]);
 		else if( _tcscmp(pstrName, _T("menu")) == 0 ) SetContextMenuUsed(_tcscmp(pstrValue, _T("true")) == 0);
+#ifdef UILIB_D3D
 		else if( _tcscmp(pstrName, _T("animeffects")) == 0 ) SetAnimEffects(_tcscmp(pstrValue, _T("true")) == 0);
 		else if( _tcscmp(pstrName, _T("adveffects")) == 0 ) SetEffectsStyle(pstrValue,&m_tCurEffects);
 		else if( _tcscmp(pstrName, _T("easyeffects")) == 0 ) AnyEasyEffectsPorfiles(pstrValue,&m_tCurEffects);
@@ -1157,6 +1164,7 @@ namespace UiLib
 		else if( _tcscmp(pstrName, _T("mouseinstyle")) == 0 ) SetEffectsStyle(pstrValue,&m_tMouseInEffects);
 		else if( _tcscmp(pstrName, _T("mouseoutstyle")) == 0 ) SetEffectsStyle(pstrValue,&m_tMouseOutEffects);
 		else if( _tcscmp(pstrName, _T("mouseclickstyle")) == 0 ) SetEffectsStyle(pstrValue,&m_tMouseClickEffects);
+#endif
 		else if( _tcscmp(pstrName, _T("style")) == 0 ) SetStyleName(pstrValue);
 		else if( _tcscmp(pstrName, _T("action")) == 0 ) SetAction(pstrValue);
 		else if( _tcscmp(pstrName, _T("virtualwnd")) == 0 ) SetVirtualWnd(pstrValue);
@@ -1662,6 +1670,7 @@ namespace UiLib
 		return;
 	}
 
+#ifdef UILIB_D3D
 	//************************************
 	// Method:    GetEffectStyle
 	// FullName:  CControlUI::GetEffectStyle
@@ -2354,4 +2363,5 @@ namespace UiLib
 			throw "CControlUI::TriggerEffects";
 		}
 	}
+#endif //UILIB_D3D
 } // namespace UiLib

@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "UIDxAnimation.h"
 
+#ifdef UILIB_D3D
 #if (_MSC_VER < 1300)
 #pragma comment(lib, "Delayimp.lib")
 #pragma comment(linker, "/DelayLoad:d3d9.dll")
@@ -547,3 +548,4 @@ namespace UiLib
 	}
 
 }
+#endif

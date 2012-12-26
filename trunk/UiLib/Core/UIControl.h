@@ -178,6 +178,7 @@ public:
 	void SetVirtualWnd(LPCTSTR pstrValue);
 	CDuiString GetVirtualWnd() const;
 
+#ifdef UILIB_D3D
 	virtual CDuiString GetEffectStyle() const;
 	virtual void SetAnimEffects(bool bEnableEffect);
 	virtual bool GetAnimEffects() const;
@@ -215,6 +216,8 @@ private:
 	TEffectAge m_tMouseInEffects;
 	TEffectAge m_tMouseOutEffects;
 	TEffectAge m_tMouseClickEffects;
+#endif UILIB_D3D
+
 public:
     CEventSource OnInit;
     CEventSource OnDestroy;

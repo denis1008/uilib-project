@@ -21,7 +21,7 @@ namespace UiLib
 		T* m_p;
 	};
 
-
+#ifdef UILIB_D3D
 	class CAnimationSpooler
 	{
 	public:
@@ -72,6 +72,7 @@ namespace UiLib
 		CUSTOMFAN m_fans[MAX_BUFFERS];
 		int m_nBuffers;
 	};
+#endif
 
 }
 #endif // Internal_h__

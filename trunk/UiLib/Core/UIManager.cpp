@@ -40,7 +40,9 @@ namespace UiLib {
 	} TIMERINFO;
 
 	/////////////////////////////////////////////////////////////////////////////////////
+#ifdef UILIB_D3D
 	CAnimationSpooler m_anim;
+#endif
 	HPEN m_hPens[UICOLOR__LAST] = { 0 };
 	HFONT m_hFonts[UIFONT__LAST] = { 0 };
 	HBRUSH m_hBrushes[UICOLOR__LAST] = { 0 };
@@ -154,7 +156,9 @@ namespace UiLib {
 		RemoveAllFonts();
 		RemoveAllImages();
 		RemoveAllDefaultAttributeList();
+#ifdef UILIB_D3D
 		RemoveAllEffectStyle();
+#endif
 		RemoveAllOptionGroups();
 		RemoveAllTimers();
 		RemoveAllStyles();
@@ -609,6 +613,7 @@ namespace UiLib {
 			lRes = 1;
 			return true;
 		}
+#ifdef UILIB_D3D
 	case WM_EFFECTS:
 		{
 			//
@@ -641,6 +646,7 @@ namespace UiLib {
 			}
 		}
 		return true;
+#endif
 	case WM_PAINT:
 		{
 			// Should we paint?
@@ -692,15 +698,17 @@ namespace UiLib {
 				SetNextTabControl();
 			}
 
+#ifdef UILIB_D3D
 			if( m_anim.IsAnimating() || m_anim.IsJobScheduled())
 				::PostMessage(m_hWndPaint,WM_EFFECTS,NULL,NULL);
+			else {
+#endif
 			//
 			// Render screen //渲染屏幕
 			//
 			// Prepare offscreen bitmap?
 
-			else{
-				if( m_bOffscreenPaint && m_hbmpOffscreen == NULL )
+				if(m_bOffscreenPaint && m_hbmpOffscreen == NULL )
 				{
 					RECT rcClient = { 0 };
 					::GetClientRect(m_hWndPaint, &rcClient);
@@ -759,7 +767,9 @@ namespace UiLib {
 				}
 				// All Done!
 				::EndPaint(m_hWndPaint, &ps);
+#ifdef UILIB_D3D
 			}
+#endif
 		}
 		// If any of the painting requested a resize again, we'll need
 		// to invalidate the entire window once more.
@@ -812,8 +822,11 @@ namespace UiLib {
 				event.dwTimestamp = ::GetTickCount();
 				m_pFocus->Event(event);
 			}
+#ifdef UILIB_D3D
 			//当对话框尺寸变化时 删除动画 job
-			if( m_anim.IsAnimating() ) m_anim.CancelJobs();
+			if( m_anim.IsAnimating() )
+				m_anim.CancelJobs();
+#endif
 			m_bUpdateNeeded= true;  //csk_no
 			if( m_pRoot != NULL ) m_pRoot->NeedUpdate();
 		}
@@ -944,8 +957,10 @@ namespace UiLib {
 			event.dwTimestamp = ::GetTickCount();
 			pControl->Event(event);
 
+#ifdef UILIB_D3D
 			// No need to burden user with 3D animations
 			m_anim.CancelJobs();
+#endif
 		}
 		break;
 	case WM_LBUTTONDBLCLK:
@@ -1289,7 +1304,7 @@ namespace UiLib {
 		m_mOptionGroup.RemoveAll();
 	}
 
-
+#ifdef UILIB_D3D
 	//************************************
 	// Method:    AddEffectsStyle
 	// FullName:  CPaintManagerUI::AddEffectsStyle
@@ -1421,6 +1436,7 @@ namespace UiLib {
 			throw "CPaintManagerUI::RemoveAllEffectStyle";
 		}
 	}
+#endif
 
 	//************************************
 	// Method:    AddControlStyle
@@ -2925,6 +2941,8 @@ namespace UiLib {
 		}
 		return false;
 	}
+
+#ifdef UILIB_D3D
 	//************************************
 	// Method:    AddAnimationJob
 	// FullName:  CPaintManagerUI::AddAnimationJob
@@ -2949,6 +2967,8 @@ namespace UiLib {
 			throw "CPaintManagerUI::AddAnimationJob";
 		}
 	}
+#endif
+
 	//************************************
 	// Method:    GetThemePen
 	// FullName:  CPaintManagerUI::GetThemePen

@@ -10,18 +10,16 @@ using namespace Gdiplus;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmdLine*/, int nCmdShow)
 {
-	EnableMemLeakCheck();
+	//EnableMemLeakCheck();
 	CPaintManagerUI::SetInstance(hInstance);
-
-	GdiplusStartupInput   gdiplusStartupInput;
-	ULONG_PTR             gdiplusToken;
-	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
 	HRESULT Hr = ::CoInitialize(NULL);
 	if( FAILED(Hr) ) return 0;
 
+#ifdef UILIB_D3D
 	if( ::LoadLibrary(_T("d3d9.dll")) == NULL ) 
 		::MessageBox(NULL, _T("加载 d3d9.dll 失败，一些特效可能无法显示！"), _T("信息提示"),MB_OK|MB_ICONWARNING);
+#endif
 
 	CMainWnd* pFrame = new CMainWnd();
 	if(pFrame == NULL)
@@ -35,8 +33,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
 	CPaintManagerUI::MessageLoop();
 
 	::CoUninitialize();
-	GdiplusShutdown(gdiplusToken);
 
-	_CrtDumpMemoryLeaks();
+	//_CrtDumpMemoryLeaks();
 	return 0;
 }
