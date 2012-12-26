@@ -301,16 +301,11 @@ bool CMainWnd::OnMsgBtnMouseLeave( TEventUI* pTEventUI,LPARAM lParam,WPARAM wPar
 //************************************
 bool CMainWnd::OnEffectsBtnClick( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wParam )
 {
+#ifdef UILIB_D3D
 	pAnimWnd->SetAnimEffects(true);
 	pEffectsDemo->SetTag(pEffectsDemo->GetTag()+1);
 
 	pm.SetCurStyles(pEffectsDemo->GetTag()%2?_T("LangChinese"):_T("LangEnglish"));
-
-	if(pEffectsDemo->GetTag()%2)
-		pm.SetCurStyles(_T("LangChinese"));
-	else 
-		pm.SetCurStyles(_T("LangEnglish"));
-		
 
 	if(pEffectsDemo->GetTag() == 1)
 		pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='left2right' offset='180'"));
@@ -338,7 +333,12 @@ bool CMainWnd::OnEffectsBtnClick( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wPa
 		pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='left2right' offset='80'"));
 	}
 	pAnimWnd->TriggerEffects();
+#endif
 
+	if(pEffectsDemo->GetTag()%2)
+		pm.SetCurStyles(_T("LangChinese"));
+	else 
+		pm.SetCurStyles(_T("LangEnglish"));
 	return true;
 }
 

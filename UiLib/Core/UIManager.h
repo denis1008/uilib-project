@@ -748,11 +748,14 @@ public:
     void RemoveOptionGroup(LPCTSTR pStrGroupName, CControlUI* pControl);
     void RemoveAllOptionGroups();
 
+#ifdef UILIB_D3D
+	bool AddAnimationJob(const CDxAnimationUI& _DxAnimationUI);
 	bool AddEffectsStyle(LPCTSTR pStrStyleName,LPCTSTR pStrStyleValue);
 	CDuiString GetEffectsStyle(LPCTSTR pStrStyleName);
 	const CStdStringPtrMap& GetEffectsStyles() const;
 	bool RemoveEffectStyle(LPCTSTR pStrStyleName);
 	void RemoveAllEffectStyle();
+#endif
 
 	bool AddControlStyle(LPCTSTR pStrStyleName,LPCTSTR pStrKey,LPCTSTR pStrVal,LPCTSTR pStylesName = NULL);
 	bool AddControlStyle(LPCTSTR pStrStyleName,CStdStringPtrMap* _StyleMap,LPCTSTR pStylesName = NULL);
@@ -853,7 +856,6 @@ public:
     bool PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lRes);
 	void UsedVirtualWnd(bool bUsed);
 
-	bool AddAnimationJob(const CDxAnimationUI& _DxAnimationUI);
 	HPEN GetThemePen(UITYPE_COLOR Index) const;
 	HFONT GetThemeFont(UITYPE_FONT Index) const;
 	HBRUSH GetThemeBrush(UITYPE_COLOR Index) const;
