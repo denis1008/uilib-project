@@ -73,7 +73,9 @@ public:
 	int GetBottomBorderSize() const;
 	void SetBottomBorderSize(int nSize);
 
-	bool DrawImage(HDC hDC, LPCTSTR pStrImage, LPCTSTR pStrModify = NULL, bool bNeedAlpha = FALSE, BYTE bNewFade = 255);
+	//bool DrawImage(HDC hDC, LPCTSTR pStrImage, LPCTSTR pStrModify = NULL, bool bNeedAlpha = FALSE, BYTE bNewFade = 255);
+	bool DrawImage(HDC hDC, CDuiImage& pStrImage, bool bNeedAlpha = FALSE, BYTE bNewFade = 255);
+	bool DrawImage(HDC hDC, CDuiImage& pStrImage,RECT& rcModify, bool bNeedAlpha = FALSE, BYTE bNewFade = 255);
 
     // 位置相关
     virtual const RECT& GetPos() const;
@@ -268,8 +270,8 @@ protected:
     DWORD m_dwBackColor2;
 	DWORD m_dwBackColor3;
 	DWORD m_dwDisabledBkColor;
-    CDuiString m_sBkImage;
-	CDuiString m_sForeImage;
+    CDuiImage m_sBkImage;
+	CDuiImage m_sForeImage;
     DWORD m_dwBorderColor;
 	DWORD m_dwFocusBorderColor;
     bool m_bColorHSL;
@@ -281,7 +283,7 @@ protected:
 public:
 
 	// 取控件图片非透明色区域
-	void GetRegion(HDC hDC, LPCTSTR pStrImage, COLORREF dwColorKey);
+	void GetRegion(HDC hDC, CDuiImage& pStrImage, COLORREF dwColorKey);
 };
 } // namespace UiLib
 

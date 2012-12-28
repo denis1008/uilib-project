@@ -203,6 +203,7 @@ typedef enum
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
+#ifdef UILIB_D3D
 typedef struct tagEffectAge
 {
 	bool		m_bEnableEffect;
@@ -214,6 +215,7 @@ typedef struct tagEffectAge
 	float		m_fRotation;
 	int			m_iNeedTimer;
 }TEffectAge;
+#endif
 
 typedef struct tagTProperty
 {
@@ -409,115 +411,6 @@ typedef struct tagTProperty
 
 		return nCurSize;
 	}
-	
-	CDuiString CalCurImageSource(LPCTSTR _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
-		CDuiString nSrcValue = _SrcValue;
-
-		int nLeft = nSrcValue.Find(_T("source='"));
-		if(sImageLeft.IsEmpty())
-			sImageLeft = nSrcValue.Left(nLeft + 8);
-		int nRight = nSrcValue.Find(_T("'"),nLeft + 8);
-		CDuiString nValueStr = nSrcValue.Mid(nLeft+8,nRight-nLeft-8);
-		if(sImageRight.IsEmpty())
-			sImageRight = nSrcValue.Mid(nRight);
-
-		LPTSTR pStartStr = NULL;
-		RECT rcSrcValue;
-		rcSrcValue.left		= _tcstol(nValueStr.GetData(), &pStartStr, 10);		ASSERT(pStartStr);
-		rcSrcValue.top		= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
-		rcSrcValue.right	= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
-		rcSrcValue.bottom	= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
-
-		RECT nCurRect = CalDiffRect(rcSrcValue,_TotalFrame,_CurFrame,_IsStartNone,_IsEndNone);
-
-		CDuiString nNewImageValue;
-		nNewImageValue.Format(_T("%s%d,%d,%d,%d%s"),sImageLeft.GetData(),nCurRect.left,nCurRect.top,nCurRect.right,nCurRect.bottom,sImageRight.GetData());
-
-		DUITRACE(_T("%s"),nNewImageValue.GetData());
-		return nNewImageValue.GetData();
-	}
-	CDuiString CalCurImageMask(LPCTSTR _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
-		CDuiString nSrcValue = _SrcValue;
-
-		int nLeft = nSrcValue.Find(_T("make='"));
-		if(sImageLeft.IsEmpty())
-			sImageLeft = nSrcValue.Left(nLeft + 6);
-		int nRight = nSrcValue.Find(_T("'"),nLeft + 6);
-		int nValue = _ttoi(nSrcValue.Mid(nLeft+6,nRight-nLeft-6));
-		if(sImageRight.IsEmpty())
-			sImageRight = nSrcValue.Mid(nRight);
-
-		CDuiString nNewImageValue;
-		nNewImageValue.Format(_T("%s%d%s"),sImageLeft.GetData(),CalDiffInt(nValue,_TotalFrame,_CurFrame,_IsStartNone,_IsEndNone),sImageRight.GetData());
-		DUITRACE(_T("%s"),nNewImageValue.GetData());
-		return nNewImageValue.GetData();
-	}
-	CDuiString CalCurImageCorner(LPCTSTR _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
-		CDuiString nSrcValue = _SrcValue;
-
-		int nLeft = nSrcValue.Find(_T("corner='"));
-		if(sImageLeft.IsEmpty())
-			sImageLeft = nSrcValue.Left(nLeft + 8);
-		int nRight = nSrcValue.Find(_T("'"),nLeft + 8);
-		CDuiString nValueStr = nSrcValue.Mid(nLeft+8,nRight-nLeft-8);
-		if(sImageRight.IsEmpty())
-			sImageRight = nSrcValue.Mid(nRight);
-
-		LPTSTR pStartStr = NULL;
-		RECT rcSrcValue;
-		rcSrcValue.left		= _tcstol(nValueStr.GetData(), &pStartStr, 10);		ASSERT(pStartStr);
-		rcSrcValue.top		= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
-		rcSrcValue.right	= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
-		rcSrcValue.bottom	= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr); 
-
-		RECT nCurRect = CalDiffRect(rcSrcValue,_TotalFrame,_CurFrame,_IsStartNone,_IsEndNone);
-
-		CDuiString nNewImageValue;
-		nNewImageValue.Format(_T("%s%d,%d,%d,%d%s"),sImageLeft.GetData(),nCurRect.left,nCurRect.top,nCurRect.right,nCurRect.bottom,sImageRight.GetData());
-		DUITRACE(_T("%s"),nNewImageValue.GetData());
-		return nNewImageValue.GetData();
-	}
-	CDuiString CalCurImageFade(LPCTSTR _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
-		CDuiString nSrcValue = _SrcValue;
-
-		int nLeft = nSrcValue.Find(_T("fade='"));
-		if(sImageLeft.IsEmpty())
-			sImageLeft = nSrcValue.Left(nLeft + 6);
-		int nRight = nSrcValue.Find(_T("'"),nLeft + 6);
-		int nValue = _ttoi(nSrcValue.Mid(nLeft+6,nRight-nLeft-6));
-		if(sImageRight.IsEmpty())
-			sImageRight = nSrcValue.Mid(nRight);
-
-		CDuiString nNewImageValue;
-		nNewImageValue.Format(_T("%s%d%s"),sImageLeft.GetData(),CalDiffInt(nValue,_TotalFrame,_CurFrame,_IsStartNone,_IsEndNone),sImageRight.GetData());
-		DUITRACE(_T("%s"),nNewImageValue.GetData());
-		return nNewImageValue.GetData();
-	}
-	CDuiString CalCurImageDest(LPCTSTR _SrcValue,int _TotalFrame,int _CurFrame,bool _IsStartNone,bool _IsEndNone){
-		CDuiString nSrcValue = _SrcValue;
-
-		int nLeft = nSrcValue.Find(_T("dest='"));
-		if(sImageLeft.IsEmpty())
-			sImageLeft = nSrcValue.Left(nLeft + 6);
-		int nRight = nSrcValue.Find(_T("'"),nLeft + 6);
-		CDuiString nValueStr = nSrcValue.Mid(nLeft+6,nRight-nLeft-6);
-		if(sImageRight.IsEmpty())
-			sImageRight = nSrcValue.Mid(nRight);
-
-		LPTSTR pStartStr = NULL;
-		RECT rcSrcValue;
-		rcSrcValue.left		= _tcstol(nValueStr.GetData(), &pStartStr, 10);		ASSERT(pStartStr);
-		rcSrcValue.top		= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
-		rcSrcValue.right	= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr);
-		rcSrcValue.bottom	= _tcstol(pStartStr + 1, &pStartStr, 10);	ASSERT(pStartStr); 
-
-		RECT nCurRect = CalDiffRect(rcSrcValue,_TotalFrame,_CurFrame,_IsStartNone,_IsEndNone);
-
-		CDuiString nNewImageValue;
-		nNewImageValue.Format(_T("%s%d,%d,%d,%d%s"),sImageLeft.GetData(),nCurRect.left,nCurRect.top,nCurRect.right,nCurRect.bottom,sImageRight.GetData());
-		DUITRACE(_T("%s"),nNewImageValue.GetData());
-		return nNewImageValue.GetData();
-	}
 
 	bool IsStartNull(){
 		return _tcscmp(_T("none"),sStartValue.GetData()) == 0;
@@ -618,7 +511,7 @@ typedef struct tagTRelativePosUI
 class INotifyUI
 {
 public:
-    virtual void Notify(TNotifyUI& msg) = 0;
+	virtual void Notify(TNotifyUI& msg) = 0;
 };
 
 // MessageFilter interface
@@ -725,11 +618,11 @@ public:
     TFontInfo* GetFontInfo(int index);
     TFontInfo* GetFontInfo(HFONT hFont);
 
-    const TImageInfo* GetImage(LPCTSTR bitmap);
-    const TImageInfo* GetImageEx(LPCTSTR bitmap, LPCTSTR type = NULL, DWORD mask = 0);
-    const TImageInfo* AddImage(LPCTSTR bitmap, LPCTSTR type = NULL, DWORD mask = 0);
-    const TImageInfo* AddImage(LPCTSTR bitmap, HBITMAP hBitmap, int iWidth, int iHeight, bool bAlpha);
-    bool RemoveImage(LPCTSTR bitmap);
+    const TImageInfo* GetImage(CDuiImage& bitmap);
+    const TImageInfo* GetImageEx(const CDuiImage& bitmap, LPCTSTR type = NULL, DWORD mask = 0);
+	const TImageInfo* AddImage(CDuiImage& bitmap, LPCTSTR type = NULL, DWORD mask = 0);
+    const TImageInfo* AddImage(CDuiImage& bitmap, HBITMAP hBitmap, int iWidth, int iHeight, bool bAlpha);
+    bool RemoveImage(CDuiImage& bitmap);
     void RemoveAllImages();
     void ReloadAllImages();
 

@@ -110,16 +110,25 @@ namespace UiLib
 		}
 
 		if( !m_sForeImage.IsEmpty() ) {
-			m_sForeImageModify.Empty();
-			if (m_bStretchForeImage)
-				m_sForeImageModify.SmallFormat(_T("dest='%d,%d,%d,%d'"), rc.left, rc.top, rc.right, rc.bottom);
+			if( !DrawImage(hDC,m_sForeImage) )
+				m_sForeImage.Empty();
 			else
-				m_sForeImageModify.SmallFormat(_T("dest='%d,%d,%d,%d' source='%d,%d,%d,%d'")
-				, rc.left, rc.top, rc.right, rc.bottom
-				, rc.left, rc.top, rc.right, rc.bottom);
+			{
+				RECT rcOldDest = m_sForeImage.GetDest(),rcOldSource = m_sForeImage.GetSource();
+				if(m_bStretchForeImage)
+					m_sForeImage.SetDest(rc);
+				
+				if(!m_bStretchForeImage)
+					m_sForeImage.SetSource(rc);
 
-			if( !DrawImage(hDC, (LPCTSTR)m_sForeImage, (LPCTSTR)m_sForeImageModify) ) m_sForeImage.Empty();
-			else return;
+				DrawImage(hDC,m_sForeImage);
+
+				if(m_bStretchForeImage)
+					m_sForeImage.SetDest(rcOldDest);
+
+				if(!m_bStretchForeImage)
+					m_sForeImage.SetSource(rcOldSource);
+			}
 		}
 	}
 

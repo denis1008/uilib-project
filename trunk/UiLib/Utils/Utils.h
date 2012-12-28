@@ -210,11 +210,11 @@ namespace UiLib
 		const CDuiString& operator=(const TCHAR ch);
 		const CDuiString& operator=(LPCTSTR pstr);
 #ifdef _UNICODE
-		const CDuiString& CDuiString::operator=(LPCSTR lpStr);
-		const CDuiString& CDuiString::operator+=(LPCSTR lpStr);
+		const CDuiString& operator=(LPCSTR lpStr);
+		const CDuiString& operator+=(LPCSTR lpStr);
 #else
-		const CDuiString& CDuiString::operator=(LPCWSTR lpwStr);
-		const CDuiString& CDuiString::operator+=(LPCWSTR lpwStr);
+		const CDuiString& operator=(LPCWSTR lpwStr);
+		const CDuiString& operator+=(LPCWSTR lpwStr);
 #endif
 		CDuiString operator+(const CDuiString& src) const;
 		CDuiString operator+(LPCTSTR pstr) const;
@@ -252,7 +252,61 @@ namespace UiLib
 		TCHAR m_szBuffer[MAX_LOCAL_STRING_LEN + 1];
 	};
 
+	/////////////////////////////////////////////////////////////////////////////////////
+	//
+	class UILIB_API CDuiImage : public CDuiString
+	{
+	public:
+		CDuiImage();
+		CDuiImage(const CDuiString& src);
+		CDuiImage(const CDuiImage& src);
+		CDuiImage(LPCTSTR lpsz, int nLen = -1);
+		~CDuiImage();
 
+		void SetResType(int _iResType);
+		void SetHole(bool _bHole);
+		void SetTiledX(bool _bTiledX);
+		void SetTiledY(bool _bTiledY);
+		void SetFade(BYTE _bFade);
+		void SetMask(DWORD _dwMask);
+		void SetControlRect(RECT _rcControl);
+		void SetSource(RECT _rcSource);
+		void SetDest(RECT _rcDest);
+		void SetCorner(RECT _rcCorner);
+		void SetImage(LPCTSTR _strImage);
+		void SetImage(LPCTSTR _strImage,RECT _rcControl);
+		void SetRes(LPCTSTR _strRes);
+		int GetResType();
+		bool GetNeedDestRect();
+		bool GetHole();
+		bool GetTiledX();
+		bool GetTiledY();
+		BYTE GetFade();
+		DWORD GetMask();
+		RECT GetSource();
+		RECT GetDest();
+		RECT GetCorner();
+		CDuiString GetRes();
+		CDuiString GetImagePath();
+		CDuiString GetImageSetting();
+		const CDuiImage& operator=(const CDuiImage& src);
+		const CDuiImage& operator=(LPCTSTR pstr);
+	private:
+		int m_iResType;
+		bool m_bNeedDestRect;
+		bool m_bHole;
+		bool m_bTiledX;
+		bool m_bTiledY;
+		BYTE m_bFade;
+		DWORD m_dwMask;
+		RECT m_rcItem;
+		RECT m_rcSource;
+		RECT m_rcDest;
+		RECT m_rcCorner;
+		CDuiString m_sRes;
+		CDuiString m_sImageFile;
+	};
+	
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 

@@ -93,10 +93,10 @@ namespace UiLib
 		CDuiString m_RegularCheckStr;
 		CDuiString m_RegularTipStr;
 		CDuiString m_RegluarSrcText;
-		CDuiString m_sNormalImage;
-		CDuiString m_sHotImage;
-		CDuiString m_sFocusedImage;
-		CDuiString m_sDisabledImage;
+		CDuiImage m_sNormalImage;
+		CDuiImage m_sHotImage;
+		CDuiImage m_sFocusedImage;
+		CDuiImage m_sDisabledImage;
 		CDuiString m_sTipValue;
 		CDuiString m_sSrcTipValue;
 		DWORD m_sTipValueColor;
