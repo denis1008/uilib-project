@@ -47,7 +47,7 @@ namespace UiLib
 		int		nWeekLine;
 	}TCalendarInfo;
 
-	class ICalendar
+	class UILIB_API ICalendar
 	{
 	public:
 		virtual CControlUI* CreateWeekPanel(CControlUI* _Panent,int _Week) {return NULL;};
@@ -63,7 +63,7 @@ namespace UiLib
 	
 	class CCalendarDlg;
 
-	class CCalendarUI : public CVerticalLayoutUI,public ICalendar
+	class UILIB_API CCalendarUI : public CVerticalLayoutUI,public ICalendar
 	{
 		friend class CCalendarDlg;
 	public:
