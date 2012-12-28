@@ -271,8 +271,7 @@ namespace UiLib
 		else if( _tcscmp(pstrName, _T("pushedimage")) == 0 ) SetPushedImage(pstrValue);
 		else if( _tcscmp(pstrName, _T("focusedimage")) == 0 ) SetFocusedImage(pstrValue);
 		else if( _tcscmp(pstrName, _T("disabledimage")) == 0 ) SetDisabledImage(pstrValue);
-		else if( _tcscmp(pstrName, _T("foreimage")) == 0 )
-			SetForeImage(pstrValue);
+		else if( _tcscmp(pstrName, _T("foreimage")) == 0 ) SetForeImage(pstrValue);
 		else if( _tcscmp(pstrName, _T("hotforeimage")) == 0 ) SetHotForeImage(pstrValue);
 		else if( _tcscmp(pstrName, _T("calendardestname")) == 0 ) SetCalendarValDest(pstrValue);
 		else if( _tcscmp(pstrName, _T("calendarname")) == 0 ) SetCalendarName(pstrValue);
@@ -351,17 +350,17 @@ namespace UiLib
 
 		if( (m_uButtonState & UISTATE_DISABLED) != 0 ) {
 			if( !m_sDisabledImage.IsEmpty() ) {
-				if( !DrawImage(hDC,m_sDisabledImage) ) m_sDisabledImage.Empty();
+				if( !DrawImage(hDC, (LPCTSTR)m_sDisabledImage) ) m_sDisabledImage.Empty();
 				else goto Label_ForeImage;
 			}
 		}
 		else if( (m_uButtonState & UISTATE_PUSHED) != 0 ) {
 			if( !m_sPushedImage.IsEmpty() ) {
-				if( !DrawImage(hDC,m_sPushedImage) ){
+				if( !DrawImage(hDC, (LPCTSTR)m_sPushedImage) ){
 					m_sPushedImage.Empty();
 				}
 				if( !m_sPushedForeImage.IsEmpty() ) {
-					if( !DrawImage(hDC,m_sPushedForeImage) )
+					if( !DrawImage(hDC, (LPCTSTR)m_sPushedForeImage) )
 						m_sPushedForeImage.Empty();
 					return;
 				}
@@ -370,11 +369,11 @@ namespace UiLib
 		}
 		else if( (m_uButtonState & UISTATE_HOT) != 0 ) {
 			if( !m_sHotImage.IsEmpty() ) {
-				if( !DrawImage(hDC,m_sHotImage) ){
+				if( !DrawImage(hDC, (LPCTSTR)m_sHotImage) ){
 					m_sHotImage.Empty();
 				}
 				if( !m_sHotForeImage.IsEmpty() ) {
-					if( !DrawImage(hDC,m_sHotForeImage) )
+					if( !DrawImage(hDC, (LPCTSTR)m_sHotForeImage) )
 						m_sHotForeImage.Empty();
 					return;
 				}
@@ -387,23 +386,21 @@ namespace UiLib
 		}
 		else if( (m_uButtonState & UISTATE_FOCUSED) != 0 ) {
 			if( !m_sFocusedImage.IsEmpty() ) {
-				if( !DrawImage(hDC,m_sFocusedImage) ) m_sFocusedImage.Empty();
+				if( !DrawImage(hDC, (LPCTSTR)m_sFocusedImage) ) m_sFocusedImage.Empty();
 				else goto Label_ForeImage;
 			}
 		}
-
 		if( !m_sNormalImage.IsEmpty() ) {
- 			if( !DrawImage(hDC,m_sNormalImage) ) m_sNormalImage.Empty();
- 			else goto Label_ForeImage;
+			if( !DrawImage(hDC, (LPCTSTR)m_sNormalImage) ) m_sNormalImage.Empty();
+			else goto Label_ForeImage;
 		}
-
 		if(!m_sForeImage.IsEmpty() )
 			goto Label_ForeImage;
 		return;
 
 Label_ForeImage:
 		if(!m_sForeImage.IsEmpty() ) {
-			if( !DrawImage(hDC,m_sForeImage) ) m_sForeImage.Empty();
+			if( !DrawImage(hDC, (LPCTSTR)m_sForeImage) ) m_sForeImage.Empty();
 		}
 	}
 
@@ -759,7 +756,6 @@ Label_ForeImage:
 		if(!pTProperty)
 			return;
 
-		int aa = ::GetTickCount();
 		int nDiffTime	= pTimer->GetTotalTimer() - pTimer->GetCurTimer();
 		int nTotalFrame	= (int)(pTimer->GetTotalTimer()/pTimer->GetInterval());
 		int nCurFrame	= (int)((pTimer->GetTotalTimer() - nDiffTime) / pTimer->GetInterval());
@@ -767,87 +763,81 @@ Label_ForeImage:
 		bool bEndNone	= pTProperty->IsEndNull();
 		CDuiString nPropertyName = pTProperty->sName;
 
-#ifndef _DEBUG
 		DUITRACE(_T("===========%s============"),nPropertyName.GetData());
 		DUITRACE(_T("nDiffTime:%d ,%d - %d"),nDiffTime,pTimer->GetTotalTimer(),pTimer->GetCurTimer());
 		DUITRACE(_T("nTotalFrame:%d ,%d / %d"),nTotalFrame,pTimer->GetTotalTimer(),pTimer->GetInterval());
 		DUITRACE(_T("nCurFrame:%d ,%d / %d"),nCurFrame,(pTimer->GetTotalTimer() - nDiffTime),pTimer->GetInterval());
-#endif
 
 		if(_tcscmp(pTProperty->sType.GetData(),_T("image.source")) == 0){
 			if( nPropertyName == _T("normalimage") )
-				m_sNormalImage.SetSource(pTProperty->CalDiffRect(m_sNormalImage.GetSource(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetNormalImage(pTProperty->CalCurImageSource(GetNormalImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("hotimage") )
-				m_sHotImage.SetSource(pTProperty->CalDiffRect(m_sHotImage.GetSource(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetHotImage(pTProperty->CalCurImageSource(GetHotImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("pushedimage") )
-				m_sPushedImage.SetSource(pTProperty->CalDiffRect(m_sPushedImage.GetSource(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetPushedImage(pTProperty->CalCurImageSource(GetPushedImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("focusedimage") )
-				m_sFocusedImage.SetSource(pTProperty->CalDiffRect(m_sFocusedImage.GetSource(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetForeImage(pTProperty->CalCurImageSource(GetForeImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("disabledimage") )
-				m_sDisabledImage.SetSource(pTProperty->CalDiffRect(m_sDisabledImage.GetSource(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
-			else
+				return SetDisabledImage(pTProperty->CalCurImageSource(GetDisabledImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+			else {
 				goto GoPropertyActionTimer;
-			Invalidate();
+			}
 		}
 		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.mask")) == 0){
 			if( nPropertyName == _T("normalimage") )
-				m_sNormalImage.SetMask(pTProperty->CalDiffInt(m_sNormalImage.GetMask(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetNormalImage(pTProperty->CalCurImageMask(GetNormalImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("hotimage") )
-				m_sHotImage.SetMask(pTProperty->CalDiffInt(m_sHotImage.GetMask(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetHotImage(pTProperty->CalCurImageMask(GetHotImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("pushedimage") )
-				m_sPushedImage.SetMask(pTProperty->CalDiffInt(m_sPushedImage.GetMask(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetPushedImage(pTProperty->CalCurImageMask(GetPushedImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("focusedimage") )
-				m_sFocusedImage.SetMask(pTProperty->CalDiffInt(m_sFocusedImage.GetMask(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetForeImage(pTProperty->CalCurImageMask(GetForeImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("disabledimage") )
-				m_sDisabledImage.SetMask(pTProperty->CalDiffInt(m_sDisabledImage.GetMask(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetDisabledImage(pTProperty->CalCurImageMask(GetDisabledImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else
 				goto GoPropertyActionTimer;
-			Invalidate();
 		}
 		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.corner")) == 0){
 			if( nPropertyName == _T("normalimage") )
-				m_sNormalImage.SetCorner(pTProperty->CalDiffRect(m_sNormalImage.GetCorner(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetNormalImage(pTProperty->CalCurImageCorner(GetNormalImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("hotimage") )
-				m_sHotImage.SetCorner(pTProperty->CalDiffRect(m_sHotImage.GetCorner(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetHotImage(pTProperty->CalCurImageCorner(GetHotImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("pushedimage") )
-				m_sPushedImage.SetCorner(pTProperty->CalDiffRect(m_sPushedImage.GetCorner(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetPushedImage(pTProperty->CalCurImageCorner(GetPushedImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("focusedimage") )
-				m_sFocusedImage.SetCorner(pTProperty->CalDiffRect(m_sFocusedImage.GetCorner(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetForeImage(pTProperty->CalCurImageCorner(GetForeImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("disabledimage") )
-				m_sDisabledImage.SetCorner(pTProperty->CalDiffRect(m_sDisabledImage.GetCorner(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetDisabledImage(pTProperty->CalCurImageCorner(GetDisabledImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else
 				goto GoPropertyActionTimer;
-			Invalidate();
 		}
 		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.fade")) == 0){
 			if( nPropertyName == _T("normalimage") )
-				m_sNormalImage.SetFade(pTProperty->CalDiffInt(m_sNormalImage.GetFade(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetNormalImage(pTProperty->CalCurImageFade(GetNormalImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("hotimage") )
-				m_sHotImage.SetFade(pTProperty->CalDiffInt(m_sHotImage.GetFade(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetHotImage(pTProperty->CalCurImageFade(GetHotImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("pushedimage") )
-				m_sPushedImage.SetFade(pTProperty->CalDiffInt(m_sPushedImage.GetFade(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetPushedImage(pTProperty->CalCurImageFade(GetPushedImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("focusedimage") )
-				m_sFocusedImage.SetFade(pTProperty->CalDiffInt(m_sFocusedImage.GetFade(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetForeImage(pTProperty->CalCurImageFade(GetForeImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("disabledimage") )
-				m_sDisabledImage.SetFade(pTProperty->CalDiffInt(m_sDisabledImage.GetFade(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetDisabledImage(pTProperty->CalCurImageFade(GetDisabledImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else
 				goto GoPropertyActionTimer;
-			Invalidate();
 		}
 		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.dest")) == 0){
 			if( nPropertyName == _T("normalimage") )
-				m_sNormalImage.SetDest(pTProperty->CalDiffRect(m_sNormalImage.GetDest(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetNormalImage(pTProperty->CalCurImageDest(GetNormalImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("hotimage") )
-				m_sHotImage.SetDest(pTProperty->CalDiffRect(m_sHotImage.GetDest(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetHotImage(pTProperty->CalCurImageDest(GetHotImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("pushedimage") )
-				m_sPushedImage.SetDest(pTProperty->CalDiffRect(m_sPushedImage.GetDest(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetPushedImage(pTProperty->CalCurImageDest(GetPushedImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("focusedimage") )
-				m_sFocusedImage.SetDest(pTProperty->CalDiffRect(m_sFocusedImage.GetDest(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetForeImage(pTProperty->CalCurImageDest(GetForeImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else if( nPropertyName == _T("disabledimage") )
-				m_sDisabledImage.SetDest(pTProperty->CalDiffRect(m_sDisabledImage.GetDest(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
+				return SetDisabledImage(pTProperty->CalCurImageDest(GetDisabledImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 			else
 				goto GoPropertyActionTimer;
-			Invalidate();
 		}
 		else goto GoPropertyActionTimer;
 

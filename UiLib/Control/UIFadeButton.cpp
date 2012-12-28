@@ -73,19 +73,19 @@ namespace UiLib {
 
 		if( (m_uButtonState & UISTATE_DISABLED) != 0 ) {
 			if( !m_sDisabledImage.IsEmpty() ) {
-				if( !DrawImage(hDC,m_sDisabledImage) ) m_sDisabledImage.Empty();
+				if( !DrawImage(hDC, (LPCTSTR)m_sDisabledImage) ) m_sDisabledImage.Empty();
 				else return;
 			}
 		}
 		else if( (m_uButtonState & UISTATE_PUSHED) != 0 ) {
 			if( !m_sPushedImage.IsEmpty() ) {
-				if( !DrawImage(hDC,m_sPushedImage) ) m_sPushedImage.Empty();
+				if( !DrawImage(hDC, (LPCTSTR)m_sPushedImage) ) m_sPushedImage.Empty();
 				else return;
 			}
 		}
 		else if( (m_uButtonState & UISTATE_FOCUSED) != 0 ) {
 			if( !m_sFocusedImage.IsEmpty() ) {
-				if( !DrawImage(hDC,m_sFocusedImage) ) m_sFocusedImage.Empty();
+				if( !DrawImage(hDC, (LPCTSTR)m_sFocusedImage) ) m_sFocusedImage.Empty();
 				else return;
 			}
 		}
@@ -97,7 +97,7 @@ namespace UiLib {
 				{
 					m_bMouseHove = FALSE;
 					m_sLastImage = m_sHotImage;
-					if( !DrawImage(hDC,m_sNormalImage) ) 
+					if( !DrawImage(hDC, (LPCTSTR)m_sNormalImage) ) 
 						m_sNormalImage.Empty();
 					return;
 				}
@@ -106,7 +106,7 @@ namespace UiLib {
 				{
 					m_bMouseLeave = FALSE;
 					m_sLastImage = m_sNormalImage;
-					if( !DrawImage(hDC,m_sHotImage) ) 
+					if( !DrawImage(hDC, (LPCTSTR)m_sHotImage) ) 
 						m_sHotImage.Empty();
 					return;
 				}
@@ -119,15 +119,15 @@ namespace UiLib {
 					m_sNewImage = m_sNormalImage;
 				}
 
-				if( !DrawImage(hDC,m_sOldImage,true, 255 - m_bFadeAlpha ) ) 
+				if( !DrawImage(hDC, (LPCTSTR)m_sOldImage, NULL, true, 255 - m_bFadeAlpha ) ) 
 					m_sOldImage.Empty();
-				if( !DrawImage(hDC,m_sNewImage,true, m_bFadeAlpha ) ) 
+				if( !DrawImage(hDC, (LPCTSTR)m_sNewImage, NULL, true, m_bFadeAlpha ) ) 
 					m_sNewImage.Empty();
 				return;
 			}
 			else
 			{
-				if( !DrawImage(hDC,m_sLastImage) ) 
+				if( !DrawImage(hDC, (LPCTSTR)m_sLastImage) ) 
 					m_sLastImage.Empty();
 				return;
 			}

@@ -28,7 +28,6 @@ namespace UiLib
 	{
 		if(GetDuiClassMaps().size() && GetDuiClassMaps().find(_duiClassName) == GetDuiClassMaps().end())
 		{
-			std::map<string, DuiInstanceFun>& mDuiClassMaps = GetDuiClassMaps();
 			DUITRACE(_T("没有找到类对象：%S "),_duiClassName.c_str());
 			return NULL;
 		}

@@ -4,6 +4,10 @@
 #include "stdafx.h"
 #include "MainWnd.h"
 
+#include <GdiPlus.h>
+#pragma comment( lib, "GdiPlus.lib" )
+using namespace Gdiplus;
+
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmdLine*/, int nCmdShow)
 {
 	//EnableMemLeakCheck();

@@ -36,7 +36,8 @@ namespace UiLib
 		int m_nMin;
 		int m_nValue;
 
-		CDuiImage m_sForeImage;
+		CDuiString m_sForeImage;
+		CDuiString m_sForeImageModify;
 	};
 
 } // namespace UiLib

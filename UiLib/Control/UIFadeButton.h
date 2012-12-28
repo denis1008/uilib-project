@@ -25,9 +25,9 @@ namespace UiLib {
 		virtual void OnAnimationStop(INT nAnimationID) {}
 		
 	protected:
-		CDuiImage m_sOldImage;
-		CDuiImage m_sNewImage;
-		CDuiImage m_sLastImage;
+		CDuiString m_sOldImage;
+		CDuiString m_sNewImage;
+		CDuiString m_sLastImage;
 		BYTE       m_bFadeAlpha;
 		BOOL       m_bMouseHove;
 		BOOL       m_bMouseLeave;

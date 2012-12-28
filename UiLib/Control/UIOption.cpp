@@ -260,13 +260,13 @@ namespace UiLib
 		m_uButtonState &= ~UISTATE_PUSHED;
 
 		if( (m_uButtonState & UISTATE_HOT) != 0 && IsSelected() && !m_sSelectedHotImage.IsEmpty()) {
-			if( !DrawImage(hDC,m_sSelectedHotImage) )
+			if( !DrawImage(hDC, (LPCTSTR)m_sSelectedHotImage) )
 				m_sSelectedHotImage.Empty();
 			else goto Label_ForeImage;
 		}
 		else if( (m_uButtonState & UISTATE_SELECTED) != 0 ) {
 			if( !m_sSelectedImage.IsEmpty() ) {
-				if( !DrawImage(hDC, m_sSelectedImage) ) m_sSelectedImage.Empty();
+				if( !DrawImage(hDC, (LPCTSTR)m_sSelectedImage) ) m_sSelectedImage.Empty();
 				else goto Label_ForeImage;
 			}
 			else if(m_dwSelectedBkColor != 0) {
@@ -279,7 +279,7 @@ namespace UiLib
 
 Label_ForeImage:
 		if( !m_sForeImage.IsEmpty() ) {
-			if( !DrawImage(hDC,m_sForeImage) ) m_sForeImage.Empty();
+			if( !DrawImage(hDC, (LPCTSTR)m_sForeImage) ) m_sForeImage.Empty();
 		}
 	}
 

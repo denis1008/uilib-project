@@ -34,10 +34,9 @@ public:
     static void DrawImage(HDC hDC, HBITMAP hBitmap, const RECT& rc, const RECT& rcPaint, \
         const RECT& rcBmpPart, const RECT& rcCorners, bool alphaChannel, BYTE uFade = 255, 
         bool hole = false, bool xtiled = false, bool ytiled = false);
-	static void DrawImage(HDC hDC,CDuiImage& sImage,const RECT& rc,const RECT& rcPaint,bool alphaChannel);
 
-	static bool DrawImageString(HDC hDC, CPaintManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint,CDuiImage& sImage,bool bNeedAlpha = FALSE, BYTE bNewFade = 255);
-	//static bool DrawImageString(HDC hDC, CPaintManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint, LPCTSTR pStrImage, LPCTSTR pStrModify = NULL, bool bNeedAlpha = FALSE, BYTE bNewFade = 255);
+	static bool DrawImageString(HDC hDC, CPaintManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint, 
+       LPCTSTR pStrImage, LPCTSTR pStrModify = NULL, bool bNeedAlpha = FALSE, BYTE bNewFade = 255);
     static void DrawColor(HDC hDC, const RECT& rc, DWORD color);
     static void DrawGradient(HDC hDC, const RECT& rc, DWORD dwFirst, DWORD dwSecond, bool bVertical, int nSteps);
 

@@ -36,9 +36,11 @@ namespace UiLib
 		UINT m_uButtonState;
 		int m_nStep;
 
-		CDuiImage m_sThumbImage;
-		CDuiImage m_sThumbHotImage;
-		CDuiImage m_sThumbPushedImage;
+		CDuiString m_sThumbImage;
+		CDuiString m_sThumbHotImage;
+		CDuiString m_sThumbPushedImage;
+
+		CDuiString m_sImageModify;
 	};
 }
 

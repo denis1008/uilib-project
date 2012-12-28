@@ -73,10 +73,7 @@ namespace UiLib
 							mask = _tcstoul(pstrValue, &pstr, 16);
 						}
 					}
-					CDuiImage mImageName;
-					mImageName.SetImage(pImageName);
-					if(!mImageName.IsEmpty())
-						pManager->AddImage(mImageName, pImageResType, mask);
+					if( pImageName ) pManager->AddImage(pImageName, pImageResType, mask);
 				}
 				else if( _tcscmp(pstrClass, _T("Font")) == 0 ) {
 					nAttributes = node.GetAttributeCount();
@@ -299,7 +296,6 @@ namespace UiLib
 
 					continue;
 				}
-#ifdef UILIB_D3D
 				else if( _tcscmp(pstrClass, _T("EffectsStyles")) == 0 && node.HasChildren() ) {
 
 					nAttributes = node.GetAttributeCount();
@@ -331,9 +327,11 @@ namespace UiLib
 											pControlValue = pstrValue;
 										}
 									}
+#ifdef UILIB_D3D
 									if( pControlName ) {
 										pManager->AddEffectsStyle(pControlName, pControlValue);
 									}
+#endif
 								}
 							}
 							break;
@@ -359,12 +357,13 @@ namespace UiLib
 								pControlValue = pstrValue;
 							}
 						}
+#ifdef UILIB_D3D
 						if( pControlName ) {
 							pManager->AddEffectsStyle(pControlName, pControlValue);
 						}
+#endif
 					}
 				}
-#endif
 			}
 
 			pstrClass = root.GetName();

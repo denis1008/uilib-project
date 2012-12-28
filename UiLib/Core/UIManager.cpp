@@ -13,6 +13,9 @@ namespace UiLib {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
+
+	
+
 	typedef struct tagFINDTABINFO
 	{
 		CControlUI* pFocus;
@@ -2552,59 +2555,43 @@ namespace UiLib {
 		return GetDefaultFontInfo();
 	}
 
-	//************************************
-	// 函数名称: GetImage
-	// 返回类型: const TImageInfo*
-	// 参数信息: CDuiImage & bitmap
-	// 函数说明：
-	//************************************
-	const TImageInfo* CPaintManagerUI::GetImage( CDuiImage& bitmap )
+	const TImageInfo* CPaintManagerUI::GetImage(LPCTSTR bitmap)
 	{
-		TImageInfo* data = static_cast<TImageInfo*>(m_mImageHash.Find(bitmap.GetImagePath()));
-		if( !data && m_pParentResourcePM )
-			return m_pParentResourcePM->GetImage(bitmap);
+		TImageInfo* data = static_cast<TImageInfo*>(m_mImageHash.Find(bitmap));
+		if( !data && m_pParentResourcePM ) return m_pParentResourcePM->GetImage(bitmap);
 		else return data;
 	}
 
-	const TImageInfo* CPaintManagerUI::GetImageEx(const CDuiImage& bitmap, LPCTSTR type, DWORD mask)
+	const TImageInfo* CPaintManagerUI::GetImageEx(LPCTSTR bitmap, LPCTSTR type, DWORD mask)
 	{
-		CDuiImage& mBitmap = (CDuiImage&)bitmap;
-		TImageInfo* data = static_cast<TImageInfo*>(m_mImageHash.Find(mBitmap.GetImagePath().GetData()));
+		TImageInfo* data = static_cast<TImageInfo*>(m_mImageHash.Find(bitmap));
 		if( !data ) {
-			if( AddImage(mBitmap, type, mask) ) {
-				data = static_cast<TImageInfo*>(m_mImageHash.Find(mBitmap.GetImagePath().GetData()));
+			if( AddImage(bitmap, type, mask) ) {
+				data = static_cast<TImageInfo*>(m_mImageHash.Find(bitmap));
 			}
 		}
 
 		return data;
 	}
 
-	//************************************
-	// 函数名称: AddImage
-	// 返回类型: const TImageInfo*
-	// 参数信息: CDuiImage & bitmap
-	// 参数信息: LPCTSTR type
-	// 参数信息: DWORD mask
-	// 函数说明：
-	//************************************
-	const TImageInfo* CPaintManagerUI::AddImage( CDuiImage& bitmap, LPCTSTR type /*= NULL*/, DWORD mask /*= 0*/ )
+	const TImageInfo* CPaintManagerUI::AddImage(LPCTSTR bitmap, LPCTSTR type, DWORD mask)
 	{
 		TImageInfo* data = NULL;
 		if( type != NULL ) {
-			if(!bitmap.GetRes().IsEmpty()) {
+			if( isdigit(*bitmap) ) {
 				LPTSTR pstr = NULL;
-				int iIndex = _tcstol(bitmap.GetRes().GetData(), &pstr, 10);
+				int iIndex = _tcstol(bitmap, &pstr, 10);
 				data = CRenderEngine::LoadImage(iIndex, type, mask);
 			}
 		}
 		else {
-			data = CRenderEngine::LoadImage(bitmap.GetImagePath().GetData(),NULL, mask);
+			data = CRenderEngine::LoadImage(bitmap, NULL, mask);
 		}
 
 		if( !data ) return NULL;
 		if( type != NULL ) data->sResType = type;
 		data->dwMask = mask;
-		if( !m_mImageHash.Insert(bitmap.GetImagePath().GetData(), data) ) {
+		if( !m_mImageHash.Insert(bitmap, data) ) {
 			::DeleteObject(data->hBitmap);
 			delete data;
 		}
@@ -2612,17 +2599,7 @@ namespace UiLib {
 		return data;
 	}
 
-	//************************************
-	// 函数名称: AddImage
-	// 返回类型: const TImageInfo*
-	// 参数信息: CDuiImage & bitmap
-	// 参数信息: HBITMAP hBitmap
-	// 参数信息: int iWidth
-	// 参数信息: int iHeight
-	// 参数信息: bool bAlpha
-	// 函数说明：
-	//************************************
-	const TImageInfo* CPaintManagerUI::AddImage( CDuiImage& bitmap, HBITMAP hBitmap, int iWidth, int iHeight, bool bAlpha )
+	const TImageInfo* CPaintManagerUI::AddImage(LPCTSTR bitmap, HBITMAP hBitmap, int iWidth, int iHeight, bool bAlpha)
 	{
 		if( hBitmap == NULL || iWidth <= 0 || iHeight <= 0 ) return NULL;
 
@@ -2633,7 +2610,7 @@ namespace UiLib {
 		data->alphaChannel = bAlpha;
 		//data->sResType = _T("");
 		data->dwMask = 0;
-		if( !m_mImageHash.Insert(bitmap.GetImagePath(), data) ) {
+		if( !m_mImageHash.Insert(bitmap, data) ) {
 			::DeleteObject(data->hBitmap);
 			delete data;
 		}
@@ -2641,7 +2618,7 @@ namespace UiLib {
 		return data;
 	}
 
-	bool CPaintManagerUI::RemoveImage(CDuiImage& bitmap)
+	bool CPaintManagerUI::RemoveImage(LPCTSTR bitmap)
 	{
 		const TImageInfo* data = GetImage(bitmap);
 		if( !data ) return false;
@@ -2675,7 +2652,7 @@ namespace UiLib {
 				data = static_cast<TImageInfo*>(m_mImageHash.Find(bitmap));
 				if( data != NULL ) {
 					if( !data->sResType.IsEmpty() ) {
-						if(isdigit(*bitmap) ) {
+						if( isdigit(*bitmap) ) {
 							LPTSTR pstr = NULL;
 							int iIndex = _tcstol(bitmap, &pstr, 10);
 							pNewData = CRenderEngine::LoadImage(iIndex, data->sResType.GetData(), data->dwMask);

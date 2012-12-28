@@ -52,9 +52,9 @@ namespace UiLib
 		DWORD			m_dwSelectedBkColor;
 		DWORD			m_dwSelectedTextColor;
 
-		CDuiImage		m_sSelectedImage;
-		CDuiImage		m_sSelectedHotImage;
-		CDuiImage		m_sForeImage;
+		CDuiString		m_sSelectedImage;
+		CDuiString		m_sSelectedHotImage;
+		CDuiString		m_sForeImage;
 	};
 
 } // namespace UiLib

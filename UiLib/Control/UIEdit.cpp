@@ -864,25 +864,25 @@ MatchFailed:
 
 		if( (m_uButtonState & UISTATE_DISABLED) != 0 ) {
 			if( !m_sDisabledImage.IsEmpty() ) {
-				if( !DrawImage(hDC,m_sDisabledImage) ) m_sDisabledImage.Empty();
+				if( !DrawImage(hDC, (LPCTSTR)m_sDisabledImage) ) m_sDisabledImage.Empty();
 				else return;
 			}
 		}
 		else if( (m_uButtonState & UISTATE_FOCUSED) != 0 ) {
 			if( !m_sFocusedImage.IsEmpty() ) {
-				if( !DrawImage(hDC,m_sFocusedImage) ) m_sFocusedImage.Empty();
+				if( !DrawImage(hDC, (LPCTSTR)m_sFocusedImage) ) m_sFocusedImage.Empty();
 				else return;
 			}
 		}
 		else if( (m_uButtonState & UISTATE_HOT) != 0 ) {
 			if( !m_sHotImage.IsEmpty() ) {
-				if( !DrawImage(hDC,m_sHotImage) ) m_sHotImage.Empty();
+				if( !DrawImage(hDC, (LPCTSTR)m_sHotImage) ) m_sHotImage.Empty();
 				else return;
 			}
 		}
 
 		if( !m_sNormalImage.IsEmpty() ) {
-			if( !DrawImage(hDC,m_sNormalImage) ) m_sNormalImage.Empty();
+			if( !DrawImage(hDC, (LPCTSTR)m_sNormalImage) ) m_sNormalImage.Empty();
 			else return;
 		}
 	}

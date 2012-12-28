@@ -28,17 +28,17 @@ typedef struct tagTListInfoUI
     RECT rcTextPadding;
     DWORD dwTextColor;
     DWORD dwBkColor;
-    CDuiImage sBkImage;
+    CDuiString sBkImage;
     bool bAlternateBk;
     DWORD dwSelectedTextColor;
     DWORD dwSelectedBkColor;
-    CDuiImage sSelectedImage;
+    CDuiString sSelectedImage;
     DWORD dwHotTextColor;
     DWORD dwHotBkColor;
-    CDuiImage sHotImage;
+    CDuiString sHotImage;
     DWORD dwDisabledTextColor;
     DWORD dwDisabledBkColor;
-    CDuiImage sDisabledImage;
+    CDuiString sDisabledImage;
     DWORD dwLineColor;
     bool bShowHtml;
     bool bMultiExpandable;
@@ -338,12 +338,12 @@ protected:
     UINT m_uTextStyle;
     bool m_bShowHtml;
 	RECT m_rcTextPadding;
-    CDuiImage m_sNormalImage;
-    CDuiImage m_sHotImage;
-    CDuiImage m_sPushedImage;
-    CDuiImage m_sFocusedImage;
-    CDuiImage m_sSepImage;
-    CDuiImage m_sSepImageModify;
+    CDuiString m_sNormalImage;
+    CDuiString m_sHotImage;
+    CDuiString m_sPushedImage;
+    CDuiString m_sFocusedImage;
+    CDuiString m_sSepImage;
+    CDuiString m_sSepImageModify;
 };
 
 
@@ -458,8 +458,8 @@ public:
 	LPCTSTR GetClass() const;
 	LPVOID GetInterface(LPCTSTR pstrName);
 
-	CDuiImage* GetNorImg(int iIndex) const;
-	CDuiImage* GetSelImg(int iIndex) const;
+	LPCTSTR GetNorImg(int iIndex) const;
+	LPCTSTR GetSelImg(int iIndex) const;
 	void SetNorImg(int iIndex, LPCTSTR pstrText);
 	void SetSelImg(int iIndex, LPCTSTR pstrText);
 
@@ -467,8 +467,8 @@ public:
 	bool GetCheckFlag(int iIndex) const;
 	void SetCheck(int iIndex, bool bCheck);
 	bool GetCheck(int iIndex) const;	
-	CDuiImage* GetNorCheckImg(int iIndex) const;
-	CDuiImage* GetSelCheckImg(int iIndex) const;
+	LPCTSTR GetNorCheckImg(int iIndex) const;
+	LPCTSTR GetSelCheckImg(int iIndex) const;
 	void SetNorCheckImg(int iIndex, LPCTSTR pstrText);
 	void SetSelCheckImg(int iIndex, LPCTSTR pstrText);
 

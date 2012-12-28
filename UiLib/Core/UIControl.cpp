@@ -195,14 +195,14 @@ namespace UiLib
 
 	LPCTSTR CControlUI::GetBkImage()
 	{
-		return m_sBkImage.GetImagePath();
+		return m_sBkImage;
 	}
 
 	void CControlUI::SetBkImage(LPCTSTR pStrImage)
 	{
 		if( m_sBkImage == pStrImage ) return;
 
-		m_sBkImage.SetImage(pStrImage,m_rcItem);
+		m_sBkImage = pStrImage;
 		m_bGetRegion = true;
 		Invalidate();
 	}
@@ -398,54 +398,19 @@ namespace UiLib
 		Invalidate();
 	}
 
-// 	bool CControlUI::DrawImage(HDC hDC, LPCTSTR pStrImage, LPCTSTR pStrModify, bool bNeedAlpha, BYTE bNewFade)
-// 	{
-// 		return CRenderEngine::DrawImageString(hDC, m_pManager, m_rcItem, m_rcPaint, pStrImage, pStrModify, bNeedAlpha, bNewFade);
-// 	}
-
-	//************************************
-	// 函数名称: DrawImage
-	// 返回类型: bool
-	// 参数信息: HDC hDC
-	// 参数信息: CDuiImage & pStrImage
-	// 参数信息: bool bNeedAlpha
-	// 参数信息: BYTE bNewFade
-	// 函数说明: 
-	//************************************
-	bool CControlUI::DrawImage( HDC hDC, CDuiImage& pStrImage,bool bNeedAlpha /*= FALSE*/, BYTE bNewFade /*= 255*/ )
+	bool CControlUI::DrawImage(HDC hDC, LPCTSTR pStrImage, LPCTSTR pStrModify, bool bNeedAlpha, BYTE bNewFade)
 	{
-		return CRenderEngine::DrawImageString(hDC,m_pManager,m_rcItem,m_rcPaint,pStrImage,bNeedAlpha,bNewFade);
+		return CRenderEngine::DrawImageString(hDC, m_pManager, m_rcItem, m_rcPaint, pStrImage, pStrModify, bNeedAlpha, bNewFade);
 	}
 
-	//************************************
-	// 函数名称: DrawImage
-	// 返回类型: bool
-	// 参数信息: HDC hDC
-	// 参数信息: CDuiImage & pStrImage
-	// 参数信息: RECT & rcModify
-	// 参数信息: bool bNeedAlpha
-	// 参数信息: BYTE bNewFade
-	// 函数说明: 
-	//************************************
-	bool CControlUI::DrawImage( HDC hDC, CDuiImage& pStrImage,RECT& rcModify, bool bNeedAlpha /*= FALSE*/, BYTE bNewFade /*= 255*/ )
-	{
-		//RECT mRcOld = pStrImage.GetDest();
-		pStrImage.SetDest(rcModify);
-		CRenderEngine::DrawImageString(hDC,m_pManager,m_rcItem,m_rcPaint,pStrImage,bNeedAlpha,bNewFade);
-		//pStrImage.SetDest(mRcOld);
-
-		bool nRet = CRenderEngine::DrawImageString(hDC,m_pManager,m_rcItem,m_rcPaint,pStrImage,bNeedAlpha,bNewFade);
-		return nRet;
-	}
-
-	void CControlUI::GetRegion(HDC hDC, CDuiImage& pStrImage, COLORREF dwColorKey)
+	void CControlUI::GetRegion(HDC hDC, LPCTSTR pStrImage, COLORREF dwColorKey)
 	{
 		m_bGetRegion = false;
 		HDC memDC;
 		memDC = ::CreateCompatibleDC(hDC);
 
 		const TImageInfo* data = NULL;
-		data = m_pManager->GetImageEx(pStrImage, NULL);
+		data = m_pManager->GetImageEx((LPCTSTR)pStrImage, NULL);
 		if( !data ) return;
 		HBITMAP pOldMemBmp=NULL;
 		//将位图选入临时DC
@@ -1377,12 +1342,11 @@ namespace UiLib
 		bool bEndNone	= pTProperty->IsEndNull();
 		CDuiString nPropertyName = pTProperty->sName;
 
-#ifndef _DEBUG
 		DUITRACE(_T("===========%s============"),nPropertyName.GetData());
 		DUITRACE(_T("nDiffTime:%d ,%d - %d"),nDiffTime,pTimer->GetTotalTimer(),pTimer->GetCurTimer());
 		DUITRACE(_T("nTotalFrame:%d ,%d / %d"),nTotalFrame,pTimer->GetTotalTimer(),pTimer->GetInterval());
 		DUITRACE(_T("nCurFrame:%d ,%d / %d"),nCurFrame,(pTimer->GetTotalTimer() - nDiffTime),pTimer->GetInterval());
-#endif // _DEBUG
+
 
 		if(_tcscmp(pTProperty->sType.GetData(),_T("int")) == 0){
 			if(nPropertyName == _T("width"))
@@ -1415,34 +1379,24 @@ namespace UiLib
 				SetBorderRound(pTProperty->CalCurSize(GetBorderRound(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 		}
 		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.source")) == 0){
-			if( nPropertyName == _T("bkimage") ){
-				m_sBkImage.SetSource(pTProperty->CalDiffRect(m_sBkImage.GetSource(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
-				PaintStatusImage(GetManager()->GetPaintDC());
-			}
+			if( nPropertyName == _T("bkimage") )
+				SetBkImage(pTProperty->CalCurImageSource(GetBkImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 		}
 		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.mask")) == 0){
-			if( nPropertyName == _T("bkimage") ){
-				m_sBkImage.SetMask(pTProperty->CalDiffInt(m_sBkImage.GetMask(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
-				Invalidate();
-			}
+			if( nPropertyName == _T("bkimage") )
+				SetBkImage(pTProperty->CalCurImageMask(GetBkImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 		}
 		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.corner")) == 0){
-			if( nPropertyName == _T("bkimage") ){
-				m_sBkImage.SetSource(pTProperty->CalDiffRect(m_sBkImage.GetSource(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
-				Invalidate();
-			}
+			if( nPropertyName == _T("bkimage") )
+				SetBkImage(pTProperty->CalCurImageCorner(GetBkImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 		}
 		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.fade")) == 0){
-			if( nPropertyName == _T("bkimage") ){
-				m_sBkImage.SetSource(pTProperty->CalDiffRect(m_sBkImage.GetSource(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
-				Invalidate();
-			}
+			if( nPropertyName == _T("bkimage") )
+				SetBkImage(pTProperty->CalCurImageFade(GetBkImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 		}
 		else if(_tcscmp(pTProperty->sType.GetData(),_T("image.dest")) == 0){
-			if( nPropertyName == _T("bkimage") ){
-				m_sBkImage.SetSource(pTProperty->CalDiffRect(m_sBkImage.GetSource(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
-				Invalidate();
-			}
+			if( nPropertyName == _T("bkimage") )
+				SetBkImage(pTProperty->CalCurImageDest(GetBkImage(),nTotalFrame,nCurFrame,bStartNone,bEndNone));
 		}
 	}
 
@@ -1458,29 +1412,15 @@ namespace UiLib
 		if(!pTimer || !pTAGroup)
 			return;
 
-// 		LARGE_INTEGER litmp;
-// 		LONGLONG QPart1,QPart2;
-// 		double dfMinus, dfFreq, dfTim;
-// 		QueryPerformanceFrequency(&litmp);
-// 		dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率
-// 		QueryPerformanceCounter(&litmp);
-// 		QPart1 = litmp.QuadPart;// 获得初始值
-
 		for(int iIndex = 0;iIndex < pTAGroup->mPropertys.GetSize();iIndex++){
 			TProperty* pTProperty = pTAGroup->mPropertys.GetAt(iIndex);
-			Sleep(0);
+
 			if(!pTProperty)
 				continue;
 
 			if(pTProperty->uInterval == pTAGroup->uDefaultInterval && pTProperty->uTimer == pTAGroup->uDefaultTimer && pTProperty->bLoop == pTAGroup->bDefaultLoop && pTProperty->bAutoStart == pTAGroup->bDefaultAutoStart && pTProperty->bReverse == pTAGroup->bDefaultReverse)
 				OnPropertyActionTimer(pTimer,pTProperty);
 		}
-
-// 		QueryPerformanceCounter(&litmp);
-// 		QPart2 = litmp.QuadPart;//获得中止值
-// 		dfMinus = (double)(QPart2-QPart1);
-// 		dfTim = dfMinus / dfFreq;// 获得对应的时间值，单位为秒
-// 		DUITRACE("动画计算耗时：%f/毫秒",dfTim*1000);
 	}
 	
 	//************************************
@@ -1660,13 +1600,12 @@ namespace UiLib
 	
 	void CControlUI::PaintBkImage(HDC hDC)
 	{
-		
 		if( m_sBkImage.IsEmpty() ) return;
 		if (m_bGetRegion)
 		{
 			GetRegion(hDC,m_sBkImage,RGB(0,0,0));
 		}
-		if( !DrawImage(hDC, m_sBkImage) ) m_sBkImage.Empty();
+		if( !DrawImage(hDC, (LPCTSTR)m_sBkImage) ) m_sBkImage.Empty();
 	}
 
 	void CControlUI::PaintStatusImage(HDC hDC)
