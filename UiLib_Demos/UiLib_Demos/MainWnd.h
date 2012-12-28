@@ -1,12 +1,8 @@
 #ifndef MainWnd_h__
 #define MainWnd_h__
 
-#include <map>
-#include <ShellAPI.h>
-#include   <time.h>
+
 #include "../../Common/Include/UiLib/Utils/IWindowBase.h"
-
-
 
 #pragma once
 class CMainWnd : public IWindowBase
@@ -52,7 +48,6 @@ private:
 	CChartViewUI*	pChartView;
 	CHorizontalLayoutUI* pAnimWnd;
 	HMENU			hMenu;
-
 };
 
 #endif // MainWnd_h__

@@ -226,25 +226,19 @@ namespace UiLib
 		rcThumb.bottom -= m_rcItem.top;
 		if( (m_uButtonState & UISTATE_CAPTURED) != 0 ) {
 			if( !m_sThumbPushedImage.IsEmpty() ) {
-				m_sImageModify.Empty();
-				m_sImageModify.SmallFormat(_T("dest='%d,%d,%d,%d'"), rcThumb.left, rcThumb.top, rcThumb.right, rcThumb.bottom);
-				if( !DrawImage(hDC, (LPCTSTR)m_sThumbPushedImage, (LPCTSTR)m_sImageModify) ) m_sThumbPushedImage.Empty();
+				if( !DrawImage(hDC, m_sThumbPushedImage,rcThumb) ) m_sThumbPushedImage.Empty();
 				else return;
 			}
 		}
 		else if( (m_uButtonState & UISTATE_HOT) != 0 ) {
 			if( !m_sThumbHotImage.IsEmpty() ) {
-				m_sImageModify.Empty();
-				m_sImageModify.SmallFormat(_T("dest='%d,%d,%d,%d'"), rcThumb.left, rcThumb.top, rcThumb.right, rcThumb.bottom);
-				if( !DrawImage(hDC, (LPCTSTR)m_sThumbHotImage, (LPCTSTR)m_sImageModify) ) m_sThumbHotImage.Empty();
+				if( !DrawImage(hDC, m_sThumbHotImage,rcThumb) ) m_sThumbHotImage.Empty();
 				else return;
 			}
 		}
 
 		if( !m_sThumbImage.IsEmpty() ) {
-			m_sImageModify.Empty();
-			m_sImageModify.SmallFormat(_T("dest='%d,%d,%d,%d'"), rcThumb.left, rcThumb.top, rcThumb.right, rcThumb.bottom);
-			if( !DrawImage(hDC, (LPCTSTR)m_sThumbImage, (LPCTSTR)m_sImageModify) ) m_sThumbImage.Empty();
+			if( !DrawImage(hDC, m_sThumbImage,rcThumb) ) m_sThumbImage.Empty();
 			else return;
 		}
 	}

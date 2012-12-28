@@ -20,7 +20,7 @@ namespace UiLib
 		void PaintStatusImage(HDC hDC);
 
 	protected:
-		CDuiString m_sArrowImage;
+		CDuiImage m_sArrowImage;
 		int        m_nArrowWidth;
 	};
 }

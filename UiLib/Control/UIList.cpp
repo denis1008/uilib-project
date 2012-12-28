@@ -606,7 +606,7 @@ namespace UiLib {
 
 	void CListUI::SetDisabledItemImage(LPCTSTR pStrImage)
 	{
-		m_ListInfo.sDisabledImage = pStrImage;
+		m_ListInfo.sDisabledImage.SetImage(pStrImage);
 		Invalidate();
 	}
 
@@ -2060,20 +2060,20 @@ namespace UiLib {
 		else m_uButtonState &= ~ UISTATE_FOCUSED;
 
 		if( (m_uButtonState & UISTATE_PUSHED) != 0 ) {
-			if( m_sPushedImage.IsEmpty() && !m_sNormalImage.IsEmpty() ) DrawImage(hDC, (LPCTSTR)m_sNormalImage);
-			if( !DrawImage(hDC, (LPCTSTR)m_sPushedImage) ) m_sPushedImage.Empty();
+			if( m_sPushedImage.IsEmpty() && !m_sNormalImage.IsEmpty() ) DrawImage(hDC,m_sNormalImage);
+			if( !DrawImage(hDC,m_sPushedImage) ) m_sPushedImage.Empty();
 		}
 		else if( (m_uButtonState & UISTATE_HOT) != 0 ) {
-			if( m_sHotImage.IsEmpty() && !m_sNormalImage.IsEmpty() ) DrawImage(hDC, (LPCTSTR)m_sNormalImage);
-			if( !DrawImage(hDC, (LPCTSTR)m_sHotImage) ) m_sHotImage.Empty();
+			if( m_sHotImage.IsEmpty() && !m_sNormalImage.IsEmpty() ) DrawImage(hDC,m_sNormalImage);
+			if( !DrawImage(hDC,m_sHotImage) ) m_sHotImage.Empty();
 		}
 		else if( (m_uButtonState & UISTATE_FOCUSED) != 0 ) {
-			if( m_sFocusedImage.IsEmpty() && !m_sNormalImage.IsEmpty() ) DrawImage(hDC, (LPCTSTR)m_sNormalImage);
-			if( !DrawImage(hDC, (LPCTSTR)m_sFocusedImage) ) m_sFocusedImage.Empty();
+			if( m_sFocusedImage.IsEmpty() && !m_sNormalImage.IsEmpty() ) DrawImage(hDC,m_sNormalImage);
+			if( !DrawImage(hDC,m_sFocusedImage) ) m_sFocusedImage.Empty();
 		}
 		else {
 			if( !m_sNormalImage.IsEmpty() ) {
-				if( !DrawImage(hDC, (LPCTSTR)m_sNormalImage) ) m_sNormalImage.Empty();
+				if( !DrawImage(hDC,m_sNormalImage) ) m_sNormalImage.Empty();
 			}
 		}
 
@@ -2084,9 +2084,10 @@ namespace UiLib {
 			rcThumb.right -= m_rcItem.left;
 			rcThumb.bottom -= m_rcItem.top;
 
-			m_sSepImageModify.Empty();
-			m_sSepImageModify.SmallFormat(_T("dest='%d,%d,%d,%d'"), rcThumb.left, rcThumb.top, rcThumb.right, rcThumb.bottom);
-			if( !DrawImage(hDC, (LPCTSTR)m_sSepImage, (LPCTSTR)m_sSepImageModify) ) m_sSepImage.Empty();
+			if( !DrawImage(hDC,m_sSepImage))
+				m_sSepImage.Empty();
+			else 
+				DrawImage(hDC,m_sSepImage,rcThumb);
 		}
 	}
 
@@ -2317,32 +2318,32 @@ namespace UiLib {
 
 		if( !IsEnabled() ) {
 			if( !pInfo->sDisabledImage.IsEmpty() ) {
-				if( !DrawImage(hDC, (LPCTSTR)pInfo->sDisabledImage) ) pInfo->sDisabledImage.Empty();
+				if( !DrawImage(hDC,pInfo->sDisabledImage) ) pInfo->sDisabledImage.Empty();
 				else return;
 			}
 		}
 		if( IsSelected() ) {
 			if( !pInfo->sSelectedImage.IsEmpty() ) {
-				if( !DrawImage(hDC, (LPCTSTR)pInfo->sSelectedImage) ) pInfo->sSelectedImage.Empty();
+				if( !DrawImage(hDC,pInfo->sSelectedImage) ) pInfo->sSelectedImage.Empty();
 				else return;
 			}
 		}
 		if( (m_uButtonState & UISTATE_HOT) != 0 ) {
 			if( !pInfo->sHotImage.IsEmpty() ) {
-				if( !DrawImage(hDC, (LPCTSTR)pInfo->sHotImage) ) pInfo->sHotImage.Empty();
+				if( !DrawImage(hDC,pInfo->sHotImage) ) pInfo->sHotImage.Empty();
 				else return;
 			}
 		}
 
 		if( !m_sBkImage.IsEmpty() ) {
 			if( !pInfo->bAlternateBk || m_iIndex % 2 == 0 ) {
-				if( !DrawImage(hDC, (LPCTSTR)m_sBkImage) ) m_sBkImage.Empty();
+				if( !DrawImage(hDC,m_sBkImage) ) m_sBkImage.Empty();
 			}
 		}
 
 		if( m_sBkImage.IsEmpty() ) {
 			if( !pInfo->sBkImage.IsEmpty() ) {
-				if( !DrawImage(hDC, (LPCTSTR)pInfo->sBkImage) ) pInfo->sBkImage.Empty();
+				if( !DrawImage(hDC,pInfo->sBkImage) ) pInfo->sBkImage.Empty();
 				else return;
 			}
 		}
@@ -2776,28 +2777,28 @@ namespace UiLib {
 	//************************************
 	CListImageTextElementUI::~CListImageTextElementUI()
 	{
-		CDuiString* pText;
+		CDuiImage* pText;
 
 		for( int it = 0; it < m_aImgNor.GetSize(); it++ ) {
-			pText = static_cast<CDuiString*>(m_aImgNor[it]);
+			pText = static_cast<CDuiImage*>(m_aImgNor[it]);
 			if( pText ) delete pText;
 		}
 		m_aImgNor.Empty();
 
 		for( int it = 0; it < m_aImgSel.GetSize(); it++ ) {
-			pText = static_cast<CDuiString*>(m_aImgSel[it]);
+			pText = static_cast<CDuiImage*>(m_aImgSel[it]);
 			if( pText ) delete pText;
 		}
 		m_aImgSel.Empty();
 
 		for( int it = 0; it < m_aImgNorCheck.GetSize(); it++ ) {
-			pText = static_cast<CDuiString*>(m_aImgNorCheck[it]);
+			pText = static_cast<CDuiImage*>(m_aImgNorCheck[it]);
 			if( pText ) delete pText;
 		}
 		m_aImgNorCheck.Empty();
 
 		for( int it = 0; it < m_aImgSelCheck.GetSize(); it++ ) {
-			pText = static_cast<CDuiString*>(m_aImgSelCheck[it]);
+			pText = static_cast<CDuiImage*>(m_aImgSelCheck[it]);
 			if( pText ) delete pText;
 		}
 		m_aImgSelCheck.Empty();
@@ -2830,32 +2831,28 @@ namespace UiLib {
 	}
 
 	//************************************
-	// Method:    GetNorImg
-	// FullName:  UiLib::CListImageTextElementUI::GetNorImg
-	// Access:    public 
-	// Returns:   LPCTSTR
-	// Qualifier: const
-	// Parameter: int iIndex
+	// 函数名称: GetNorImg
+	// 返回类型: CDuiImage*
+	// 参数信息: int iIndex
+	// 函数说明: 
 	//************************************
-	LPCTSTR CListImageTextElementUI::GetNorImg(int iIndex) const
+	CDuiImage* CListImageTextElementUI::GetNorImg(int iIndex) const
 	{
-		CDuiString* pText = static_cast<CDuiString*>(m_aImgNor.GetAt(iIndex));
-		if( pText ) return pText->GetData();
+		CDuiImage* pText = static_cast<CDuiImage*>(m_aImgNor.GetAt(iIndex));
+		if( pText ) return pText;
 		return NULL;
 	}
 
 	//************************************
-	// Method:    GetSelImg
-	// FullName:  UiLib::CListImageTextElementUI::GetSelImg
-	// Access:    public 
-	// Returns:   LPCTSTR
-	// Qualifier: const
-	// Parameter: int iIndex
+	// 函数名称: GetSelImg
+	// 返回类型: CDuiImage*
+	// 参数信息: int iIndex
+	// 函数说明: 
 	//************************************
-	LPCTSTR CListImageTextElementUI::GetSelImg(int iIndex) const
+	CDuiImage* CListImageTextElementUI::GetSelImg(int iIndex) const
 	{
-		CDuiString* pText = static_cast<CDuiString*>(m_aImgSel.GetAt(iIndex));
-		if( pText ) return pText->GetData();
+		CDuiImage* pText = static_cast<CDuiImage*>(m_aImgSel.GetAt(iIndex));
+		if( pText ) return pText;
 		return NULL;
 	}
 
@@ -2875,13 +2872,16 @@ namespace UiLib {
 		if( iIndex < 0 || iIndex >= pInfo->nColumns ) return;
 		while( m_aImgNor.GetSize() < pInfo->nColumns ) { m_aImgNor.Add(NULL); }
 
-		CDuiString* pText = static_cast<CDuiString*>(m_aImgNor[iIndex]);
+		CDuiImage* pText = static_cast<CDuiImage*>(m_aImgNor[iIndex]);
 		if( (pText == NULL && pstrText == NULL) || (pText && *pText == pstrText) ) return;
 
 		if ( pText )
-			pText->Assign(pstrText);
-		else
-			m_aImgNor.SetAt(iIndex, new CDuiString(pstrText));
+			pText->SetImage(pstrText);
+		else{
+			CDuiImage* pImage = new CDuiImage();
+			pImage->SetImage(pstrText);
+			m_aImgNor.SetAt(iIndex,pImage);
+		}
 		Invalidate();
 	}
 
@@ -2901,13 +2901,16 @@ namespace UiLib {
 		if( iIndex < 0 || iIndex >= pInfo->nColumns ) return;
 		while( m_aImgSel.GetSize() < pInfo->nColumns ) { m_aImgSel.Add(NULL); }
 
-		CDuiString* pText = static_cast<CDuiString*>(m_aImgSel[iIndex]);
+		CDuiImage* pText = static_cast<CDuiImage*>(m_aImgSel[iIndex]);
 		if( (pText == NULL && pstrText == NULL) || (pText && *pText == pstrText) ) return;
 
 		if ( pText ) 
-			pText->Assign(pstrText);
-		else
-			m_aImgSel.SetAt(iIndex, new CDuiString(pstrText));
+			pText->SetImage(pstrText);
+		else{
+			CDuiImage* pImage = new CDuiImage();
+			pImage->SetImage(pstrText);
+			m_aImgSel.SetAt(iIndex,pImage);
+		}
 		Invalidate();
 	}
 
@@ -2991,10 +2994,10 @@ namespace UiLib {
 	// Qualifier: const
 	// Parameter: int iIndex
 	//************************************
-	LPCTSTR CListImageTextElementUI::GetNorCheckImg(int iIndex) const
+	CDuiImage* CListImageTextElementUI::GetNorCheckImg(int iIndex) const
 	{
-		CDuiString* pText = static_cast<CDuiString*>(m_aImgNorCheck.GetAt(iIndex));
-		if( pText ) return pText->GetData();
+		CDuiImage* pText = static_cast<CDuiImage*>(m_aImgNorCheck.GetAt(iIndex));
+		if( pText ) return pText;
 		return NULL;
 	}
 
@@ -3006,10 +3009,10 @@ namespace UiLib {
 	// Qualifier: const
 	// Parameter: int iIndex
 	//************************************
-	LPCTSTR CListImageTextElementUI::GetSelCheckImg(int iIndex) const
+	CDuiImage* CListImageTextElementUI::GetSelCheckImg(int iIndex) const
 	{
-		CDuiString* pText = static_cast<CDuiString*>(m_aImgSelCheck.GetAt(iIndex));
-		if( pText ) return pText->GetData();
+		CDuiImage* pText = static_cast<CDuiImage*>(m_aImgSelCheck.GetAt(iIndex));
+		if( pText ) return pText;
 		return NULL;
 	}
 
@@ -3029,13 +3032,16 @@ namespace UiLib {
 		if( iIndex < 0 || iIndex >= pInfo->nColumns ) return;
 		while( m_aImgNorCheck.GetSize() < pInfo->nColumns ) { m_aImgNorCheck.Add(NULL); }
 
-		CDuiString* pText = static_cast<CDuiString*>(m_aImgNorCheck[iIndex]);
+		CDuiImage* pText = static_cast<CDuiImage*>(m_aImgNorCheck[iIndex]);
 		if( (pText == NULL && pstrText == NULL) || (pText && *pText == pstrText) ) return;
 
 		if ( pText )
-			pText->Assign(pstrText);
-		else
-			m_aImgNorCheck.SetAt(iIndex, new CDuiString(pstrText));
+			pText->SetImage(pstrText);
+		else{
+			CDuiImage* pImage = new CDuiImage();
+			pImage->SetImage(pstrText);
+			m_aImgNorCheck.SetAt(iIndex,pImage);
+		}
 		Invalidate();
 	}
 
@@ -3312,19 +3318,18 @@ namespace UiLib {
 			if(nTextAlgin < 0)
 				nTextAlgin = DT_SINGLELINE | pInfo->uTextStyle;
 
-			LPCTSTR pImg;		
 			if (GetCheckFlag(i))
 			{
 				RECT rcCheck = GetItemCheckRect(i);
-				pImg = GetCheck(i) ? GetSelCheckImg(i) : GetNorCheckImg(i);
-				if (pImg)
+				CDuiImage& pImg = GetCheck(i) ? *GetSelCheckImg(i) : *GetNorCheckImg(i);
+				if (!pImg.IsEmpty())
 					CRenderEngine::DrawImageString(hDC, m_pManager, rcCheck, m_rcPaint, pImg, NULL);
 			}
 
 			RECT rcImg;
 			rcImg = GetItemImgRect(i);		
-			pImg = IsSelected() ? GetSelImg(i) : GetNorImg(i);
-			if (pImg)
+			CDuiImage& pImg = IsSelected() ? *GetSelImg(i) : *GetNorImg(i);
+			if (!pImg.IsEmpty())
 				CRenderEngine::DrawImageString(hDC, m_pManager, rcImg, m_rcPaint, pImg, NULL);
 
 			RECT rcText = GetItemTextRect(i);
@@ -3606,31 +3611,31 @@ namespace UiLib {
 
 		if( !IsEnabled() ) {
 			if( !pInfo->sDisabledImage.IsEmpty() ) {
-				if( !DrawImage(hDC, (LPCTSTR)pInfo->sDisabledImage) ) pInfo->sDisabledImage.Empty();
+				if( !DrawImage(hDC,pInfo->sDisabledImage) ) pInfo->sDisabledImage.Empty();
 				else return;
 			}
 		}
 		if( IsSelected() ) {
 			if( !pInfo->sSelectedImage.IsEmpty() ) {
-				if( !DrawImage(hDC, (LPCTSTR)pInfo->sSelectedImage) ) pInfo->sSelectedImage.Empty();
+				if( !DrawImage(hDC,pInfo->sSelectedImage) ) pInfo->sSelectedImage.Empty();
 				else return;
 			}
 		}
 		if( (m_uButtonState & UISTATE_HOT) != 0 ) {
 			if( !pInfo->sHotImage.IsEmpty() ) {
-				if( !DrawImage(hDC, (LPCTSTR)pInfo->sHotImage) ) pInfo->sHotImage.Empty();
+				if( !DrawImage(hDC,pInfo->sHotImage) ) pInfo->sHotImage.Empty();
 				else return;
 			}
 		}
 		if( !m_sBkImage.IsEmpty() ) {
 			if( !pInfo->bAlternateBk || m_iIndex % 2 == 0 ) {
-				if( !DrawImage(hDC, (LPCTSTR)m_sBkImage) ) m_sBkImage.Empty();
+				if( !DrawImage(hDC,m_sBkImage) ) m_sBkImage.Empty();
 			}
 		}
 
 		if( m_sBkImage.IsEmpty() ) {
 			if( !pInfo->sBkImage.IsEmpty() ) {
-				if( !DrawImage(hDC, (LPCTSTR)pInfo->sBkImage) ) pInfo->sBkImage.Empty();
+				if( !DrawImage(hDC,pInfo->sBkImage) ) pInfo->sBkImage.Empty();
 				else return;
 			}
 		}

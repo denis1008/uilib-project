@@ -305,8 +305,6 @@ bool CMainWnd::OnEffectsBtnClick( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wPa
 	pAnimWnd->SetAnimEffects(true);
 	pEffectsDemo->SetTag(pEffectsDemo->GetTag()+1);
 
-	pm.SetCurStyles(pEffectsDemo->GetTag()%2?_T("LangChinese"):_T("LangEnglish"));
-
 	if(pEffectsDemo->GetTag() == 1)
 		pAnimWnd->SetAttribute(_T("adveffects"),_T("anim='left2right' offset='180'"));
 	else if(pTNotifyUI->pSender->GetTag() == 2)
@@ -334,6 +332,8 @@ bool CMainWnd::OnEffectsBtnClick( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wPa
 	}
 	pAnimWnd->TriggerEffects();
 #endif
+	pEffectsDemo->SetTag(pEffectsDemo->GetTag()%2?2:3);
+	pm.SetCurStyles(pEffectsDemo->GetTag()%2?_T("LangChinese"):_T("LangEnglish"));
 
 	if(pEffectsDemo->GetTag()%2)
 		pm.SetCurStyles(_T("LangChinese"));

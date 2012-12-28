@@ -72,13 +72,13 @@ namespace UiLib
 		DWORD m_dwPushedTextColor;
 		DWORD m_dwFocusedTextColor;
 		
-		CDuiString	m_sNormalImage;
-		CDuiString	m_sHotImage;
-		CDuiString	m_sHotForeImage;
-		CDuiString	m_sPushedImage;
-		CDuiString	m_sPushedForeImage;
-		CDuiString	m_sFocusedImage;
-		CDuiString	m_sDisabledImage;
+		CDuiImage	m_sNormalImage;
+		CDuiImage	m_sHotImage;
+		CDuiImage	m_sHotForeImage;
+		CDuiImage	m_sPushedImage;
+		CDuiImage	m_sPushedForeImage;
+		CDuiImage	m_sFocusedImage;
+		CDuiImage	m_sDisabledImage;
 
 		CDuiString	m_sSalendarValDest;
 		CDuiString	m_sCalendarName;

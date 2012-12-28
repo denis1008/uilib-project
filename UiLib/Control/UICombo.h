@@ -108,11 +108,11 @@ protected:
     SIZE m_szDropBox;
     UINT m_uButtonState;
 
-    CDuiString m_sNormalImage;
-    CDuiString m_sHotImage;
-    CDuiString m_sPushedImage;
-    CDuiString m_sFocusedImage;
-    CDuiString m_sDisabledImage;
+    CDuiImage m_sNormalImage;
+    CDuiImage m_sHotImage;
+    CDuiImage m_sPushedImage;
+    CDuiImage m_sFocusedImage;
+    CDuiImage m_sDisabledImage;
 
     TListInfoUI m_ListInfo;
 };
