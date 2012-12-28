@@ -86,7 +86,7 @@
 		<HorizontalLayout float="true" pos="10,10,800,98" inset="10,24,0,0" childpadding="5" name="MenuBar">
 			<Button style="BtnStyle" />
 			<Button style="StartTrayAminCtrl" />
-			<Button name="CalenderBtn" text="日历测试" calendarprofile="bordercolor=&quot;#ff3b3b3b&quot; bordersize=&quot;1&quot; inset=&quot;2,2,2,2&quot; bkcolor=&quot;#FFFFFFFF&quot;" width="120" height="30" calendarname="test"  normalimage="" />
+			<Button name="CalenderBtn" text="日历测试" calendarname="CalenderBtn" calendarprofile="bordercolor=&quot;#ff3b3b3b&quot; bordersize=&quot;1&quot; inset=&quot;2,2,2,2&quot; bkcolor=&quot;#FFFFFFFF&quot;" width="120" height="30" calendarname="test"  normalimage="" />
 			<Label enabledeffect="true" enabledshadow="true" transshadow1="100" enabledstroke="true" strokecolor="#ffffffff"  shadowoffset="5,-100" text="深圳码农公司" align="center" width="250" height="26" disabledtextcolor="#FFa3c6f2" font="2" />
 			<Label enabledeffect="true" enabledshadow="true" enabledstroke="false" transshadow="255" transtext="255" transshadow1="0" transtext1="0" textcolor="#ff0680C9" shadowoffset="2,120" text="渐变透明" align="center" gradientlength="38" disabledtextcolor="#FFa3c6f2" font="2" />
 			<Label height="70" enabledeffect="true" enabledshadow="true" enabledstroke="false" transshadow="255" transtext="255" transshadow1="255" transtext1="255" textcolor="#ffffff00" gradientangle="10" textcolor1="#ffff0000" enabledstroke="true" strokecolor="#ffffffff" shadowoffset="-2,2" text="渐变文字" align="center" rhaa="1" gradientlength="70" disabledtextcolor="#FFa3c6f2" font="2" /></HorizontalLayout>

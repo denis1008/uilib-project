@@ -141,7 +141,9 @@ public:
 	virtual void SetStyleName(LPCTSTR pStrStyleName,CPaintManagerUI* pm = NULL);
 	virtual void SetAction(LPCTSTR pActonName,CPaintManagerUI* pm = NULL);
 	virtual void OnPropertyActionTimer(IDuiTimer* pTimer,TProperty* pTProperty);
+	virtual void OnPropertyActionTimer(IDuiTimer* pTimer,HWND hWnd,TProperty* pTProperty,WPARAM _wParam);
 	virtual void OnGroupActionTimer(IDuiTimer* pTimer,TAGroup* pTAGroup);
+	virtual void OnGroupActionTimer(IDuiTimer* pTimer,HWND hWnd,TAGroup* pTAGroup,WPARAM _wParam);
 	virtual bool OnAGroupNotify(TNotifyUI* pTNotifyUI,TAGroup* pTAGroup,WPARAM wParam);
 	virtual bool OnAGroupEvent(TEventUI* pTEventUI,TAGroup* pTAGroup,WPARAM wParam);
 

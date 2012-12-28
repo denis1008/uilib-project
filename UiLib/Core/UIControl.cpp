@@ -1295,19 +1295,6 @@ namespace UiLib
 			pTAProperty->nAGroupName = nActionName;
 			pTAProperty->pTAGroup	= pTAGroup;
 
-//			pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnGroupActionTimer,pTAGroup,pTAGroup->uDefaultInterval,pTAGroup->uDefaultTimer,pTAGroup->bDefaultAutoStart,pTAGroup->bDefaultLoop,pTAGroup->bDefaultReverse);
-
-// 			for(int iIndex = 0;iIndex < pTAGroup->mPropertys.GetSize();iIndex++){
-// 				TProperty* pTProperty = pTAGroup->mPropertys.GetAt(iIndex);
-// 				if(!pTProperty)
-// 					continue;
-// 
-// 				if(pTProperty->uInterval == pTAGroup->uDefaultInterval && pTProperty->uTimer == pTAGroup->uDefaultTimer && pTProperty->bLoop == pTAGroup->bDefaultLoop && pTProperty->bAutoStart == pTAGroup->bDefaultAutoStart && pTProperty->bReverse == pTAGroup->bDefaultReverse)
-// 					continue;
-// 
-// 				pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnPropertyActionTimer,pTProperty,pTProperty->uInterval,pTProperty->uTimer,pTProperty->bAutoStart,pTProperty->bLoop,pTProperty->bReverse);
-// 			}
-
 			if(pTAGroup->mPropertys.GetSize()){
 				mActionNotifys.Set(nActionName,pTAProperty);
 
@@ -1401,6 +1388,20 @@ namespace UiLib
 	}
 
 	//************************************
+	// 函数名称: OnPropertyActionTimer
+	// 返回类型: void
+	// 参数信息: IDuiTimer * pTimer
+	// 参数信息: HWND hWnd
+	// 参数信息: TProperty * pTProperty
+	// 参数信息: WPARAM _wParam
+	// 函数说明: 
+	//************************************
+	void CControlUI::OnPropertyActionTimer( IDuiTimer* pTimer,HWND hWnd,TProperty* pTProperty,WPARAM _wParam )
+	{
+		OnPropertyActionTimer(pTimer,pTProperty);
+	}
+
+	//************************************
 	// 函数名称: OnActionTimer
 	// 返回类型: void
 	// 参数信息: IDuiTimer * pTimer
@@ -1422,7 +1423,22 @@ namespace UiLib
 				OnPropertyActionTimer(pTimer,pTProperty);
 		}
 	}
-	
+
+	//************************************
+	// 函数名称: OnGroupActionTimer
+	// 返回类型: void
+	// 参数信息: IDuiTimer * pTimer
+	// 参数信息: HWND hWnd
+	// 参数信息: TAGroup * pTAGroup
+	// 参数信息: WPARAM _wParam
+	// 函数说明: 
+	//************************************
+	void CControlUI::OnGroupActionTimer( IDuiTimer* pTimer,HWND hWnd,TAGroup* pTAGroup,WPARAM _wParam )
+	{
+		OnGroupActionTimer(pTimer,pTAGroup);
+	}
+
+
 	//************************************
 	// 函数名称: OnAGroupNotify
 	// 返回类型: bool
@@ -1450,7 +1466,7 @@ namespace UiLib
 			pCurTActionProperty->nActionTimers.KillTimers();
 
 		if(!pTAProperty->nActionTimers){
-			pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnGroupActionTimer,pTAGroup,pTAGroup->uDefaultInterval,pTAGroup->uDefaultTimer,pTAGroup->bDefaultAutoStart,pTAGroup->bDefaultLoop,pTAGroup->bDefaultReverse);
+			pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnGroupActionTimer,GetManager()->GetPaintWindow(),pTAGroup,NULL,pTAGroup->uDefaultInterval,pTAGroup->uDefaultTimer,pTAGroup->bDefaultAutoStart,pTAGroup->bDefaultLoop,pTAGroup->bDefaultReverse);
 
 			for(int iIndex = 0;iIndex < pTAGroup->mPropertys.GetSize();iIndex++){
 				TProperty* pTProperty = pTAGroup->mPropertys.GetAt(iIndex);
@@ -1460,7 +1476,7 @@ namespace UiLib
 				if(pTProperty->uInterval == pTAGroup->uDefaultInterval && pTProperty->uTimer == pTAGroup->uDefaultTimer && pTProperty->bLoop == pTAGroup->bDefaultLoop && pTProperty->bAutoStart == pTAGroup->bDefaultAutoStart && pTProperty->bReverse == pTAGroup->bDefaultReverse)
 					continue;
 
-				pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnPropertyActionTimer,pTProperty,pTProperty->uInterval,pTProperty->uTimer,pTProperty->bAutoStart,pTProperty->bLoop,pTProperty->bReverse);
+				pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnPropertyActionTimer,GetManager()->GetPaintWindow(),pTProperty,NULL,pTProperty->uInterval,pTProperty->uTimer,pTProperty->bAutoStart,pTProperty->bLoop,pTProperty->bReverse);
 			}
 		}
 
@@ -1498,7 +1514,7 @@ namespace UiLib
 			pCurTActionProperty->nActionTimers.KillTimers();
 
 		if(!pTAProperty->nActionTimers){
-			pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnGroupActionTimer,pTAGroup,pTAGroup->uDefaultInterval,pTAGroup->uDefaultTimer,pTAGroup->bDefaultAutoStart,pTAGroup->bDefaultLoop,pTAGroup->bDefaultReverse);
+			pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnGroupActionTimer,GetManager()->GetPaintWindow(),pTAGroup,NULL,pTAGroup->uDefaultInterval,pTAGroup->uDefaultTimer,pTAGroup->bDefaultAutoStart,pTAGroup->bDefaultLoop,pTAGroup->bDefaultReverse);
 
 			for(int iIndex = 0;iIndex < pTAGroup->mPropertys.GetSize();iIndex++){
 				TProperty* pTProperty = pTAGroup->mPropertys.GetAt(iIndex);
@@ -1508,7 +1524,7 @@ namespace UiLib
 				if(pTProperty->uInterval == pTAGroup->uDefaultInterval && pTProperty->uTimer == pTAGroup->uDefaultTimer && pTProperty->bLoop == pTAGroup->bDefaultLoop && pTProperty->bAutoStart == pTAGroup->bDefaultAutoStart && pTProperty->bReverse == pTAGroup->bDefaultReverse)
 					continue;
 
-				pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnPropertyActionTimer,pTProperty,pTProperty->uInterval,pTProperty->uTimer,pTProperty->bAutoStart,pTProperty->bLoop,pTProperty->bReverse);
+				pTAProperty->nActionTimers += MakeDuiTimer(this,&CControlUI::OnPropertyActionTimer,GetManager()->GetPaintWindow(),pTProperty,NULL,pTProperty->uInterval,pTProperty->uTimer,pTProperty->bAutoStart,pTProperty->bLoop,pTProperty->bReverse);
 			}
 		}
 

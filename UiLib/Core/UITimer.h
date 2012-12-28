@@ -255,7 +255,7 @@ namespace UiLib{
 	}
 
 	template <class TObj,class TFun,class TParam>
-	IDuiTimer* MakeDuiTimer(TObj* pObject, void (TFun::* pFn)(IDuiTimer* pTimer,HWND hWnd,TParam lParam,WPARAM wParam),HWND hWnd,TParam lParam,WPARAM wParam,int iInterval,int iTotalTimer = NULL,bool bAutoRun = true)
+	IDuiTimer* MakeDuiTimer(TObj* pObject, void (TFun::* pFn)(IDuiTimer* pTimer,HWND hWnd,TParam lParam,WPARAM wParam),HWND hWnd,TParam lParam,WPARAM wParam,int iInterval,int iTotalTimer = NULL,bool bAutoRun = true,bool bLoop = false,bool bRevers = false)
 	{
 		return (IDuiTimer*)new TDuiTimer<TObj, TFun,TParam>(pObject,pFn,hWnd,lParam,wParam,iInterval,iTotalTimer,bAutoRun,bLoop,bRevers);
 	}
