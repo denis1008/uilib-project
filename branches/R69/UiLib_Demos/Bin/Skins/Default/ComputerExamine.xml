@@ -8,7 +8,8 @@
 				<Button width="38" height="42" bkimage="file='Button/btn.png' fade='100' corner='5,11,5,11' source='0,0,96,24'" normalimage="file='Icon/newtask.ani.png' source='0,0,38,42'" hotimage="" action="MouseEnterC|MouseLeaveC" />
 				<Button width="38" height="42" bkimage="file='Button/btn.png' fade='100' corner='5,11,5,11' source='0,0,96,24'" normalimage="file='Icon/anivip.png' source='0,0,38,42'" hotimage="" action="MouseEnterD|MouseLeaveD" />
 				<Button name="TextMsg" text="按钮1" width="100" action="MouseEnterBtn|MouseLeaveBtn" hotimage="" normalimage="file='Button/btn.png' fade='0' corner='5,11,5,11' source='0,24,96,48'" bkimage="file='Button/btn.png' fade='100' corner='5,11,5,11' source='0,0,96,24'" />
-				<Button text="按钮2" width="100" action="MouseEnterBtn|MouseLeaveBtn" hotimage="" normalimage="file='Button/btn.png' fade='0' corner='5,11,5,11' source='0,24,96,48'" bkimage="file='Button/btn.png' fade='100' corner='5,11,5,11' source='0,0,96,24'" />
+				<Button text="Button" width="100" action="MouseEnterBtn|MouseLeaveBtn" hotimage="" normalimage="file='Button/btn.png' fade='0' corner='5,11,5,11' source='0,24,96,48'" bkimage="file='Button/btn.png' fade='100' corner='5,11,5,11' source='0,0,96,24'" />
+				<FadeButton text="FadeButton" width="100" hotimage="file='Button/btn.png' fade='0' corner='5,11,5,11' source='0,24,96,48'" normalimage="file='Button/btn.png' fade='100' corner='5,11,5,11' source='0,0,96,24'" bkimage="file='Button/btn.png' fade='0' corner='5,11,5,11' source='0,24,96,48'" />
 			</HorizontalLayout>
 			<VerticalLayout height="80" inset="1,1,0,0" bkimage="WndFrame/examine_background.bmp">
 				<HorizontalLayout >

@@ -115,10 +115,10 @@ namespace UiLib
 			m_pManager->SendNotify(this, _T("click"));
 #ifdef UILIB_D3D
 			TriggerEffects(GetClickInEffect());
+#endif
 			if(!m_sCalendarName.IsEmpty()){
 				CCalendarUI::ShowCalendarDlg(this);
 			}
-#endif
 			BindTriggerTabSel();
 		}
 		return true;
