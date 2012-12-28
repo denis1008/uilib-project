@@ -81,7 +81,7 @@ namespace UiLib{
 		void operator() (IDuiTimer* pTimer){return OnTimer(pTimer);};
 		void operator() (IDuiTimer* pTimer,void* param){return OnTimer(pTimer,param);};
 		void operator() (IDuiTimer* pTimer,HWND hWnd,LPARAM lParam,WPARAM wParam){return OnTimer(pTimer,hWnd,lParam,wParam);};
-		
+
 	public:
 		void SetTimerParam(void* pObj,void* pFun,void* pParam,int iInterval,int iTotalTimer = NULL,bool bAutoRun = true,bool bLoop = false,bool bRevers = false);
 		void SetTimerParam(void* pObj,void* pFun,HWND hWnd,LPARAM lParam,WPARAM wParam,int iInterval,int iTotalTimer = NULL,bool bAutoRun = false,bool bLoop = false,bool bRevers = false);
@@ -144,7 +144,7 @@ namespace UiLib{
 		virtual bool SetDuiTimer();
 		virtual void KillDuiTimer();
 		virtual CDuiTimer* Copy() const;
-		
+
 		virtual void OnTimer(IDuiTimer* pTimer) {};
 		virtual void OnTimer(IDuiTimer* pTimer,void* param) {};
 		virtual void OnTimer(IDuiTimer* pTimer,HWND hWnd,LPARAM lParam,WPARAM wParam){::PostMessage(hWnd,WM_TIMER,lParam,wParam);};
@@ -161,7 +161,7 @@ namespace UiLib{
 		{
 			if(GetTimerID())
 				KillDuiTimer();
-			
+
 			m_pTimerOnFnA = pFun;
 			m_pTimerOnFnB = NULL;
 			m_pTimerOnFnC = NULL;
@@ -255,11 +255,11 @@ namespace UiLib{
 	}
 
 	template <class TObj,class TFun,class TParam>
-	IDuiTimer* MakeDuiTimer(TObj* pObject, void (TFun::* pFn)(IDuiTimer* pTimer,HWND hWnd,TParam lParam,WPARAM wParam),HWND hWnd,TParam lParam,WPARAM wParam,int iInterval,int iTotalTimer = NULL,bool bAutoRun = true)
+	IDuiTimer* MakeDuiTimer(TObj* pObject, void (TFun::* pFn)(IDuiTimer* pTimer,HWND hWnd,TParam lParam,WPARAM wParam),HWND hWnd,TParam lParam,WPARAM wParam,int iInterval,int iTotalTimer = NULL,bool bAutoRun = true,bool bLoop = false,bool bRevers = false)
 	{
 		return (IDuiTimer*)new TDuiTimer<TObj, TFun,TParam>(pObject,pFn,hWnd,lParam,wParam,iInterval,iTotalTimer,bAutoRun,bLoop,bRevers);
 	}
-	
+
 	typedef void (*TimerOnFnA)(IDuiTimer* pTimer);
 	typedef void (*TimerOnFnB)(IDuiTimer* pTimer,void* param);
 	typedef void (*TimerOnFnC)(IDuiTimer* pTimer,HWND hWnd,LPARAM lParam,WPARAM wParam);

@@ -26,6 +26,27 @@ namespace UiLib{
 			pTimerUI->KillDuiTimer();
 		}
 	}
+
+	static void CALLBACK TimerWndProc(HWND hwnd,UINT uMsg,UINT_PTR idEvent,DWORD dwTimer)
+	{
+		CDuiTimerBase* pTimerUI = (CDuiTimerBase*)idEvent;
+
+		if(!pTimerUI)
+			return;
+
+		if(pTimerUI->GetObj() && pTimerUI->GetFun() && pTimerUI->GetParam() )
+			pTimerUI->OnTimer(pTimerUI,pTimerUI->GetParam());
+		else if(pTimerUI->GetHwnd() || pTimerUI->GetLParam())
+			pTimerUI->OnTimer(pTimerUI,pTimerUI->GetHwnd(),pTimerUI->GetLParam(),pTimerUI->GetWParam());
+		else
+			pTimerUI->OnTimer(pTimerUI);
+
+		pTimerUI->CalInterval();
+
+		if(pTimerUI->FinshTimered()){
+			pTimerUI->KillDuiTimer();
+		}
+	}
 	
 	//************************************
 	// º¯ÊýÃû³Æ: CDuiTimerBase
@@ -112,13 +133,6 @@ namespace UiLib{
 	CDuiTimerBase::CDuiTimerBase( void* pObj,void* pFun,HWND hWnd,LPARAM lParam,WPARAM wParam,int iInterval,int iTotalTimer /*= NULL*/,bool bAutoRun /*= true*/,bool bLoop /*= false*/,bool bRevers /*= false*/ )
 	{
 		SetTimerParam(pObj,pFun,hWnd,lParam,wParam,iInterval,iTotalTimer,bAutoRun,bLoop,bRevers);
-
-		TIMECAPS tc;
-		if(timeGetDevCaps(&tc,sizeof(TIMECAPS))==TIMERR_NOERROR)
-		{
-			m_uTimerAccuracy=min(max(tc.wPeriodMin,1),tc.wPeriodMax);
-			timeBeginPeriod(m_uTimerAccuracy);
-		}
 	}
 
 	//************************************
@@ -135,13 +149,6 @@ namespace UiLib{
 	CDuiTimerBase::CDuiTimerBase( HWND hWnd,LPARAM lParam,WPARAM wParam,int iInterval,int iTotalTimer /*= NULL*/,bool bAutoRun /*= true*/,bool bLoop /*= false*/,bool bRevers /*= false*/ )
 	{
 		SetTimerParam(hWnd,lParam,wParam,iInterval,iTotalTimer,bAutoRun,bLoop,bRevers);
-
-		TIMECAPS tc;
-		if(timeGetDevCaps(&tc,sizeof(TIMECAPS))==TIMERR_NOERROR)
-		{
-			m_uTimerAccuracy=min(max(tc.wPeriodMin,1),tc.wPeriodMax);
-			timeBeginPeriod(m_uTimerAccuracy);
-		}
 	}
 
 	//************************************
@@ -376,7 +383,10 @@ namespace UiLib{
 		if(m_uTimerID)
 			InnerKillTimer();
 
-		m_uTimerID		= timeSetEvent(m_iInterval,m_uTimerAccuracy,TimerProc,(DWORD)this,TIME_PERIODIC);
+		if(!m_hWnd)
+			m_uTimerID	= timeSetEvent(m_iInterval,m_uTimerAccuracy,TimerProc,(DWORD)this,TIME_PERIODIC);
+		else 
+			m_uTimerID		= ::SetTimer(m_hWnd,(UINT_PTR)this,m_iInterval,TimerWndProc);
 
 		if(m_uTimerID)
 			return true;
@@ -394,8 +404,12 @@ namespace UiLib{
 	//************************************
 	void CDuiTimerBase::InnerKillTimer()
 	{
-		timeKillEvent(m_uTimerID);
-		timeEndPeriod(m_uTimerAccuracy);
+		if(!GetHwnd()){
+			timeKillEvent(m_uTimerID);
+			timeEndPeriod(m_uTimerAccuracy);
+		}
+		else ::KillTimer(m_hWnd,m_uTimerID);
+
 		m_uTimerID = NULL;
 		m_uTimerAccuracy = NULL;
 
