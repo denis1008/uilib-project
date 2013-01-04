@@ -148,7 +148,7 @@ void CMainWnd::Init()
 		pLegendRightBtn->OnNotify		+= MakeDelegate(this,&CMainWnd::OnLegendRightBtn,_T("click"));
 		pLegendBottomBtn->OnNotify		+= MakeDelegate(this,&CMainWnd::OnLegendBottomBtn,_T("click"));
 		pDelChartDataBtn->OnNotify		+= MakeDelegate(this,&CMainWnd::OnDelChartDataBtn,_T("click"));
-
+		
 		//pEffectsDemo ÎªDuilib¿Ø¼þÖ¸Õë
 
 		//IDuiTimer* pControlTimer = NULL;

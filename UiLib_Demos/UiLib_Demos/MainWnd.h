@@ -44,6 +44,7 @@ public:
 	void OnDuiTimerB(IDuiTimer* pTimer,CButtonUI* pControl);
 	void OnDuiTimerC(IDuiTimer* pTimer,HWND hWnd,CMainWnd* lParam,WPARAM wParam);
 	bool OnDuiTimerD(TEventUI* pTEventUI);
+
 private:
 	int				mChartDataPos;
 	CLabelUI*		pTestLabel;
