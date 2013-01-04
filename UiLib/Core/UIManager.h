@@ -9,7 +9,8 @@ namespace UiLib {
 //
 #define WM_EFFECTS		WM_USER+1680
 #define WM_RELOADSTYLE	WM_USER+1681
-
+#define WM_MOUSEINTRAYICON	WM_USER+1682
+#define WM_MOUSEOUTTRAYICON	WM_USER+1683
 class CControlUI;
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -56,6 +57,8 @@ typedef enum EVENTTYPE_UI
 	UIEVENT_COMMAND,
 	UIEVENT_RELOADSTYLE,
 	UIEVENT_TRAYICON,
+	UIEVENT_MOUSEINTRAYICON,
+	UIEVENT_MOUSEOUTTRAYICON,
     UIEVENT__LAST,
 };
 
