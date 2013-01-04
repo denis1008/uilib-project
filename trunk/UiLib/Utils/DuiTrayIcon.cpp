@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "DuiTrayIcon.h"
+#include "Core/UIManager.h"
 
 namespace UiLib
 {
@@ -10,15 +11,19 @@ namespace UiLib
 		m_bEnabled		= false;
 		m_bVisible		= false;
 		m_bTwinkling	= false;
+		m_bTrackMouse	= false;
+		m_pDuiTime		= NULL;
 		m_hWnd			= NULL;
 		pIDuiTimer		= NULL;
 		m_uMessage		= UIEVENT_TRAYICON;
+		InitializeCriticalSection(&m_cs);
 	}
 
 
 	CDuiTrayIcon::~CDuiTrayIcon(void)
 	{
 		DeleteTrayIcon();
+		DeleteCriticalSection(&m_cs);
 	}
 
 	//************************************
@@ -30,7 +35,7 @@ namespace UiLib
 	// 参数信息: HICON _DefaultIcon
 	// 函数说明: 
 	//************************************
-	void CDuiTrayIcon::CreateTrayIcon( HWND _RecvHwnd,UINT _IconIDResource,LPCTSTR _ToolTipText /*= NULL*/,UINT _Message /*= UIEVENT_TRAYICON*/)
+	void CDuiTrayIcon::CreateTrayIcon( HWND _RecvHwnd,UINT _IconIDResource,LPCTSTR _ToolTipText /*= NULL*/,UINT _Message /*= UIEVENT_TRAYICON*/,CPaintManagerUI* pManager/* = NULL*/)
 	{
 		if(_Message == NULL)
 			_Message = UIEVENT_TRAYICON;
@@ -51,6 +56,12 @@ namespace UiLib
 
 		Shell_NotifyIcon(NIM_ADD,&m_trayData);
 		m_bEnabled = true;
+
+		m_pDuiTime = MakeDuiTimer(this,&CDuiTrayIcon::OnTimerMousePt,_RecvHwnd,this,NULL,200);
+		m_pDuiTime->SetDuiTimer();
+
+		if(pManager)
+			pManager->GetEventSource() += MakeDelegate(this,&CDuiTrayIcon::OnCommon,UIEVENT_TRAYICON);
 	}
 	
 	//************************************
@@ -63,6 +74,12 @@ namespace UiLib
 		if(pIDuiTimer)
 			StopTwinkling();
 
+		if(m_pDuiTime){
+			m_pDuiTime->KillDuiTimer();
+			delete m_pDuiTime;
+			m_pDuiTime = NULL;
+		}
+				
 		Shell_NotifyIcon(NIM_DELETE,&m_trayData);
 		m_bEnabled		= false;
 		m_bVisible		= false;
@@ -215,7 +232,7 @@ namespace UiLib
 		if(m_bTwinkling || !m_bEnabled || pIDuiTimer)
 			return false;
 
-		pIDuiTimer = MakeDuiTimer(this,&CDuiTrayIcon::OnTimer,400);
+		pIDuiTimer = MakeDuiTimer(this,&CDuiTrayIcon::OnTimer,m_hWnd,this,NULL,400);
 		pIDuiTimer->SetDuiTimer();
 		m_bTwinkling = true;
 		return true;
@@ -236,15 +253,63 @@ namespace UiLib
 		m_bTwinkling = false;
 		SetShowIcon();
 	}
+	
+	//************************************
+	// 函数名称: OnCommon
+	// 返回类型: bool
+	// 参数信息: TEventUI * pTEventUI
+	// 参数信息: LPARAM lParam
+	// 参数信息: WPARAM wParam
+	// 函数说明: 
+	//************************************
+	bool CDuiTrayIcon::OnCommon( TEventUI* pTEventUI,LPARAM lParam,WPARAM wParam )
+	{
+		if(m_trayData.uID == pTEventUI->wParam && pTEventUI->lParam == WM_MOUSEMOVE)
+		{
+			GetCursorPos(&m_ptMouse);
+			if(!m_bTrackMouse)
+			{
+				m_bTrackMouse = true;
+				PostMessage(m_hWnd,WM_MOUSEINTRAYICON,NULL,NULL);
+			}
+		}
+		return true;
+	}
 
 	//************************************
 	// 函数名称: OnTimer
 	// 返回类型: void
 	// 参数信息: IDuiTimer * pTimer
+	// 参数信息: HWND hWnd
+	// 参数信息: CDuiTrayIcon * lParam
+	// 参数信息: WPARAM wParam
 	// 函数说明: 
 	//************************************
-	void CDuiTrayIcon::OnTimer( IDuiTimer* pTimer )
+	void CDuiTrayIcon::OnTimer( IDuiTimer* pTimer,HWND hWnd,CDuiTrayIcon* lParam,WPARAM wParam )
 	{
 		IsVisible()?SetHideIcon():SetShowIcon();
+	}
+
+	//************************************
+	// 函数名称: OnTimerMousePt
+	// 返回类型: void
+	// 参数信息: IDuiTimer * pTimer
+	// 参数信息: HWND hWnd
+	// 参数信息: CDuiTrayIcon * lParam
+	// 参数信息: WPARAM wParam
+	// 函数说明: 
+	//************************************
+	void CDuiTrayIcon::OnTimerMousePt( IDuiTimer* pTimer,HWND hWnd,CDuiTrayIcon* lParam,WPARAM wParam )
+	{
+		if(m_bTrackMouse)
+		{
+			POINT ptMouse;
+			GetCursorPos(&ptMouse);
+			if(ptMouse.x != m_ptMouse.x || ptMouse.y != m_ptMouse.y)
+			{
+				m_bTrackMouse = false;
+				PostMessage(hWnd,WM_MOUSEOUTTRAYICON,NULL,NULL);
+			}
+		}
 	}
 }
