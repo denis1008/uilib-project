@@ -16,14 +16,12 @@ namespace UiLib
 		m_hWnd			= NULL;
 		pIDuiTimer		= NULL;
 		m_uMessage		= UIEVENT_TRAYICON;
-		InitializeCriticalSection(&m_cs);
 	}
 
 
 	CDuiTrayIcon::~CDuiTrayIcon(void)
 	{
 		DeleteTrayIcon();
-		DeleteCriticalSection(&m_cs);
 	}
 
 	//************************************
@@ -43,10 +41,11 @@ namespace UiLib
 		if(!_RecvHwnd || _IconIDResource <= 0 || _Message < 0)
 			return;
 
+		m_hWnd	= _RecvHwnd;
 		m_hIcon = LoadIcon(CPaintManagerUI::GetInstance(),MAKEINTRESOURCE(_IconIDResource));
 
 		m_trayData.cbSize = sizeof(NOTIFYICONDATA);
-		m_trayData.hWnd	 = _RecvHwnd;
+		m_trayData.hWnd	 = m_hWnd;
 		m_trayData.uID	 = _IconIDResource;
 		m_trayData.hIcon = m_hIcon;
 		m_trayData.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
@@ -57,7 +56,7 @@ namespace UiLib
 		Shell_NotifyIcon(NIM_ADD,&m_trayData);
 		m_bEnabled = true;
 
-		m_pDuiTime = MakeDuiTimer(this,&CDuiTrayIcon::OnTimerMousePt,_RecvHwnd,this,NULL,200);
+		m_pDuiTime = MakeDuiTimer(this,&CDuiTrayIcon::OnTimerMousePt,m_hWnd,this,NULL,500);
 		m_pDuiTime->SetDuiTimer();
 
 		if(pManager)
@@ -308,7 +307,7 @@ namespace UiLib
 			if(ptMouse.x != m_ptMouse.x || ptMouse.y != m_ptMouse.y)
 			{
 				m_bTrackMouse = false;
-				PostMessage(hWnd,WM_MOUSEOUTTRAYICON,NULL,NULL);
+				PostMessage(m_hWnd,WM_MOUSEOUTTRAYICON,NULL,NULL);
 			}
 		}
 	}

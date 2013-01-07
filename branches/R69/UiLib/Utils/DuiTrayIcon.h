@@ -46,7 +46,6 @@ namespace UiLib
 		bool m_bTwinkling;
 		bool m_bTrackMouse;
 		POINT m_ptMouse;
-		CRITICAL_SECTION m_cs;
 		HWND m_hWnd;
 		UINT m_uMessage;
 		HICON m_hIcon;
