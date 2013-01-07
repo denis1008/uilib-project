@@ -16,14 +16,12 @@ namespace UiLib
 		m_hWnd			= NULL;
 		pIDuiTimer		= NULL;
 		m_uMessage		= UIEVENT_TRAYICON;
-		InitializeCriticalSection(&m_cs);
 	}
 
 
 	CDuiTrayIcon::~CDuiTrayIcon(void)
 	{
 		DeleteTrayIcon();
-		DeleteCriticalSection(&m_cs);
 	}
 
 	//************************************

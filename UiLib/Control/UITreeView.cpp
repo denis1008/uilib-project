@@ -1089,7 +1089,8 @@ namespace UiLib
 			{
 				CTreeNodeUI* pItem = (CTreeNodeUI*)GetItemAt(nIndex);
 
-				pItem->SetVisible(_Expanded);
+				CCheckBoxUI* pFolder	= pItem->GetFolderButton();
+				pFolder->Selected(!_Expanded);
 
 				if(pItem->GetCountChild() && !pItem->GetFolderButton()->IsSelected())
 					SetItemExpand(_Expanded,pItem);
@@ -1254,6 +1255,8 @@ namespace UiLib
 			SetVisibleFolderBtn(_tcscmp(pstrValue,_T("true")) == 0);
 		else if(_tcscmp(pstrName,_T("visiblecheckbtn")) == 0)
 			SetVisibleCheckBtn(_tcscmp(pstrValue,_T("true")) == 0);
+		else if(_tcscmp(pstrName,_T("defaultexpand")) == 0)
+			SetItemExpand(_tcscmp(pstrValue,_T("true")) == 0);
 		else if(_tcscmp(pstrName,_T("itemminwidth")) == 0)
 			SetItemMinWidth(_ttoi(pstrValue));
 		else if(_tcscmp(pstrName, _T("itemtextcolor")) == 0 ){

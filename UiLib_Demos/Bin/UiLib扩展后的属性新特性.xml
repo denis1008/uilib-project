@@ -332,6 +332,7 @@
 		
 		<!--TreeView 独有的属性-->
 		<Attribute name="multipleitem" default="true" type="BOOL" comment="是否允许item多选"/>
+		<Attribute name="defaultexpand" default="true" type="BOOL" comment="节点默认是否展开（仅对XML静态定义的节点有效，动态添加的节点需要在程序中设置）"/>
 		<Attribute name="itemcheckimgsize" default="0,0" type="SIZE" comment="Item的复选框图片大小,如(2,2)"/>
 		<Attribute name="itemiconimgsize" default="0,0" type="SIZE" comment="Item的图标大小,如(2,2)"/>
 
