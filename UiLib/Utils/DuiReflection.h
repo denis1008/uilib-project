@@ -39,10 +39,12 @@ namespace UiLib
 #define REGIST_DUICLASS(DuiObject) DelegatingObject<DuiObject> __class_##DuiObject( #DuiObject );
 #endif
 
+#ifdef _UNICODE
 	template<class TObj>
 	TObj CreateDuiInstance(LPCSTR _DuiClassName){
 		return static_cast<TObj>(DuiObjectMap::createInstance(_DuiClassName));
 	}
+#endif // !_UNICODE
 
 	template<class TObj>
 	TObj CreateDuiInstance(LPCTSTR _DuiClassName){
