@@ -1830,7 +1830,7 @@ namespace UiLib {
 		for(int nIndex = 0;nIndex < m_mStyles.GetSize();nIndex++)
 		{
 			CDuiString nKey = m_mStyles.GetAt(nIndex);
-			if(nKey == pStylesName)
+			if(nKey != pStylesName)
 				continue;
 
 			RemoveAllControlStyle(NULL,nKey.GetData());
