@@ -19,6 +19,7 @@ namespace UiLib
 
 		void SetEnabled(bool bEnable = true);
 		void SetText(LPCTSTR pstrText);
+		CDuiString GetText();
 		void SetMaxChar(int uMax);
 		int GetMaxChar();
 		void SetReadOnly(bool bReadOnly);
@@ -76,8 +77,6 @@ namespace UiLib
 		void SetTimerDelay(UINT nDelay);
 		UINT GetTimerDelay();
 
-	public:
-		void OnTimer(UINT iTimerID);
 	protected:
 		UINT m_uDelay;
 		CEditWnd*	m_pWindow;
