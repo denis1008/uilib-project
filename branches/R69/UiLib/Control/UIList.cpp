@@ -352,7 +352,6 @@ namespace UiLib {
 						SelectAllItems();
 				}
 				return;
-				break;
 			case UIEVENT_SCROLLWHEEL:
 				{
 					switch( LOWORD(event.wParam) )

@@ -19,19 +19,21 @@ namespace UiLib
 		LPCTSTR GetWindowClassName() const;
 		LPCTSTR GetSuperClassName() const;
 		void OnFinalMessage(HWND hWnd);
+		void OnTimerEdit(IDuiTimer* pTimer,HWND hWnd,CEditUI* lParam,WPARAM wParam);
 
 		LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 		LRESULT OnKillFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 		LRESULT OnEditChanged(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 	protected:
+		IDuiTimer* m_pDuiTimer;
 		CEditUI* m_pOwner;
 		HBRUSH m_hBkBrush;
 		bool m_bInit;
 	};
 
 
-	CEditWnd::CEditWnd() : m_pOwner(NULL), m_hBkBrush(NULL), m_bInit(false)
+	CEditWnd::CEditWnd() : m_pDuiTimer(NULL),m_pOwner(NULL), m_hBkBrush(NULL), m_bInit(false)
 	{
 	}
 
@@ -99,12 +101,19 @@ namespace UiLib
 		LRESULT lRes = 0;
 		BOOL bHandled = TRUE;
 
-		if(m_hWnd && uMsg == WM_SETFOCUS && !m_pOwner->GetTipValue().IsEmpty() )
+		if(m_hWnd && uMsg == WM_SETFOCUS )
 		{
-			if(CDuiString(_T("__IsTipValue__"))+m_pOwner->GetText() == m_pOwner->GetTipValue())
-				m_pOwner->SetText(_T(""));
-			m_pOwner->m_RegluarSrcText = m_pOwner->GetText();
-			m_pOwner->GetManager()->SetTimer(m_pOwner,1650,m_pOwner->GetTimerDelay());
+			if(!m_pOwner->GetTipValue().IsEmpty())
+			{
+				if(CDuiString(_T("__IsTipValue__"))+m_pOwner->GetText() == m_pOwner->GetTipValue())
+					m_pOwner->SetText(_T(""));
+				m_pOwner->m_RegluarSrcText = m_pOwner->GetText();
+			}
+
+			if(!m_pDuiTimer && m_pOwner->GetEnableTimer()){
+				m_pDuiTimer = MakeDuiTimer(this,&CEditWnd::OnTimerEdit,m_hWnd,m_pOwner,NULL,m_pOwner->GetTimerDelay());
+				m_pDuiTimer->SetDuiTimer();
+			}
 		}
 		
 		if( uMsg == WM_KILLFOCUS )
@@ -112,6 +121,13 @@ namespace UiLib
 			if(m_pOwner->GetTipValue().GetLength() > 0 && m_pOwner->GetText().GetLength() == 0)
 				m_pOwner->SetText(m_pOwner->GetSrcTipValue());
 			m_pOwner->GetManager()->KillTimer(m_pOwner);
+
+			if(m_pDuiTimer)
+			{
+				m_pDuiTimer->KillDuiTimer();
+				delete m_pDuiTimer;
+				m_pDuiTimer = NULL;
+			}
 
 			lRes = OnKillFocus(uMsg, wParam, lParam, bHandled);
 		}
@@ -178,6 +194,25 @@ namespace UiLib
 		return 0;
 	}
 
+	//************************************
+	// 函数名称: OnTimerEdit
+	// 返回类型: void
+	// 参数信息: IDuiTimer * pTimer
+	// 参数信息: HWND hWnd
+	// 参数信息: CEditUI * lParam
+	// 参数信息: WPARAM wParam
+	// 函数说明: 
+	//************************************
+	void CEditWnd::OnTimerEdit( IDuiTimer* pTimer,HWND hWnd,CEditUI* lParam,WPARAM wParam )
+	{
+		if(_tcscmp(m_pOwner->m_sCheckVal.GetData(),m_pOwner->GetText().GetData()) != 0)
+		{
+			CDuiString nNewValue = m_pOwner->GetText();
+			m_pOwner->m_sCheckVal = nNewValue;
+			m_pOwner->GetManager()->SendNotify(m_pOwner,_T("OnEditTimer"),NULL,(LPARAM)&nNewValue,true);
+		}
+	}
+
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
@@ -217,8 +252,6 @@ namespace UiLib
 			else CLabelUI::DoEvent(event);
 			return;
 		}
-		if( event.Type == UIEVENT_TIMER && event.pSender == this && m_pWindow )
-			return OnTimer(event.wParam );
 		if( event.Type == UIEVENT_SETCURSOR && IsEnabled() )
 		{
 			::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_IBEAM)));
@@ -338,6 +371,19 @@ namespace UiLib
 		m_sText = pstrText;
 		if( m_pWindow != NULL ) Edit_SetText(*m_pWindow, m_sText);
 		Invalidate();
+	}
+	
+	//************************************
+	// 函数名称: GetText
+	// 返回类型: CDuiString
+	// 函数说明: 
+	//************************************
+	CDuiString CEditUI::GetText()
+	{
+		if(!m_sSrcTipValue.IsEmpty())
+			return _T("");
+
+		return CLabelUI::GetText();
 	}
 	
 	void CEditUI::SetMaxChar(int uMax)
@@ -568,15 +614,8 @@ MatchFailed:
 	//************************************
 	void CEditUI::SetRegularCheck( LPCTSTR pRegularCheckStr )
 	{
-		try
-		{
-			m_RegularCheckStr = pRegularCheckStr;
-			Invalidate();
-		}
-		catch(...)
-		{
-			throw "CEditUI::SetRegularCheck";
-		}
+		m_RegularCheckStr = pRegularCheckStr;
+		Invalidate();
 	}
 
 	//************************************
@@ -589,14 +628,7 @@ MatchFailed:
 	//************************************
 	LPCTSTR CEditUI::GetRegularCheck()
 	{
-		try
-		{
-			return m_RegularCheckStr;
-		}
-		catch(...)
-		{
-			throw "CEditUI::GetRegularCheck";
-		}
+		return m_RegularCheckStr;
 	}
 
 	//************************************
@@ -739,14 +771,7 @@ MatchFailed:
 	//************************************
 	DWORD CEditUI::GetTipValueColor()
 	{
-		try
-		{
-			return m_sTipValueColor;
-		}
-		catch(...)
-		{
-			throw "CEditUI::GetTipValueColor";
-		}
+		return m_sTipValueColor;
 	}
 
 	//************************************
@@ -759,14 +784,7 @@ MatchFailed:
 	//************************************
 	UiLib::CDuiString CEditUI::GetTipValue()
 	{
-		try
-		{
-			return m_sTipValue;
-		}
-		catch(...)
-		{
-			throw "CEditUI::GetTipValue";
-		}
+		return m_sTipValue;
 	}
 
 	//************************************
@@ -779,14 +797,7 @@ MatchFailed:
 	//************************************
 	LPCTSTR CEditUI::GetSrcTipValue()
 	{
-		try
-		{
-			return m_sSrcTipValue.GetData();
-		}
-		catch(...)
-		{
-			throw "CEditUI::GetSrcTipValue";
-		}
+		return m_sSrcTipValue.GetData();
 	}
 
 	void CEditUI::SetPos(RECT rc)
@@ -892,7 +903,7 @@ MatchFailed:
 		DWORD mCurTextColor = m_dwTextColor;
 
 		if( m_dwTextColor == 0 ) m_dwTextColor = m_pManager->GetDefaultFontColor();
-		if(GetText() == m_sSrcTipValue)	mCurTextColor = m_sTipValueColor;
+		if(CLabelUI::GetText() == m_sSrcTipValue)	mCurTextColor = m_sTipValueColor;
 		if( m_dwDisabledTextColor == 0 ) m_dwDisabledTextColor = m_pManager->GetDefaultDisabledColor();
 
 		if( m_sText.IsEmpty() ) return;
@@ -934,14 +945,7 @@ MatchFailed:
 	//************************************
 	void CEditUI::SetEnableTimer( bool bEnableTime )
 	{
-		try
-		{
-			m_bEnableTime = bEnableTime;
-		}
-		catch(...)
-		{
-			throw "CEditUI::SetEnableTimer";
-		}
+		m_bEnableTime = bEnableTime;
 	}
 
 	//************************************
@@ -954,14 +958,7 @@ MatchFailed:
 	//************************************
 	bool CEditUI::GetEnableTimer()
 	{
-		try
-		{
-			return m_bEnableTime;
-		}
-		catch(...)
-		{
-			throw "CEditUI::GetEnableTimer";
-		}
+		return m_bEnableTime;
 	}
 
 	//************************************
@@ -975,37 +972,9 @@ MatchFailed:
 	//************************************
 	void CEditUI::SetTimerDelay( UINT nDelay )
 	{
-		try
-		{
-			m_uDelay = nDelay;
-
-			if(!m_bEnableTime)
-				return;
-
-			GetManager()->KillTimer(this);
-			GetManager()->SetTimer(this,1650,m_uDelay);
-		}
-		catch(...)
-		{
-			throw "CEditUI::SetTimerDelay";
-		}
+		m_uDelay = nDelay;
 	}
 	
-	//************************************
-	// 函数名称: OnTimer
-	// 返回类型: void
-	// 参数信息: UINT iTimerID
-	// 函数说明:
-	//************************************
-	void CEditUI::OnTimer( UINT iTimerID )
-	{
-		if(_tcscmp(m_sCheckVal.GetData(),GetText().GetData()) != 0)
-		{
-			m_sCheckVal = GetText();
-			GetManager()->SendNotify(this,_T("OnEditTimer"));
-		}
-	}
-
 	//************************************
 	// 函数名称: GetTimerDelay
 	// 返回类型: UINT
