@@ -139,7 +139,7 @@ void CMainWnd::Init()
 		pTextMsgBtn->OnEvent			+= MakeDelegate(this,&CMainWnd::OnMsgBtnMouseEnter,UIEVENT_MOUSEENTER);
 		pTextMsgBtn->OnEvent			+= MakeDelegate(this,&CMainWnd::OnMsgBtnMouseLeave,UIEVENT_MOUSELEAVE);
 		pAddNodeBtn->OnNotify			+= MakeDelegate(this,&CMainWnd::OnAddNodeBtnClick,_T("click"));
-		pAddAtNodeBtn->OnNotify			+= MakeDelegate(this,&CMainWnd::OnAddNodeBtnClick,_T("click"));
+		pAddAtNodeBtn->OnNotify			+= MakeDelegate(this,&CMainWnd::OnAddAtNodeBtnClick,_T("click"));
 		pCreateChartViewBtn->OnNotify	+= MakeDelegate(this,&CMainWnd::OnCreateChartViewBtn,_T("click"));
 		pAddChartDataABtn->OnNotify		+= MakeDelegate(this,&CMainWnd::OnAddChartDataABtn,_T("click"));
 		pAddChartDataBBtn->OnNotify		+= MakeDelegate(this,&CMainWnd::OnAddChartDataBBtn,_T("click"));
@@ -339,6 +339,8 @@ bool CMainWnd::OnEffectsBtnClick( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM wPa
 		pm.SetCurStyles(_T("LangChinese"));
 	else 
 		pm.SetCurStyles(_T("LangEnglish"));
+
+	pEffectsDemo->SetTag(pEffectsDemo->GetTag()+1);
 	return true;
 }
 
@@ -399,6 +401,7 @@ bool CMainWnd::OnAddAtNodeBtnClick( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM w
 	CFadeButtonUI* pAddAtBtn = new CFadeButtonUI();
 	pAddAtBtn->SetText(_T("²åÈë½Úµã"));
 	pAddAtBtn->SetName(_T("AddAtNode"));
+	pAddAtBtn->OnNotify			+= MakeDelegate(this,&CMainWnd::OnAddAtNodeBtnClick,_T("click"));
 
 	CEditUI* pAddEdit = new CEditUI();
 	pAddEdit->SetName(_T("AddAtNodeText"));
@@ -408,6 +411,7 @@ bool CMainWnd::OnAddAtNodeBtnClick( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM w
 	CTreeNodeUI* pNewNode = new CTreeNodeUI();
 	pNewNode->SetItemText(pEdit->GetText().GetData());
 	pParentNode->AddAt(pNewNode,0);
+	
 	pNewNode->GetTreeNodeHoriznotal()->Add(pAddEdit);
 	pNewNode->GetTreeNodeHoriznotal()->Add(pAddAtBtn);
 	pNewNode->GetTreeNodeHoriznotal()->Add(pRemoveBtn);
@@ -418,7 +422,6 @@ bool CMainWnd::OnAddAtNodeBtnClick( TNotifyUI* pTNotifyUI,LPARAM lParam,WPARAM w
 	pAddEdit->SetFixedWidth(50);
 	pAddAtBtn->SetFixedWidth(60);
 	pRemoveBtn->SetFixedWidth(20);
-
 
 	pRemoveBtn->OnNotify		+= MakeDelegate(this,&CMainWnd::OnRemoveNodeBtnClick,_T("click"));
 

@@ -68,10 +68,6 @@
 					</TreeNode>
 					<CheckBox text="扩展复选框" width="100" />
 				</TreeNode>
-				<TreeNode text="A3" style="treenode" >
-					<Edit name="AddAtNodeText" text="节点名称" tipvalue="节点名称" width="70" />
-					<Button name="AddAtNode" text="添加节点" width="60" />
-				</TreeNode>
 			</TreeView>
 		</VerticalLayout>
 	</HorizontalLayout>
