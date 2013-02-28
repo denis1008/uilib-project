@@ -340,6 +340,19 @@ namespace UiLib
 		Invalidate();
 	}
 	
+	//************************************
+	// 函数名称: GetText
+	// 返回类型: CDuiString
+	// 函数说明: 
+	//************************************
+	CDuiString CEditUI::GetText()
+	{
+		if(!m_sSrcTipValue.IsEmpty())
+			return _T("");
+
+		return CLabelUI::GetText();
+	}
+
 	void CEditUI::SetMaxChar(int uMax)
 	{
 		m_uMaxChar = uMax;
