@@ -23,6 +23,7 @@ class UILIB_API CControlUI
 public:
     CControlUI();
     virtual ~CControlUI();
+	void RemoveAllActionNotifys();
 
 public:
     virtual CDuiString GetName() const;
@@ -106,6 +107,8 @@ public:
     // 鼠标提示
     virtual CDuiString GetToolTip() const;
     virtual void SetToolTip(LPCTSTR pstrText);
+	virtual void SetToolTipWidth(int nWidth);
+	virtual int GetToolTipWidth();
 
     // 快捷键
     virtual TCHAR GetShortcut() const;
@@ -280,6 +283,7 @@ protected:
     SIZE m_cxyBorderRound;
     RECT m_rcPaint;
 	RECT m_rcBorderSize;
+	int m_nTooltipWidth;
 public:
 
 	// 取控件图片非透明色区域
