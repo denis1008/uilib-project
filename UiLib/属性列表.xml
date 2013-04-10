@@ -17,7 +17,7 @@
 		<Attribute name="selectedcolor" default="0xFFBAE4FF" type="DWORD" comment="默认的selected字体颜色,如(0xFFBAE4FF)"/>
 	</Window>
 	<Include parent="Container" >
-		<Attribute name="xmlfile" default="" type="STRING" comment="外部XML布局文件"/>
+		<Attribute name="source" default="" type="STRING" comment="外部XML布局文件"/>
 		<Attribute name="count" default="1" type="INT" comment="重复创建xmlfile布局的个数"/>
 	</Include>
 	<!--UiLib 扩展的UI元素对象-->
