@@ -29,7 +29,8 @@ namespace UiLib
 		m_bColorHSL(false),
 		m_nBorderSize(0),
 		m_nBorderStyle(PS_SOLID),
-		pCurTActionProperty(NULL)
+		pCurTActionProperty(NULL),
+		m_nTooltipWidth(300)
 	{
 #ifdef UILIB_D3D
 		m_tCurEffects.m_bEnableEffect	= false;
@@ -67,6 +68,20 @@ namespace UiLib
 		::DeleteObject(m_hRgn);
 		if( OnDestroy ) OnDestroy(this);
 		if( m_pManager != NULL ) m_pManager->ReapObjects(this);
+	}
+
+	void CControlUI::RemoveAllActionNotifys()
+	{
+		int isize=mActionNotifys.GetSize()-1;
+		for(int i = isize;i >=0 ;i--){
+			LPCTSTR key = mActionNotifys.GetAt(i);
+			TActionProperty* pTAP = mActionNotifys.Find(key);
+			if(!pTAP)
+				continue;
+			delete pTAP;
+			pTAP = NULL;
+		}
+		mActionNotifys.RemoveAll();
 	}
 
 	CDuiString CControlUI::GetName() const
@@ -669,9 +684,20 @@ namespace UiLib
 
 	void CControlUI::SetToolTip(LPCTSTR pstrText)
 	{
-		m_sToolTip = pstrText;
+		CDuiString strTemp(pstrText);
+		strTemp.Replace(_T("<n>"),_T("\r\n"));
+		m_sToolTip=strTemp;
 	}
 
+	void CControlUI::SetToolTipWidth(int nWidth)
+	{
+		m_nTooltipWidth=nWidth;
+	}
+	
+	int CControlUI::GetToolTipWidth()
+	{
+		return m_nTooltipWidth;
+	}
 
 	TCHAR CControlUI::GetShortcut() const
 	{
@@ -1110,7 +1136,11 @@ namespace UiLib
 		else if( _tcscmp(pstrName, _T("bordersize")) == 0 ) {
 			CDuiString nValue = pstrValue;
 			if(nValue.Find(',') < 0)
+			{
 				SetBorderSize(_ttoi(pstrValue));
+				RECT rcPadding = {0};
+				SetBorderSize(rcPadding);
+			}
 			else
 			{
 				RECT rcPadding = { 0 };

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 以下仅列出对DuiLib扩展后支持的新特性。可能有错漏，欢迎补充。(UiLib@qq.com) -->
+<!-- 最新特性。可能有错漏，欢迎补充。(UiLib@qq.com) -->
 <Controls>
 	<Window parent="">
 		<Attribute name="trayiconid" default="" type="UINT" comment="图标资源ID，将显示在托盘的图标资源ID"/>

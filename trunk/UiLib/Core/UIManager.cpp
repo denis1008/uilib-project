@@ -158,6 +158,7 @@ namespace UiLib {
 #endif
 		RemoveAllOptionGroups();
 		RemoveAllTimers();
+		RemoveActionScriptGroupAll();
 		RemoveAllStyles();
 
 		// Reset other parts...
@@ -168,6 +169,7 @@ namespace UiLib {
 		if( m_hbmpBackground != NULL ) ::DeleteObject(m_hbmpBackground);
 		if( m_hDcPaint != NULL ) ::ReleaseDC(m_hWndPaint, m_hDcPaint);
 		m_aPreMessages.Remove(m_aPreMessages.Find(this));
+
 	}
 
 	void CPaintManagerUI::Init(HWND hWnd)
@@ -874,6 +876,7 @@ namespace UiLib {
 				m_hwndTooltip = ::CreateWindowEx(0, TOOLTIPS_CLASS, NULL, WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, m_hWndPaint, NULL, m_hInstance, NULL);
 				::SendMessage(m_hwndTooltip, TTM_ADDTOOL, 0, (LPARAM) &m_ToolTip);
 			}
+			::SendMessage( m_hwndTooltip,TTM_SETMAXTIPWIDTH,0, pHover->GetToolTipWidth());
 			::SendMessage(m_hwndTooltip, TTM_SETTOOLINFO, 0, (LPARAM) &m_ToolTip);
 			::SendMessage(m_hwndTooltip, TTM_TRACKACTIVATE, TRUE, (LPARAM) &m_ToolTip);
 		}
@@ -3767,6 +3770,12 @@ namespace UiLib {
 			TAGroup* pTAGroup = m_mActionScript.Find(key);
 			if(!pTAGroup)
 				continue;
+
+			int jsize=pTAGroup->mPropertys.GetSize()-1;
+			for(int j=jsize;j>=0;j--)
+			{
+				pTAGroup->mPropertys.Remove(j,true);
+			}
 
 			delete pTAGroup;
 			pTAGroup = NULL;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 可能有错漏，欢迎补充。wangchyz(wangchyz@gmail.com) -->
+<!-- 可能有错漏，欢迎补充。-->
 <Controls>
 	<Window parent="">
 		<Attribute name="size" default="0,0" type="SIZE" comment="窗口的初始化大小,如(800,600)"/>
