@@ -65,6 +65,7 @@ namespace UiLib
 
 	CControlUI::~CControlUI()
 	{
+		RemoveAllActionNotifys();
 		::DeleteObject(m_hRgn);
 		if( OnDestroy ) OnDestroy(this);
 		if( m_pManager != NULL ) m_pManager->ReapObjects(this);
