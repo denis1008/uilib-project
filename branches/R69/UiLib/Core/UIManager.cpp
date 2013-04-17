@@ -1855,7 +1855,8 @@ namespace UiLib {
 	void CPaintManagerUI::RemoveAllStyles()
 	{
 		SetCurStyles(NULL);
-		for(int nIndex = 0;nIndex < m_mStyles.GetSize();nIndex++)
+		int isize = m_mStyles.GetSize()-1;
+		for(int nIndex = isize;nIndex >= 0;nIndex--)
 		{
 			CDuiString nKey = m_mStyles.GetAt(nIndex);
 			RemoveStyles(nKey.GetData());
@@ -3741,7 +3742,8 @@ namespace UiLib {
 	//************************************
 	void CPaintManagerUI::RemoveActionScriptGroupAll()
 	{
-		for(int i = 0;i < m_mActionScript.GetSize();i++){
+		int isize = m_mActionScript.GetSize() -1;
+		for(int i = isize;i >= 0;i--){
 			LPCTSTR key = m_mActionScript.GetAt(i);
 			TAGroup* pTAGroup = m_mActionScript.Find(key);
 			if(!pTAGroup)
